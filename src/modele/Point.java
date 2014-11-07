@@ -1,57 +1,56 @@
 package modele;
 
-import java.util.*;
-
 /**
  * @author Hexanome 4301
  */
 public class Point {
+	
+	private Integer longitude;
+	private Integer latitude;
+	private int adresse;
+	private DemandeLivraison uneDemande;
+	public Reseau reseau;
 
-    /**
-     * 
-     */
-    public Point() {
-    }
+	/**
+	 * Constructeur par défaut
+	 */
+	public Point() {
+	}
 
-    /**
-     * 
-     */
-    private Integer longitude;
+	/**
+	 * Constructeur à 3 paramètres
+	 * 
+	 * @param longitude
+	 * @param latitude
+	 * @param adresse
+	 */
+	public Point(Integer longitude, Integer latitude, int adresse) {
+		this.longitude = longitude;
+		this.latitude = latitude;
+		this.adresse = adresse;
+	}
+	
+	 /****************************************************
+     ********************* Getter  **********************
+     ****************************************************/
 
-    /**
-     * 
-     */
-    private Integer latitude;
+	public Integer getLongitude() {
+		return longitude;
+	}
 
-    /**
-     * 
-     */
-    private Integer adresse;
+	public Integer getLatitude() {
+		return latitude;
+	}
+	
+	public int getAdresse() {
+		return adresse;
+	}
 
-    /**
-     * 
-     */
-    private DemandeLivraison uneDemande;
+	public DemandeLivraison getUneDemande() {
+		return uneDemande;
+	}
 
-    /**
-     * 
-     */
-    public Reseau reseau;
-
-
-    /**
-     * 
-     */
-    public Reseau points;
-
-    /**
-     * 
-     */
-    public Set<Troncon> origine;
-
-    /**
-     * 
-     */
-    public Set<Troncon> destination;
-
+	public Reseau getReseau() {
+		return reseau;
+	}
 }

@@ -1,11 +1,10 @@
 package controleur;
 
-import java.util.*;
-
-import vue.VueFenetre;
 import modele.Client;
 import modele.PlageHoraire;
+import modele.Reseau;
 import modele.Tournee;
+import vue.VueFenetre;
 
 /**
  * @author Hexanome 4301
@@ -67,8 +66,9 @@ public class Application {
     }
     
     public static void main(String []args){
-    	System.out.println("Hello !");
-    	
+    	// Code permettant de charger le réseau
+    	Reseau reseau = new Reseau() ;
+    	reseau.chargerReseauXML();
     }
 
 }
