@@ -27,7 +27,7 @@ public class Application {
     /**
      * 
      */
-    public Tournee tournee;
+    public static Tournee tournee;
 
     /**
      * 
@@ -68,21 +68,23 @@ public class Application {
     }
     
     public static void main(String []args){
-    	// Code permettant de charger le réseau
-    	/*Reseau reseau = new Reseau() ;
-    	reseau.chargerReseauXML();*/
+    	// Code permettant de charger le réseau puis les livraisons
+    	Reseau reseau = new Reseau() ;
+    	reseau.chargerReseauXML();
+    	tournee = new Tournee(reseau);
+    	tournee.chargerDonneesDemandeXML();
     	
     	//Main pour l'interface graphique
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-			    	VueFenetre window = new VueFenetre();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//			    	VueFenetre window = new VueFenetre();
+//					window.frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
     }
 
 }

@@ -4,6 +4,12 @@ package modele;
  * @author Hexanome 4301
  */
 public class Troncon {
+	
+	private String nomRue;
+    private Double vitesse;
+    private Double distance;
+    private Point origine;
+    private Point destination;
 
 	/**
 	 * Constructeur avec tous les paramètres
@@ -27,32 +33,7 @@ public class Troncon {
      */
     public Troncon() {
     }
-
-    /**
-     * 
-     */
-    private Double vitesse;
-
-    /**
-     * 
-     */
-    private Double distance;
-
-    /**
-     * 
-     */
-    private String nomRue;
-
-    /**
-     * 
-     */
-    private Point origine;
-
-    /**
-     * 
-     */
-    private Point destination;
-    
+   
     /****************************************************
      ********************* Getter  **********************
      ****************************************************/
