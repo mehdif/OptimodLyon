@@ -1,6 +1,10 @@
 package vue;
 
+import java.awt.BorderLayout;
 import java.util.*;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
  * @author Hexanome 4301
@@ -10,7 +14,8 @@ public class VueReseau implements VueDessinable {
     /**
      * 
      */
-    public VueReseau() {
+    public VueReseau(JFrame frame) {
+    	initialiser(frame);
     }
 
     /**
@@ -42,8 +47,9 @@ public class VueReseau implements VueDessinable {
     /**
      * @return
      */
-    public Boolean initialiser() {
-        // TODO implement here
+    public Boolean initialiser(JFrame frame) {
+		JPanel vueReseau = new JPanel();
+		frame.getContentPane().add(vueReseau, BorderLayout.CENTER);
         return null;
     }
 

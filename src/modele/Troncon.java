@@ -1,44 +1,60 @@
 package modele;
 
-import java.util.*;
-
 /**
  * @author Hexanome 4301
  */
 public class Troncon {
+	
+	private String nomRue;
+    private Double vitesse;
+    private Double distance;
+    private Point origine;
+    private Point destination;
 
-    /**
-     * 
+	/**
+	 * Constructeur avec tous les paramètres
+	 * @param nomRue
+	 * @param vitesse
+	 * @param distance
+	 * @param origine
+	 * @param destination
+	 */
+    public Troncon(String nomRue, Double vitesse, Double distance,
+			Point origine, Point destination) {
+		this.vitesse = vitesse;
+		this.distance = distance;
+		this.nomRue = nomRue;
+		this.origine = origine;
+		this.destination = destination;
+	}
+
+	/**
+     * Constructeur par défaut
      */
     public Troncon() {
     }
+   
+    /****************************************************
+     ********************* Getter  **********************
+     ****************************************************/
 
-    /**
-     * 
-     */
-    private Double vitesse;
+	public Double getVitesse() {
+		return vitesse;
+	}
 
-    /**
-     * 
-     */
-    private Double distance;
+	public Double getDistance() {
+		return distance;
+	}
 
-    /**
-     * 
-     */
-    private String nomRue;
+	public String getNomRue() {
+		return nomRue;
+	}
 
-    /**
-     * 
-     */
-    private Point origine;
+	public Point getOrigine() {
+		return origine;
+	}
 
-    /**
-     * 
-     */
-    private Point destination;
-
-
-
-
+	public Point getDestination() {
+		return destination;
+	}
 }

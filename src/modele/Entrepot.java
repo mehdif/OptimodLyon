@@ -10,7 +10,10 @@ public class Entrepot extends Point {
     /**
      * 
      */
-    public Entrepot() {
+    public Entrepot(Integer longitude, Integer latitude, int adresse) {
+    	super(longitude, latitude, adresse);
     }
+    
+    
 
 }

@@ -1,44 +1,79 @@
 package modele;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  * @author Hexanome 4301
  */
 public class PlageHoraire {
 
-    /**
-     * 
+	private Calendar debut;
+    private Calendar fin;
+    private List <DemandeLivraison> demandeLivraison = new ArrayList<DemandeLivraison>();
+    private Boolean dispo;
+    
+    /****************************************************
+	 ********************* Getter **********************
+	 ****************************************************/
+	
+    public Calendar getDebut() {
+		return debut;
+	}
+
+	public Calendar getFin() {
+		return fin;
+	}
+
+	public List<DemandeLivraison> getDemandeLivraison() {
+		return demandeLivraison;
+	}
+
+	public Boolean getDispo() {
+		return dispo;
+	}
+	
+	/****************************************************
+	 ****************** Constructeur ********************
+	 ****************************************************/
+
+	/**
+     * Constructeur par défaut
      */
     public PlageHoraire() {
     }
+    
+    /**
+     * Constructeur avec 2 paramètres
+     */
+    public PlageHoraire(Calendar debut, Calendar fin){
+    	this.debut = debut;
+    	this.fin = fin;
+    }
 
+    /****************************************************
+	 *************** Méthodes de classes ****************
+	 ****************************************************/
+
+    
+    // TODO : Peut on la passer à public afin de de pouvoir ajouter des demandes depuis tournee
+//    /**
+//     * 
+//     * @return
+//     */
+//    private Boolean ajouterDemandeLivraison() {
+//        return null;
+//    }
+    
+    
     /**
      * 
-     */
-    private Calendar debut;
-
-    /**
-     * 
-     */
-    private Calendar fin;
-
-    /**
-     * 
-     */
-    private List <DemandeLivraison> demandeLivraison;
-
-    /**
-     * 
-     */
-    private Boolean dispo;
-
-
-    /**
+     * @param demandeLivraison
      * @return
      */
-    private Boolean ajouterDemandeLivraison() {
-        // TODO implement here
+    public Boolean ajouterDemandeLivraison(DemandeLivraison demandeLivraison) {
+        this.demandeLivraison.add(demandeLivraison);
         return null;
     }
 

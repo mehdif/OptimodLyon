@@ -7,38 +7,60 @@ import java.util.*;
  */
 public class DemandeLivraison {
 
+	private Point pointDeLivraison;
+    private Client client;
+    private PlageHoraire unePlageHoraire;
+    private Boolean confirmee;
+    private Integer id;
+    
+    /****************************************************
+	 ****************** Constructeur ********************
+	 ****************************************************/
+    
     /**
-     * 
+     * Constructeur par défaut
      */
     public DemandeLivraison() {
     }
-
+    
     /**
-     * 
+     * Constructeur avec tout les paramètres
+     * @param pointDeLivraison
+     * @param client
+     * @param unePlageHoraire
+     * @param confirmee
+     * @param id
      */
-    private Point pointDeLivraison;
+    public DemandeLivraison(Point pointDeLivraison, Client client,
+			PlageHoraire unePlageHoraire, Boolean confirmee, Integer id) {
+		this.pointDeLivraison = pointDeLivraison;
+		this.client = client;
+		this.unePlageHoraire = unePlageHoraire;
+		this.confirmee = confirmee;
+		this.id = id;
+	}
+    
+    /****************************************************
+   	 ********************* Getter **********************
+   	 ****************************************************/
 
-    /**
-     * 
-     */
-    private Client client;
+	public Point getPointDeLivraison() {
+		return pointDeLivraison;
+	}
 
-    /**
-     * 
-     */
-    private PlageHoraire unePlageHoraire;
+	public Client getClient() {
+		return client;
+	}
 
-    /**
-     * 
-     */
-    private Boolean confirmee;
+	public PlageHoraire getUnePlageHoraire() {
+		return unePlageHoraire;
+	}
 
-    /**
-     * 
-     */
-    public Integer id;
+	public Boolean getConfirmee() {
+		return confirmee;
+	}
 
-
-
-
+	public Integer getId() {
+		return id;
+	}
 }

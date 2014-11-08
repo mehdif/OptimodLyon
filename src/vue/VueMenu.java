@@ -1,23 +1,43 @@
 package vue;
 
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.*;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
  * @author Hexanome 4301
  */
 public class VueMenu {
+	
+	private JButton btnChargerReseau;
+	private JButton btnChargerDemandeLivraison;
+	private JButton btnCalculerTournee;
+	private JButton btnUndo;
+	private JButton btnRedo;
+	private JButton btnGenererFeuilleDeRoute;
 
     /**
      * 
      */
-    public VueMenu() {
+    public VueMenu(JFrame frame) {
+    	initialiser(frame);
     }
 
     /**
      * @return
      */
     public Boolean onClicCalculerTournee() {
-        // TODO implement here
+		btnCalculerTournee.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
         return null;
     }
 
@@ -25,7 +45,11 @@ public class VueMenu {
      * @return
      */
     public Boolean onClicChargerReseau() {
-        // TODO implement here
+		btnChargerReseau.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
         return null;
     }
 
@@ -33,7 +57,11 @@ public class VueMenu {
      * @return
      */
     public Boolean onClicUndo() {
-        // TODO implement here
+		btnUndo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
         return null;
     }
 
@@ -41,7 +69,11 @@ public class VueMenu {
      * @return
      */
     public Boolean onClicRedo() {
-        // TODO implement here
+		btnRedo.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
         return null;
     }
 
@@ -49,22 +81,57 @@ public class VueMenu {
      * 
      */
     public void onClicChargerDemandeLivraison() {
-        // TODO implement here
+		btnChargerDemandeLivraison.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
     }
 
     /**
      * 
      */
     public void onClicGenererFeuilleDeRoute() {
-        // TODO implement here
+		btnGenererFeuilleDeRoute.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			}
+		});
     }
 
     /**
      * @return
      */
-    public Boolean initialiser() {
-        // TODO implement here
-        return null;
+    public Boolean initialiser(JFrame frame) {
+    	Boolean creation = true;
+    	//Vue menu du haut pour les boutons de chargement
+		JPanel vueMenuHaut = new JPanel(new GridLayout(1, 2));
+		frame.getContentPane().add(vueMenuHaut, BorderLayout.NORTH);
+		
+		btnChargerReseau = new JButton("Charger le plan");
+		vueMenuHaut.add(btnChargerReseau);
+
+		btnChargerDemandeLivraison = new JButton("Charger les demandes de livraison");
+		vueMenuHaut.add(btnChargerDemandeLivraison);
+		//Fin vue menu du haut
+		
+		//Vue menu de gauche pour les bouttons du menu
+		JPanel vueMenuGauche = new JPanel(new GridLayout(4, 1));
+		frame.getContentPane().add(vueMenuGauche, BorderLayout.WEST);
+
+		btnCalculerTournee = new JButton("Calculer");
+		vueMenuGauche.add(btnCalculerTournee);
+
+		btnUndo = new JButton("Undo");
+		vueMenuGauche.add(btnUndo);
+
+		btnRedo = new JButton("Redo");
+		vueMenuGauche.add(btnRedo);
+		
+		btnGenererFeuilleDeRoute = new JButton("G�n�rer feuille de route");
+		vueMenuGauche.add(btnGenererFeuilleDeRoute);
+		//Fin vue menu de gauche
+        return creation;
     }
 
 }
