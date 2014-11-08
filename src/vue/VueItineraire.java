@@ -1,5 +1,6 @@
 package vue;
 
+import java.awt.Graphics;
 import java.util.*;
 
 /**
@@ -18,13 +19,10 @@ public class VueItineraire implements VueDessinable {
      */
     public List <VueTroncon> vuesTroncon;
 
-
-    /**
-     * @return
-     */
-    public Boolean dessiner() {
-        // TODO implement here
-        return null;
-    }
+	@Override
+	public Boolean dessiner(Graphics g) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }
