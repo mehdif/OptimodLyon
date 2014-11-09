@@ -72,7 +72,7 @@ public class Application {
     	final Reseau reseau = new Reseau() ;
     	reseau.chargerReseauXML();
     	tournee = new Tournee(reseau);
-    	tournee.chargerDonneesDemandeXML();
+    	//tournee.chargerDonneesDemandeXML();
     	
     	//Main pour l'interface graphique
 		EventQueue.invokeLater(new Runnable() {

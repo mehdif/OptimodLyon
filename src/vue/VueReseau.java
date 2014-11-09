@@ -17,9 +17,9 @@ public class VueReseau  extends JPanel implements VueDessinable {
 
 	private static final long serialVersionUID = 1L;
     
-	public List <VuePoint>  vuesPoints;
-    public List <VueTroncon>  vuesTroncons;
-    public VueTournee vueTournee;
+	private ArrayList <VuePoint>  vuesPoints = new ArrayList<VuePoint>();
+    private ArrayList <VueTroncon>  vuesTroncons = new ArrayList<VueTroncon>();;
+    private VueTournee vueTournee;
     
 	/****************************************************
 	 ****************** Constructeurs ********************
@@ -62,11 +62,20 @@ public class VueReseau  extends JPanel implements VueDessinable {
 			Point p = points.get(key);
 			
 			VuePoint vuePoint = new VuePoint(p.getLongitude(),p.getLatitude());
+			System.out.println(vuePoint.toString());
+			System.out.println("X : "+vuePoint.getX() + " Y : " + vuePoint.getY());
 			this.vuesPoints.add(vuePoint);
 		}
 		
 		//Remplissage de la liste vueTroncons
-		//TODO parcours de la liste de troncons
+		for(int i=0;i<troncons.size();i++){
+			Troncon t = troncons.get(i);
+			Point origine = t.getOrigine();
+			Point destination = t.getDestination();
+			
+			VueTroncon vueTroncon = new VueTroncon(origine.getLongitude(),origine.getLatitude(),destination.getLongitude(),destination.getLatitude());
+			vuesTroncons.add(vueTroncon);
+		}
     }
 
 	/****************************************************
