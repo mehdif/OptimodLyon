@@ -2,6 +2,8 @@ package vue;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
@@ -33,9 +35,8 @@ public class VueMenu {
      * @return
      */
     public Boolean onClicCalculerTournee() {
-		btnCalculerTournee.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		btnCalculerTournee.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
         return null;
@@ -45,9 +46,8 @@ public class VueMenu {
      * @return
      */
     public Boolean onClicChargerReseau() {
-		btnChargerReseau.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		btnChargerReseau.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
         return null;
@@ -57,9 +57,8 @@ public class VueMenu {
      * @return
      */
     public Boolean onClicUndo() {
-		btnUndo.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		btnUndo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
         return null;
@@ -69,9 +68,8 @@ public class VueMenu {
      * @return
      */
     public Boolean onClicRedo() {
-		btnRedo.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		btnRedo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
         return null;
@@ -81,9 +79,8 @@ public class VueMenu {
      * 
      */
     public void onClicChargerDemandeLivraison() {
-		btnChargerDemandeLivraison.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		btnChargerDemandeLivraison.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
     }
@@ -92,9 +89,8 @@ public class VueMenu {
      * 
      */
     public void onClicGenererFeuilleDeRoute() {
-		btnGenererFeuilleDeRoute.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		btnGenererFeuilleDeRoute.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
     }

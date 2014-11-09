@@ -2,6 +2,8 @@ package vue;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
@@ -37,9 +39,8 @@ public class VueDetail {
      * 
      */
     public void onClicAjouterDemande() {
-		btnSupprimerAjouter.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		btnSupprimerAjouter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
     }
@@ -59,9 +60,8 @@ public class VueDetail {
      * 
      */
     public void onClicSupprimerDemande() {
-		btnSupprimerAjouter.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		btnSupprimerAjouter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
     }
