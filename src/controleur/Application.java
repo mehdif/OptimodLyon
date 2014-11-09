@@ -1,13 +1,10 @@
 package controleur;
 
-<<<<<<< HEAD
 import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-=======
->>>>>>> branch 'master' of https://github.com/mehdif/OptimodLyon.git
 import modele.Client;
 import modele.DijkstraAlgorithm;
 import modele.Graph;
@@ -85,20 +82,8 @@ public class Application {
     	//tournee.chargerDonneesDemandeXML();
     	
     	//Main pour l'interface graphique
-
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-			    	VueFenetre window = new VueFenetre();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-    	
     	//new VueFenetre(reseau);
->>>>>>> branch 'master' of https://github.com/mehdif/OptimodLyon.git
+
     	
     }
 
