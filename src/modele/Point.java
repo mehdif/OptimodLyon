@@ -5,16 +5,21 @@ package modele;
  */
 public class Point {
 	
-	private Integer longitude;
-	private Integer latitude;
+	//private Integer longitude;
+	//private Integer latitude;
 	private int adresse;
-	private DemandeLivraison uneDemande;
-	public Reseau reseau;
+	//private DemandeLivraison uneDemande;
+	//public Reseau reseau;
 
 	/**
 	 * Constructeur par défaut
 	 */
 	public Point() {
+		
+	}
+	
+	public Point(int adresse) {
+		this.adresse = adresse;
 	}
 
 	/**
@@ -25,8 +30,8 @@ public class Point {
 	 * @param adresse
 	 */
 	public Point(Integer longitude, Integer latitude, int adresse) {
-		this.longitude = longitude;
-		this.latitude = latitude;
+		//this.longitude = longitude;
+		//this.latitude = latitude;
 		this.adresse = adresse;
 	}
 	
@@ -34,7 +39,7 @@ public class Point {
      ********************* Getter  **********************
      ****************************************************/
 
-	public Integer getLongitude() {
+	/*public Integer getLongitude() {
 		return longitude;
 	}
 
@@ -42,9 +47,7 @@ public class Point {
 		return latitude;
 	}
 	
-	public int getAdresse() {
-		return adresse;
-	}
+
 
 	public DemandeLivraison getUneDemande() {
 		return uneDemande;
@@ -52,5 +55,9 @@ public class Point {
 
 	public Reseau getReseau() {
 		return reseau;
+	}*/
+	
+	public int getAdresse() {
+		return adresse;
 	}
 }

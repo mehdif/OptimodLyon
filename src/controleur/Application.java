@@ -1,11 +1,18 @@
 package controleur;
 
 import java.awt.EventQueue;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import modele.Client;
+import modele.DijkstraAlgorithm;
+import modele.Graph;
 import modele.PlageHoraire;
+import modele.Point;
 import modele.Reseau;
 import modele.Tournee;
+import modele.Troncon;
 import vue.VueFenetre;
 
 /**
@@ -75,16 +82,18 @@ public class Application {
     	tournee.chargerDonneesDemandeXML();
     	
     	//Main pour l'interface graphique
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//			    	VueFenetre window = new VueFenetre();
-//					window.frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+			    	VueFenetre window = new VueFenetre();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+    	
+    	
     }
 
 }
