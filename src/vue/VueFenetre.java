@@ -24,6 +24,7 @@ public class VueFenetre {
 		vueDetail = new VueDetail(frame);
 		vueListe = new VueListe(frame);
 		vueReseau = new VueReseau(frame);
+		frame.setVisible(true);
     }
 
     /**

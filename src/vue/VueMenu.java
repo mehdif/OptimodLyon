@@ -128,7 +128,7 @@ public class VueMenu {
 		btnRedo = new JButton("Redo");
 		vueMenuGauche.add(btnRedo);
 		
-		btnGenererFeuilleDeRoute = new JButton("G�n�rer feuille de route");
+		btnGenererFeuilleDeRoute = new JButton("Generer feuille de route");
 		vueMenuGauche.add(btnGenererFeuilleDeRoute);
 		//Fin vue menu de gauche
         return creation;
