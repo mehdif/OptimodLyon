@@ -7,51 +7,70 @@ import java.awt.Graphics;
  */
 public class VuePoint implements VueCliquable, VueDessinable {
 
+    private int x;
+    private int y;
+    
+	/****************************************************
+	 ****************** Constructeurs ********************
+	 ****************************************************/
+	
 	/**
-	 * Constructeur par defaut de VuePoint
+	 * Constructeur par défaut de VuePoint
 	 */
 	public VuePoint(){
 		
 	}
 	
     /**
-     * Constructeur de VuePoint a partir de coordonnees x et y 
+     * Constructeur de VuePoint à partir de coordonnées x et y 
      * 
      * @param x
      * @param y
      */
-    public VuePoint(Double x, Double y) {
+    public VuePoint(int x, int y) {
     	this.x = x;
     	this.y = y;
     }
 
-    /**
-     * 
-     */
-    private Double x;
 
-    /**
-     * 
-     */
-    private Double y;
+	/****************************************************
+	 **************** Getter & Setter *******************
+	 ****************************************************/
 
-
-    public Double getX() {
+    public int getX() {
 		return x;
 	}
 
-	public void setX(Double x) {
+	public void setX(int x) {
 		this.x = x;
 	}
 
-	public Double getY() {
+	public int getY() {
 		return y;
 	}
 
-	public void setY(Double y) {
+	public void setY(int y) {
 		this.y = y;
 	}
 
+	/**
+	 * Dessine un rond pour une vuePoint a partir des coordonnees x et y en attribut de
+	 * note: le rayon est un rayon defini par defaut
+	 * 
+	 * @param g
+	 * @return bool, égal à true si le rond s'est correctement dessiné, false sinon
+	 */
+	@Override
+    public Boolean dessiner(Graphics g) {
+		boolean bool = true;
+		int x = (this.x);
+		int y = (this.y);
+		
+		g.fillOval(x, y, 10, 10);
+		
+        return bool;
+    }
+	
 	/**
      * @return
      */
@@ -66,23 +85,4 @@ public class VuePoint implements VueCliquable, VueDessinable {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	/**
-	 * Dessine un rond pour une vuePoint a partir des coordonnees x et y en attribut de
-	 * note: le rayon est un rayon defini par defaut
-	 * 
-	 * @param g
-	 * @return true si le rond s'est correctement dessine
-	 */
-	@Override
-    public Boolean dessiner(Graphics g) {
-		
-		// TODO on ne peux pas caster un double en int directement.
-		int x = (int) Math.round(this.x);
-		int y = (int) Math.round(this.y);
-		
-		g.fillOval(x, y, 10, 10);
-		
-        return true;
-    }
 }

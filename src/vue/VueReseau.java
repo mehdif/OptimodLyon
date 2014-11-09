@@ -15,18 +15,39 @@ import modele.Troncon;
  */
 public class VueReseau  extends JPanel implements VueDessinable {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-
+    
+	public List <VuePoint>  vuesPoints;
+    public List <VueTroncon>  vuesTroncons;
+    public VueTournee vueTournee;
+    
+	/****************************************************
+	 ****************** Constructeurs ********************
+	 ****************************************************/
+	
 	/**
-     * 
-     */
+	 * Constructeur par defaut
+	 */
+	public VueReseau(){
+		
+	}
+	/**
+	 * Constructeur appelant la méthode d'initialisation qui insère la vueReseau
+	 * dans une JFrame
+	 * 
+	 * @param frame , le cadre JFrame contenant la vueReseau
+	 */
     public VueReseau(JFrame frame) {
     	initialiser(frame);
     }
     
+    /**
+     * Constructeur de la vueReseau à partir des paramètres précédement 
+     * chargés dans le modèle
+     * 
+     * @param troncons
+     * @param points
+     */
     public VueReseau(List<Troncon> troncons,Map<Integer, Point> points) {
    		
     	//Remplissage de la liste vuesPoints
@@ -39,49 +60,54 @@ public class VueReseau  extends JPanel implements VueDessinable {
 		{
 			Object key= it.next();
 			Point p = points.get(key);
-			//TODO pb de cast int to double
-			//VuePoint vuePoint = new VuePoint((p.getLongitude(),p.getLatitude());
-			//vuesPoints.add(vuePoint);
+			
+			VuePoint vuePoint = new VuePoint(p.getLongitude(),p.getLatitude());
+			this.vuesPoints.add(vuePoint);
 		}
 		
 		//Remplissage de la liste vueTroncons
 		//TODO parcours de la liste de troncons
     }
+
+	/****************************************************
+	 ********************* Getter **********************
+	 ****************************************************/
+    public List<VuePoint> getVuesPoints() {
+		return vuesPoints;
+	}
+	public List<VueTroncon> getVuesTroncons() {
+		return vuesTroncons;
+	}
+	public VueTournee getVueTournee() {
+		return vueTournee;
+	}
+
     /**
+     * Méthode d'initialisation. Insère le JPanel: vueReseau au centre du cadre frame
+     * passé en paramètre
      * 
-     */
-    public List <VuePoint>  vuesPoints;
-
-    /**
+     * @param frame
      * 
-     */
-    public List <VueTroncon>  vuesTroncons;
-
-    /**
-     * 
-     */
-    public VueTournee vueTournee;
-
-
-    /**
-     * @return
+     * @return bool , égal à true si l'initialisation s'est correctement effectué, false sinon
      */
     public Boolean initialiser(JFrame frame) {
-		JPanel vueReseau = new JPanel();
-		frame.getContentPane().add(vueReseau, BorderLayout.CENTER);
-        return null;
+    	boolean bool = true;
+		frame.getContentPane().add(this, BorderLayout.CENTER);
+        return bool;
     }
 
-    /**
+    
+	/**
      * Parcours la liste vuesPoints pour que chaque points se dessinent,
      * ensuite parcours la liste vuesTroncons pour que chaque troncons se dessinent
      * et finalement demande a la vueTournee de se dessiner si une tournee a deja ete cree
      * 
      * @param g
-     * @return true si tout les �l�ments ont pu se dessiner
+     * @return bool true si tout les �l�ments ont pu se dessiner
      */
 	@Override
 	public Boolean dessiner(Graphics g) {
+		boolean bool = true;
 		for(int i=0; i<vuesPoints.size(); i++){
             vuesPoints.get(i).dessiner(g);
 		}
@@ -90,7 +116,7 @@ public class VueReseau  extends JPanel implements VueDessinable {
 		}
 		vueTournee.dessiner(g);
 		
-		return true;
+		return bool;
 	}
 
     @Override
