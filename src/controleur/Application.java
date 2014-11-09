@@ -1,7 +1,5 @@
 package controleur;
 
-import java.awt.EventQueue;
-
 import modele.Client;
 import modele.PlageHoraire;
 import modele.Reseau;
@@ -70,12 +68,12 @@ public class Application {
     public static void main(String []args){
     	// Code permettant de charger le réseau puis les livraisons
     	Reseau reseau = new Reseau() ;
-//    	reseau.chargerReseauXML();
-//    	tournee = new Tournee(reseau);
-//    	tournee.chargerDonneesDemandeXML();
+    	reseau.chargerReseauXML();
+    	//tournee = new Tournee(reseau);
+    	//tournee.chargerDonneesDemandeXML();
     	
     	//Main pour l'interface graphique
-    	new VueFenetre(reseau);
+    	//new VueFenetre(reseau);
     	
     }
 

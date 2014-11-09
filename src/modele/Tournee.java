@@ -126,14 +126,9 @@ public class Tournee {
 	public void chargerDonneesDemandeXML() {
 		try {		
 			File xml = XMLReader.ouvrirFichier();
-//			StreamSource ssXml =  new StreamSource(xml);
-//			SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI); 
-//			StreamSource xsd = new StreamSource(new File("C:/Users/Sonia/git/OptimodLyon/livraison.xsd"));
-//	
-//			Schema schema = factory.newSchema(xsd);
-//			Validator validator = schema.newValidator();
-//			validator.validate(ssXml);
-			
+			if(!XMLReader.validerXML(xml.getAbsolutePath(), "xsd/livraison.xsd")){
+				return;
+			}			
 			DocumentBuilder constructeur = DocumentBuilderFactory
 					.newInstance().newDocumentBuilder();
 
