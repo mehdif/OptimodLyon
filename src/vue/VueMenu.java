@@ -2,13 +2,14 @@ package vue;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import modele.Reseau;
 
 /**
  * @author Hexanome 4301
@@ -33,9 +34,8 @@ public class VueMenu {
      * @return
      */
     public Boolean onClicCalculerTournee() {
-		btnCalculerTournee.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		btnCalculerTournee.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
         return null;
@@ -44,10 +44,10 @@ public class VueMenu {
     /**
      * @return
      */
-    public Boolean onClicChargerReseau() {
-		btnChargerReseau.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+    public Boolean onClicChargerReseau(final Reseau reseau) {
+		btnChargerReseau.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				reseau.chargerReseauXML();
 			}
 		});
         return null;
@@ -57,9 +57,8 @@ public class VueMenu {
      * @return
      */
     public Boolean onClicUndo() {
-		btnUndo.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		btnUndo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
         return null;
@@ -69,9 +68,8 @@ public class VueMenu {
      * @return
      */
     public Boolean onClicRedo() {
-		btnRedo.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		btnRedo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
         return null;
@@ -81,9 +79,8 @@ public class VueMenu {
      * 
      */
     public void onClicChargerDemandeLivraison() {
-		btnChargerDemandeLivraison.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		btnChargerDemandeLivraison.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
     }
@@ -92,9 +89,8 @@ public class VueMenu {
      * 
      */
     public void onClicGenererFeuilleDeRoute() {
-		btnGenererFeuilleDeRoute.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
+		btnGenererFeuilleDeRoute.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
     }
@@ -128,7 +124,7 @@ public class VueMenu {
 		btnRedo = new JButton("Redo");
 		vueMenuGauche.add(btnRedo);
 		
-		btnGenererFeuilleDeRoute = new JButton("G�n�rer feuille de route");
+		btnGenererFeuilleDeRoute = new JButton("Generer feuille de route");
 		vueMenuGauche.add(btnGenererFeuilleDeRoute);
 		//Fin vue menu de gauche
         return creation;

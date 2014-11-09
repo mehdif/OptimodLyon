@@ -1,10 +1,13 @@
 package controleur;
 
+<<<<<<< HEAD
 import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+=======
+>>>>>>> branch 'master' of https://github.com/mehdif/OptimodLyon.git
 import modele.Client;
 import modele.DijkstraAlgorithm;
 import modele.Graph;
@@ -78,10 +81,11 @@ public class Application {
     	// Code permettant de charger le réseau puis les livraisons
     	Reseau reseau = new Reseau() ;
     	reseau.chargerReseauXML();
-    	tournee = new Tournee(reseau);
-    	tournee.chargerDonneesDemandeXML();
+    	//tournee = new Tournee(reseau);
+    	//tournee.chargerDonneesDemandeXML();
     	
     	//Main pour l'interface graphique
+
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -93,6 +97,8 @@ public class Application {
 			}
 		});
     	
+    	//new VueFenetre(reseau);
+>>>>>>> branch 'master' of https://github.com/mehdif/OptimodLyon.git
     	
     }
 
