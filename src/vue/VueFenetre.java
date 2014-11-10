@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 
+import controleur.Application;
+
 /**
  * @author Hexanome 4301
  */

@@ -1,6 +1,5 @@
 package modele;
 
-import java.util.*;
 
 /**
  * @author Hexanome 4301

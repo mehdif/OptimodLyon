@@ -23,10 +23,6 @@ public class VueMenu {
 	private JButton btnRedo;
 	private JButton btnGenererFeuilleDeRoute;
 
-	// TODO : Si je veux que �a marche il faut que je d�clare application ici
-	// alors que �a ne respecte pas le diag de classe
-	// private Application application = new Application();
-
 	/**
      * 
      */
@@ -50,7 +46,7 @@ public class VueMenu {
 	public Boolean onClicChargerReseau() {
 		btnChargerReseau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// application.chargerReseauXML();
+				
 			}
 		});
 		return null;
