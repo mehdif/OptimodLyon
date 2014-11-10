@@ -23,15 +23,15 @@ public class VueMenu {
 	private JButton btnRedo;
 	private JButton btnGenererFeuilleDeRoute;
 
-	// TODO : Si je veux que ça marche il faut que je déclare application ici
-	// alors que ça ne respecte pas le diag de classe
+	// TODO : Si je veux que ï¿½a marche il faut que je dï¿½clare application ici
+	// alors que ï¿½a ne respecte pas le diag de classe
 	// private Application application = new Application();
 
 	/**
      * 
      */
     public VueMenu() {
-    	initialiser();
+    }
 
 	/**
 	 * @return
