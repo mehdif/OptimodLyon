@@ -101,6 +101,8 @@ public class VueDetail {
 		
 		btnSupprimerAjouter = new JButton("Supprimer / Ajouter");
 		vueDetail.add(btnSupprimerAjouter);
+		onClicAjouterDemande();
+		onClicSupprimerDemande();
 		//Fin vue de droite
         return null;
     }

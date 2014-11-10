@@ -1,18 +1,9 @@
 package controleur;
 
-import java.awt.EventQueue;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 import modele.Client;
-import modele.DijkstraAlgorithm;
-import modele.Graph;
 import modele.PlageHoraire;
-import modele.Point;
 import modele.Reseau;
 import modele.Tournee;
-import modele.Troncon;
 import vue.VueFenetre;
 
 /**
@@ -77,12 +68,12 @@ public class Application {
     public static void main(String []args){
     	// Code permettant de charger le réseau puis les livraisons
     	Reseau reseau = new Reseau() ;
-    	reseau.chargerReseauXML();
+    	//reseau.chargerReseauXML();
     	//tournee = new Tournee(reseau);
     	//tournee.chargerDonneesDemandeXML();
     	
     	//Main pour l'interface graphique
-    	//new VueFenetre(reseau);
+    	new VueFenetre(reseau);
 
     	
     }

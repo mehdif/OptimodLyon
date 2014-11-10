@@ -20,7 +20,7 @@ public class VueFenetre {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		vueMenu = new VueMenu(frame);
-		vueMenu.onClicChargerReseau(reseau);
+		//vueMenu.onClicChargerReseau(reseau);
 
 		vueDetail = new VueDetail(frame);
 		vueListe = new VueListe(frame);

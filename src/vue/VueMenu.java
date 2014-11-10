@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -44,10 +46,9 @@ public class VueMenu {
     /**
      * @return
      */
-    public Boolean onClicChargerReseau(final Reseau reseau) {
+    public Boolean onClicChargerReseau() {
 		btnChargerReseau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				reseau.chargerReseauXML();
 			}
 		});
         return null;
@@ -106,9 +107,11 @@ public class VueMenu {
 		
 		btnChargerReseau = new JButton("Charger le plan");
 		vueMenuHaut.add(btnChargerReseau);
+		onClicChargerReseau();
 
 		btnChargerDemandeLivraison = new JButton("Charger les demandes de livraison");
 		vueMenuHaut.add(btnChargerDemandeLivraison);
+		onClicChargerDemandeLivraison();
 		//Fin vue menu du haut
 		
 		//Vue menu de gauche pour les bouttons du menu
@@ -117,15 +120,19 @@ public class VueMenu {
 
 		btnCalculerTournee = new JButton("Calculer");
 		vueMenuGauche.add(btnCalculerTournee);
+		onClicCalculerTournee();
 
 		btnUndo = new JButton("Undo");
 		vueMenuGauche.add(btnUndo);
+		onClicUndo();
 
 		btnRedo = new JButton("Redo");
 		vueMenuGauche.add(btnRedo);
+		onClicRedo();
 		
 		btnGenererFeuilleDeRoute = new JButton("Generer feuille de route");
 		vueMenuGauche.add(btnGenererFeuilleDeRoute);
+		onClicGenererFeuilleDeRoute();
 		//Fin vue menu de gauche
         return creation;
     }
