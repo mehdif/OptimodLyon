@@ -30,29 +30,30 @@ public class Tournee {
 	private List<PlageHoraire> plagesHoraires = new ArrayList<PlageHoraire>();
 	private Entrepot entrepot;
 	private Reseau reseau;
-	
+
 	/****************************************************
 	 ****************** Constructeur ********************
 	 ****************************************************/
-	
+
 	/**
 	 * Constructeur par défaut
 	 */
 	public Tournee() {
 	}
-	
+
 	/**
 	 * Constructeur à un paramètre
+	 * 
 	 * @param reseau
 	 */
 	public Tournee(Reseau reseau) {
 		this.reseau = reseau;
 	}
-	
+
 	/****************************************************
 	 ********************* Getter **********************
 	 ****************************************************/
-	
+
 	public List<Itineraire> getItineraires() {
 		return itineraires;
 	}
@@ -69,7 +70,9 @@ public class Tournee {
 		return reseau;
 	}
 
-	
+	/****************************************************
+	 *************** Méthodes de classes ****************
+	 ****************************************************/
 
 	/**
 	 * @return
@@ -123,20 +126,22 @@ public class Tournee {
 	/**
      * 
      */
+	// TODO : la boucle ne se fait que pour une plage horaire
 	public void chargerDonneesDemandeXML() {
-		try {		
+		try {
 			File xml = XMLReader.ouvrirFichier();
-			if(!XMLReader.validerXML(xml.getAbsolutePath(), "xsd/livraison.xsd")){
+			if (!XMLReader.validerXML(xml.getAbsolutePath(),
+					"xsd/livraison.xsd")) {
 				return;
-			}			
-			DocumentBuilder constructeur = DocumentBuilderFactory
-					.newInstance().newDocumentBuilder();
+			}
+			DocumentBuilder constructeur = DocumentBuilderFactory.newInstance()
+					.newDocumentBuilder();
 
 			// lecture du contenu d'un fichier XML avec DOM
 			Document documentXML = constructeur.parse(xml);
 			Element racine = documentXML.getDocumentElement();
 			NodeList listeElements = racine.getChildNodes();
-			
+
 			for (int i = 0; i < listeElements.getLength(); i++) {
 				NamedNodeMap listeAttributs = listeElements.item(i)
 						.getAttributes();
@@ -145,12 +150,12 @@ public class Tournee {
 					NodeList listeSousElements = listeElements.item(i)
 							.getChildNodes();
 					for (int j = 0; j < listeSousElements.getLength(); j++) {
-						
+
 						if (listeSousElements.item(j).getNodeName()
 								.equals("Plage")) {
 							listeAttributs = listeSousElements.item(j)
 									.getAttributes();
-							
+
 							String debut = listeAttributs.getNamedItem(
 									"heureDebut").getNodeValue();
 							String fin = listeAttributs
@@ -160,21 +165,40 @@ public class Tournee {
 
 							calDebut.setTime(dateFormat.parse(debut));
 							calFin.setTime(dateFormat.parse(fin));
-							PlageHoraire plage = new PlageHoraire(calDebut, calFin);
-							
-							listeSousElements = listeSousElements.item(j).getChildNodes().item(1).getChildNodes();
-							for(int k = 0; k< listeSousElements.getLength() ; k++){
+							PlageHoraire plage = new PlageHoraire(calDebut,
+									calFin);
+
+							listeSousElements = listeSousElements.item(j)
+									.getChildNodes().item(1).getChildNodes();
+							for (int k = 0; k < listeSousElements.getLength(); k++) {
 								if (listeSousElements.item(k).getNodeName()
-										.equals("Livraison")){
+										.equals("Livraison")) {
 									listeAttributs = listeSousElements.item(k)
 											.getAttributes();
-									Integer adresse = Integer.parseInt(listeAttributs.getNamedItem("adresse").getNodeValue());
-									Integer idClient = Integer.parseInt(listeAttributs.getNamedItem("client").getNodeValue());
-									Integer id = Integer.parseInt(listeAttributs.getNamedItem("id").getNodeValue()); 
+									Integer adresse = Integer
+											.parseInt(listeAttributs
+													.getNamedItem("adresse")
+													.getNodeValue());
+									Integer idClient = Integer
+											.parseInt(listeAttributs
+													.getNamedItem("client")
+													.getNodeValue());
+									Integer id = Integer
+											.parseInt(listeAttributs
+													.getNamedItem("id")
+													.getNodeValue());
 									Client client = new Client(idClient);
-									Point pointDeLivraison = reseau.getPoints().get(adresse);
-									DemandeLivraison uneDemande = new DemandeLivraison(pointDeLivraison, client,
-											plage, false, id);
+									Point pointDeLivraison = reseau.getPoints()
+											.get(adresse);
+									if (null == pointDeLivraison) {
+										System.out
+												.println("Erreur le document renseigné possède un ou plusieurs points de livraison inconnus, abandon du chargement");
+										return;
+									}
+
+									DemandeLivraison uneDemande = new DemandeLivraison(
+											pointDeLivraison, client, plage,
+											false, id);
 									plage.ajouterDemandeLivraison(uneDemande);
 									ajouterPlageHoraire(plage);
 								}
@@ -182,18 +206,19 @@ public class Tournee {
 						}
 					}
 				} else if (listeElements.item(i).getNodeName()
-						.equals("Entrepot")){
-					listeAttributs = listeElements.item(i)
-							.getAttributes();
-					Integer adresseEntrepot = Integer.parseInt(listeAttributs.getNamedItem("adresse").getNodeValue());
-					Point pointEntrepot = reseau.getPoints().get(adresseEntrepot);
-					//Entrepot entrepot = new Entrepot(pointEntrepot.getLongitude(), pointEntrepot.getLatitude(), pointEntrepot.getAdresse());
-					this.entrepot = entrepot ;
+						.equals("Entrepot")) {
+					listeAttributs = listeElements.item(i).getAttributes();
+					Integer adresseEntrepot = Integer.parseInt(listeAttributs
+							.getNamedItem("adresse").getNodeValue());
+					Point pointEntrepot = reseau.getPoints().get(
+							adresseEntrepot);
+					this.entrepot = new Entrepot(pointEntrepot.getLongitude(),
+							pointEntrepot.getLatitude(),
+							pointEntrepot.getAdresse());
 				}
 			}
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Erreur lors du parsing des dates");
 		} catch (SAXException e) {
 			System.out.println("Erreur lors du parsing du document");
 			System.out.println("lors de l'appel a construteur.parse(xml)");
@@ -206,5 +231,4 @@ public class Tournee {
 					.println("lors de l'appel a fabrique.newDocumentBuilder();");
 		}
 	}
-
 }

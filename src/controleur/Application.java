@@ -72,13 +72,13 @@ public class Application {
     
     public static void main(String []args){
     	// Code permettant de charger le réseau puis les livraisons
-    	//Reseau reseau = new Reseau() ;
-    	//reseau.chargerReseauXML();
-    	//tournee = new Tournee(reseau);
-    	//tournee.chargerDonneesDemandeXML();
+    	Reseau reseau = new Reseau() ;
+    	reseau.chargerReseauXML();
+    	tournee = new Tournee(reseau);
+    	tournee.chargerDonneesDemandeXML();
     	
     	//Main pour l'interface graphique
-    	new VueFenetre();
+    	//new VueFenetre();
     	
     }
 
