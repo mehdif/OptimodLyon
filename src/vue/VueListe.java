@@ -16,8 +16,7 @@ public class VueListe {
     /**
      * 
      */
-    public VueListe(JFrame frame) {
-    	initialiser(frame);
+    public VueListe() {
     }
 
     /**

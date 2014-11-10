@@ -14,8 +14,7 @@ public class VueReseau implements VueDessinable {
     /**
      * 
      */
-    public VueReseau(JFrame frame) {
-    	initialiser(frame);
+    public VueReseau() {
     }
 
     /**

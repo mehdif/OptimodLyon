@@ -73,7 +73,7 @@ public class Application {
     	//tournee.chargerDonneesDemandeXML();
     	
     	//Main pour l'interface graphique
-    	new VueFenetre(reseau);
+    	new VueFenetre();
 
     	
     }

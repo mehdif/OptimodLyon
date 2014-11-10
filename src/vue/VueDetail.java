@@ -31,8 +31,7 @@ public class VueDetail {
     /**
      * 
      */
-    public VueDetail(JFrame frame) {
-    	initialiser(frame);
+    public VueDetail() {
     }
 
     /**

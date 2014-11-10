@@ -28,8 +28,7 @@ public class VueMenu {
     /**
      * 
      */
-    public VueMenu(JFrame frame) {
-    	initialiser(frame);
+    public VueMenu() {
     }
 
     /**
