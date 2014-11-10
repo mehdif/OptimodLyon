@@ -17,6 +17,9 @@ public class VueFenetre {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
+		vueDetail = new VueDetail(frame);
+		vueListe = new VueListe(frame);
+		vueReseau = new VueReseau(frame);
 		vueMenu.initialiser(frame);
 		vueDetail.initialiser(frame); 
 		vueListe.initialiser(frame);
@@ -25,28 +28,10 @@ public class VueFenetre {
     }
 
     /**
-    *
-    */
-    public VueMenu vueMenu = new VueMenu();
-   
     /**
-    *
-    */
-    public VueDetail vueDetail = new VueDetail();
-   
-   /**
-    *
-    */
     public JFrame frame ;
    
     /**
-    *
-    */
-    public VueListe vueListe = new VueListe();
-   
     /**
-    *
-    */
-    public VueReseau vueReseau = new VueReseau();
 
 }
