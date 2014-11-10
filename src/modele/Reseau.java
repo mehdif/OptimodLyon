@@ -70,26 +70,25 @@ public class Reseau {
 	/**
 	 * Méthodes qui permet de charger le réseau depuis un fichier XML
 	 */
-	public void chargerReseauXML() {
+	public boolean chargerReseauXML() {
 		try {
 			Map<Integer, Point> points = new HashMap<Integer, Point>();
 			List<Troncon> troncons = new ArrayList<Troncon>();
 
 			File xml = XMLReader.ouvrirFichier();
 			if (!XMLReader.validerXML(xml.getAbsolutePath(), "xsd/reseau.xsd")) {
-				return;
+				return false;
 			}
 
-			DocumentBuilder constructeur;
-
-			constructeur = DocumentBuilderFactory.newInstance()
+			DocumentBuilder constructeur = DocumentBuilderFactory.newInstance()
 					.newDocumentBuilder();
 
 			// lecture du contenu d'un fichier XML avec DOM
 			Document documentXML = constructeur.parse(xml);
-
 			Element racine = documentXML.getDocumentElement();
 			NodeList listeElements = racine.getChildNodes();
+			
+			// Remplissage de la map avec tous les noeuds
 			for (int i = 0; i < listeElements.getLength(); i++) {
 				NamedNodeMap listeAttributs = listeElements.item(i)
 						.getAttributes();
@@ -103,6 +102,8 @@ public class Reseau {
 							.getNodeValue()), p);
 				}
 			}
+			
+			// On reparcours pour pouvoir récupérer le point d'origine
 			for (int i = 0; i < listeElements.getLength(); i++) {
 				NamedNodeMap listeAttributs = listeElements.item(i)
 						.getAttributes();
@@ -113,8 +114,10 @@ public class Reseau {
 							.getNodeValue());
 					pointOrigine = (Point) points.get(idPoint);
 				}
+				// On récupére les noeuds fils
 				NodeList listeSousElements = listeElements.item(i)
 						.getChildNodes();
+				// Remplissage de la liste de tronçons 
 				for (int j = 0; j < listeSousElements.getLength(); j++) {
 					if (listeSousElements.item(j).getNodeName()
 							.equals("LeTronconSortant")) {
@@ -129,24 +132,28 @@ public class Reseau {
 								.item(3).getNodeValue().replace(",", "."));
 						pointDestination = (Point) points
 								.get(idPointDestination);
-						Troncon t = new Troncon(nomRue, pointOrigine,
-								pointDestination, vitesse, distance);
+						Troncon t = new Troncon(nomRue, vitesse, distance,
+								pointOrigine, pointDestination);
 						troncons.add(t);
 					}
 				}
 			}
 			this.points = points;
 			this.troncons = troncons;
+			return true;
 		} catch (ParserConfigurationException e) {
 			System.out.println("Erreur de configuration du parseur DOM");
 			System.out
 					.println("lors de l'appel a fabrique.newDocumentBuilder();");
+			return false;
 		} catch (SAXException e) {
 			System.out.println("Erreur lors du parsing du document");
 			System.out.println("lors de l'appel a construteur.parse(xml)");
+			return false;
 		} catch (IOException e) {
 			System.out.println("Erreur d'entree/sortie");
 			System.out.println("lors de l'appel a construteur.parse(xml)");
+			return false;
 		}
 
 	}

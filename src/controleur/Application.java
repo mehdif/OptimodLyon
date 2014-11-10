@@ -32,9 +32,6 @@ public class Application {
      */
     public VueFenetre vueFenetre ;
 
-
-
-
     /**
      * 
      */
@@ -65,16 +62,23 @@ public class Application {
         // TODO implement here
     }
     
+    public boolean chargerReseauXML(){
+    	Reseau reseau = new Reseau();
+    	if(reseau.chargerReseauXML()){
+    		tournee = new Tournee(reseau);
+    	}
+    	return reseau.chargerReseauXML();
+    }
+    
     public static void main(String []args){
     	// Code permettant de charger le réseau puis les livraisons
-    	Reseau reseau = new Reseau() ;
+    	//Reseau reseau = new Reseau() ;
     	//reseau.chargerReseauXML();
     	//tournee = new Tournee(reseau);
     	//tournee.chargerDonneesDemandeXML();
     	
     	//Main pour l'interface graphique
-    	new VueFenetre(reseau);
-
+    	new VueFenetre();
     	
     }
 

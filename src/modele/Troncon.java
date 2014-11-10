@@ -19,7 +19,7 @@ public class Troncon {
 	 * @param origine
 	 * @param destination
 	 */
-    public Troncon(String nomRue, Point origine, Point destination, Double vitesse, Double distance) {
+    public Troncon(String nomRue, Double vitesse, Double distance, Point origine, Point destination) {
 		this.vitesse = vitesse;
 		this.distance = distance;
 		this.nomRue = nomRue;
