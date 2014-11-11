@@ -22,12 +22,14 @@ public class VueMenu {
 	private JButton btnUndo;
 	private JButton btnRedo;
 	private JButton btnGenererFeuilleDeRoute;
+	private Application application;
 
 	/**
      * 
      */
-    public VueMenu() {
-    }
+	public VueMenu(Application application) {
+		this.application = application;
+	}
 
 	/**
 	 * @return
@@ -46,7 +48,7 @@ public class VueMenu {
 	public Boolean onClicChargerReseau() {
 		btnChargerReseau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+				application.chargerReseauXML();
 			}
 		});
 		return null;
@@ -80,6 +82,7 @@ public class VueMenu {
 	public void onClicChargerDemandeLivraison() {
 		btnChargerDemandeLivraison.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				application.chargerDemandeLivraisonXML();
 			}
 		});
 	}

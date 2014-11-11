@@ -1,6 +1,5 @@
 package vue;
 
-import java.util.*;
 
 /**
  * @author Hexanome 4301

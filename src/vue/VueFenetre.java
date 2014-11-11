@@ -17,6 +17,11 @@ public class VueFenetre {
 	public JFrame frame ;
 	
 	/**
+	 * 
+	 */
+	private Application application;
+	
+	/**
      * 
      */
     public VueDetail vueDetail = new VueDetail();
@@ -34,12 +39,14 @@ public class VueFenetre {
 	/**
 	 * 
 	 */
-	public VueMenu vueMenu = new VueMenu();
+	public VueMenu vueMenu;
 	
     /**
      * 
      */
-    public VueFenetre() {
+    public VueFenetre(Application application) {
+    	this.application = application;
+    	vueMenu = new VueMenu(application);
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
