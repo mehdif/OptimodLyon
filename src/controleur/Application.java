@@ -63,13 +63,14 @@ public class Application {
         // TODO implement here
     }
     
-    public boolean chargerReseauXML(){
+    public Reseau chargerReseauXML(){
     	Reseau reseau = new Reseau();
     	boolean chargementOK = reseau.chargerReseauXML(null);
     	if(chargementOK){
     		tournee = new Tournee(reseau);
     	}
-    	return chargementOK;
+    	
+    	return reseau;
     }
     
     public boolean chargerDemandeLivraisonXML(){

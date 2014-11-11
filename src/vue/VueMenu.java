@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import modele.Reseau;
 import controleur.Application;
 
 /**
@@ -23,6 +24,8 @@ public class VueMenu {
 	private JButton btnRedo;
 	private JButton btnGenererFeuilleDeRoute;
 	private Application application;
+	
+	private VueFenetre frame;
 
 	/**
      * 
@@ -48,7 +51,10 @@ public class VueMenu {
 	public Boolean onClicChargerReseau() {
 		btnChargerReseau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				application.chargerReseauXML();
+				Reseau r =application.chargerReseauXML();
+				System.out.println(r.toString());
+				frame.vueReseau = new VueReseau(r.getTroncons(),r.getPoints());
+				frame.vueReseau.repaint();
 			}
 		});
 		return null;
@@ -82,7 +88,7 @@ public class VueMenu {
 	public void onClicChargerDemandeLivraison() {
 		btnChargerDemandeLivraison.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				application.chargerDemandeLivraisonXML();
+				application.chargerDemandeLivraisonXML();	
 			}
 		});
 	}
@@ -100,8 +106,9 @@ public class VueMenu {
 	/**
 	 * @return
 	 */
-	public void initialiser(JFrame frame) {
+	public void initialiser(VueFenetre frame) {
 		// Vue menu du haut pour les boutons de chargement
+		this.frame=frame;
 		JPanel vueMenuHaut = new JPanel(new GridLayout(1, 2));
 		frame.getContentPane().add(vueMenuHaut, BorderLayout.NORTH);
 
