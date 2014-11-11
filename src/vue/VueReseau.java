@@ -62,8 +62,6 @@ public class VueReseau  extends JPanel implements VueDessinable {
 			Point p = points.get(key);
 			
 			VuePoint vuePoint = new VuePoint(p.getLongitude(),p.getLatitude());
-			System.out.println(vuePoint.toString());
-			System.out.println("X : "+vuePoint.getX() + " Y : " + vuePoint.getY());
 			this.vuesPoints.add(vuePoint);
 		}
 		
