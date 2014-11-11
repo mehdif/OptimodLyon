@@ -155,14 +155,12 @@ public class Tournee {
 		ArrayList <Point[]> tempList = null;
 
 		for (int i = 0;i < demandeLivraison.size() ; i++){
-			for (int j= i ;j < demandeLivraison.size() ; j++){
+			for (int j= i+1 ;j < demandeLivraison.size() ; j++){
 				Point [] tempCouple= {demandeLivraison.get(i).getPointDeLivraison(),demandeLivraison.get(j).getPointDeLivraison()};
 				tempList.add(tempCouple);
 			}
 		}
-		
-		
-		
+
 		if (tempList.size()!=numberOfCombinations(2,n)){
 			System.out.println("Combinaisons manquantes");
 		}
@@ -170,6 +168,7 @@ public class Tournee {
 		return tempList;
 	}
 	
+
 
 	/** Returns the number of combinations of k elements within n
 	 * 

@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -23,6 +25,27 @@ public class VueMenu {
 	private JButton btnRedo;
 	private JButton btnGenererFeuilleDeRoute;
 	private Application application;
+	// Redirection de la sortie standard
+	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+
+	/****************************************************
+	 ********************* Getter **********************
+	 ****************************************************/
+
+	public ByteArrayOutputStream getOutContent() {
+		return outContent;
+	}
+
+	/****************************************************
+	 *************** Méthodes de classes ****************
+	 ****************************************************/
+
+	/**
+	 * setUpStreams permettent de récupérer la sortie standard
+	 */
+	public void setUpStreams() {
+		System.setOut(new PrintStream(outContent));
+	}
 
 	/**
      * 
@@ -48,7 +71,12 @@ public class VueMenu {
 	public Boolean onClicChargerReseau() {
 		btnChargerReseau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				application.chargerReseauXML();
+				setUpStreams();
+				boolean chargementOK = application.chargerReseauXML();
+				application.vueFenetre.refresh();
+				if(chargementOK == true){
+					btnChargerDemandeLivraison.setEnabled(true);
+				}
 			}
 		});
 		return null;
@@ -82,7 +110,11 @@ public class VueMenu {
 	public void onClicChargerDemandeLivraison() {
 		btnChargerDemandeLivraison.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				application.chargerDemandeLivraisonXML();
+				boolean chargementOK = application.chargerDemandeLivraisonXML();
+				application.vueFenetre.refresh();
+				if(chargementOK == true){
+					btnGenererFeuilleDeRoute.setEnabled(true);
+				}	
 			}
 		});
 	}
@@ -109,8 +141,8 @@ public class VueMenu {
 		vueMenuHaut.add(btnChargerReseau);
 		onClicChargerReseau();
 
-		btnChargerDemandeLivraison = new JButton(
-				"Charger les demandes de livraison");
+		btnChargerDemandeLivraison = new JButton("Charger les demandes de livraison");
+		btnChargerDemandeLivraison.setEnabled(false);
 		vueMenuHaut.add(btnChargerDemandeLivraison);
 		onClicChargerDemandeLivraison();
 		// Fin vue menu du haut
@@ -132,6 +164,7 @@ public class VueMenu {
 		onClicRedo();
 
 		btnGenererFeuilleDeRoute = new JButton("Generer feuille de route");
+		btnGenererFeuilleDeRoute.setEnabled(false);
 		vueMenuGauche.add(btnGenererFeuilleDeRoute);
 		onClicGenererFeuilleDeRoute();
 		// Fin vue menu de gauche
