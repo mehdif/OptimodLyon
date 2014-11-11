@@ -132,7 +132,6 @@ public class VueReseau  extends JPanel implements VueDessinable {
 		
 		for(int j=0; j<vuesTroncons.size();j++){
 			vuesTroncons.get(j).dessiner(g);
-			System.out.println(j);
 		}
 		
 	}
