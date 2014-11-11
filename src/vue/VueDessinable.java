@@ -10,6 +10,6 @@ public interface VueDessinable {
     /**
      * @return
      */
-    public Boolean dessiner(Graphics g);
+    public void dessiner(Graphics g);
 
 }

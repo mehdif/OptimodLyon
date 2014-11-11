@@ -20,14 +20,13 @@ public class VueTournee implements VueDessinable {
     public List <VueItineraire> vuesItineraire;
 
 	@Override
-	public Boolean dessiner(Graphics g) {
+	public void dessiner(Graphics g) {
 
 		// TODO
 
 		for (VueItineraire uneVueItineraire : vuesItineraire) {
 			uneVueItineraire.dessiner(g);
 		};
-		return null;
 	}
 
 }
