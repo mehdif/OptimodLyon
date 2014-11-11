@@ -52,9 +52,7 @@ public class VueMenu {
 		btnChargerReseau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				application.chargerReseauXML();
-//				System.out.println(r.toString());
-//				frame.vueReseau = new VueReseau(r.getTroncons(),r.getPoints());
-//				frame.vueReseau.repaint();
+
 			}
 		});
 		return null;
@@ -88,7 +86,8 @@ public class VueMenu {
 	public void onClicChargerDemandeLivraison() {
 		btnChargerDemandeLivraison.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				application.chargerDemandeLivraisonXML();	
+				application.chargerDemandeLivraisonXML();
+				application.afficherDemandesLivraison();
 			}
 		});
 	}

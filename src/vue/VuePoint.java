@@ -60,6 +60,10 @@ public class VuePoint implements VueCliquable, VueDessinable {
 	public void setY(int y) {
 		this.y = y;
 	}
+	
+	public void setCouleur(Color uneCouleur){
+		this.couleur = uneCouleur;
+	}
 
 	/**
 	 * Dessine un rond pour une vuePoint a partir des coordonnees x et y en attribut de
@@ -74,7 +78,6 @@ public class VuePoint implements VueCliquable, VueDessinable {
 		int x = (this.x);
 		int y = (this.y);
 		Ellipse2D rond = new Ellipse2D.Double( (double) x - OFFSET , (double) y - OFFSET, this.rayon, this.rayon);
-		//g.fillOval(x - offset , y - offset, 10, 10);
 		g2d.setColor(this.couleur);
 		g2d.fill(rond);
     }

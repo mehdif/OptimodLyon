@@ -42,6 +42,26 @@ public class VueReseau  extends JPanel implements VueDessinable {
     	initialiser(frame);
     }
     
+	/**
+	 * Dessine tous les points du réseau
+	 */
+    
+    public void dessinerPoints(Graphics g){
+		
+		for(int i=0; i<vuesPoints.size(); i++){
+            vuesPoints.get(i).dessiner(g);
+		}
+    }
+    
+	/**
+	 * Dessine tous les troncons du réseau
+	 */
+    public void dessinerTroncons(Graphics g){
+    	
+		for(int j=0; j<vuesTroncons.size();j++){
+			vuesTroncons.get(j).dessiner(g);
+		}
+    }
     /**
      * Constructeur de la vueReseau à partir des paramètres précédement 
      * chargés dans le modèle
@@ -86,6 +106,7 @@ public class VueReseau  extends JPanel implements VueDessinable {
 	/****************************************************
 	 ********************* Getter **********************
 	 ****************************************************/
+    
     public List<VuePoint> getVuesPoints() {
 		return vuesPoints;
 	}
@@ -122,18 +143,10 @@ public class VueReseau  extends JPanel implements VueDessinable {
 	@Override
 	public void dessiner(Graphics g) {
 
-		// Dessin des points
-		
-		for(int i=0; i<vuesPoints.size(); i++){
-            vuesPoints.get(i).dessiner(g);
-		}
+		this.dessinerTroncons(g);
+		this.dessinerPoints(g);
 
-		//Dessin des troncons
-		
-		for(int j=0; j<vuesTroncons.size();j++){
-			vuesTroncons.get(j).dessiner(g);
-		}
-		
+	
 	}
 
     @Override
