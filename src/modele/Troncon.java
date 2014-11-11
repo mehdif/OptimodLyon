@@ -19,8 +19,7 @@ public class Troncon {
 	 * @param origine
 	 * @param destination
 	 */
-    public Troncon(String nomRue, Double vitesse, Double distance,
-			Point origine, Point destination) {
+    public Troncon(String nomRue, Double vitesse, Double distance, Point origine, Point destination) {
 		this.vitesse = vitesse;
 		this.distance = distance;
 		this.nomRue = nomRue;
@@ -33,6 +32,7 @@ public class Troncon {
      */
     public Troncon() {
     }
+
    
     /****************************************************
      ********************* Getter  **********************
@@ -57,4 +57,8 @@ public class Troncon {
 	public Point getDestination() {
 		return destination;
 	}
+	
+    public Double getWeight() {
+        return (distance*vitesse);
+    }
 }
