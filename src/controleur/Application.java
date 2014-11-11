@@ -15,7 +15,7 @@ public class Application {
      * 
      */
     public Application() {
-    	new VueFenetre(this);
+    	vueFenetre = new VueFenetre(this);
     }
 
     /**
@@ -63,13 +63,6 @@ public class Application {
         // TODO implement here
     }
     
-//    public boolean chargerReseauXML(){
-//    	Reseau reseau = new Reseau();
-//    	if(reseau.chargerReseauXML()){
-//    		tournee = new Tournee(reseau);
-//    	}
-//    	return reseau.chargerReseauXML();
-//    }
     public boolean chargerReseauXML(){
     	Reseau reseau = new Reseau();
     	boolean chargementOK = reseau.chargerReseauXML(null);
@@ -85,27 +78,7 @@ public class Application {
     }
     
     public static void main(String []args){
-    	// Code permettant de charger le réseau puis les livraisons
-		// Reseau reseau = new Reseau() ;
-		// reseau.chargerReseauXML(null);
-		// //reseau.afficherReseau();
-		// tournee = new Tournee(reseau);
-		// tournee.chargerDonneesDemandeXML(null);
-		 //tournee.afficherTournee();
-    	
-    	//Main pour l'interface graphique
-    	//new VueFenetre();
     	new Application();
-
-
-
-
-
-
-
-
-
-
     }
 
 }

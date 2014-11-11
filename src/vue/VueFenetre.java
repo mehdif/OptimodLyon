@@ -10,7 +10,6 @@ import controleur.Application;
  * @author Hexanome 4301
  */
 public class VueFenetre {
-
 	/**
 	 * 
 	 */
@@ -53,11 +52,14 @@ public class VueFenetre {
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		vueMenu.initialiser(frame);
 		vueDetail.initialiser(frame); 
-		vueListe.initialiser(frame);
+		vueListe.initialiser(frame, vueMenu.getOutContent());
 		vueReseau.initialiser(frame);
 		frame.setVisible(true);
     }
     
+    public void refresh(){
+		vueListe.refresh(vueMenu.getOutContent());
+    }
     
     
 }
