@@ -9,12 +9,12 @@ import controleur.Application;
 /**
  * @author Hexanome 4301
  */
-public class VueFenetre extends JFrame {
+public class VueFenetre {
 
 	/**
 	 * 
 	 */
-	//public JFrame frame ;
+	public JFrame frame ;
 	
 	/**
 	 * 
@@ -34,7 +34,7 @@ public class VueFenetre extends JFrame {
 	/**
 	 * 
 	 */
-	public VueReseau vueReseau;
+	public VueReseau vueReseau = new VueReseau();
 	
 	/**
 	 * 
@@ -47,14 +47,14 @@ public class VueFenetre extends JFrame {
     public VueFenetre(Application application) {
     	this.application = application;
     	vueMenu = new VueMenu(application);
-		//frame = new JFrame();
-		this.setBounds(100, 100, 800, 600);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.getContentPane().setLayout(new BorderLayout(0, 0));
-		vueMenu.initialiser(this);
-		vueDetail.initialiser(this); 
-		vueListe.initialiser(this);
-		vueReseau.initialiser(this);
-		this.setVisible(true);
+		frame = new JFrame();
+		frame.setBounds(100, 100, 800, 600);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(new BorderLayout(0, 0));
+		vueMenu.initialiser(frame);
+		vueDetail.initialiser(frame); 
+		vueListe.initialiser(frame);
+		vueReseau.initialiser(frame);
+		frame.setVisible(true);
     }
 }

@@ -51,10 +51,10 @@ public class VueMenu {
 	public Boolean onClicChargerReseau() {
 		btnChargerReseau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Reseau r =application.chargerReseauXML();
-				System.out.println(r.toString());
-				frame.vueReseau = new VueReseau(r.getTroncons(),r.getPoints());
-				frame.vueReseau.repaint();
+				application.chargerReseauXML();
+//				System.out.println(r.toString());
+//				frame.vueReseau = new VueReseau(r.getTroncons(),r.getPoints());
+//				frame.vueReseau.repaint();
 			}
 		});
 		return null;
@@ -106,9 +106,8 @@ public class VueMenu {
 	/**
 	 * @return
 	 */
-	public void initialiser(VueFenetre frame) {
+	public void initialiser(JFrame frame) {
 		// Vue menu du haut pour les boutons de chargement
-		this.frame=frame;
 		JPanel vueMenuHaut = new JPanel(new GridLayout(1, 2));
 		frame.getContentPane().add(vueMenuHaut, BorderLayout.NORTH);
 

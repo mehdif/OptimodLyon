@@ -49,7 +49,7 @@ public class VueReseau  extends JPanel implements VueDessinable {
      * @param troncons
      * @param points
      */
-    public VueReseau(List<Troncon> troncons,Map<Integer, Point> points) {
+    public void chargerVueReseau(List<Troncon> troncons,Map<Integer, Point> points) {
    		
     	//Remplissage de la liste vuesPoints
     		

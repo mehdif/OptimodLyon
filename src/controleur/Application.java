@@ -15,7 +15,7 @@ public class Application {
      * 
      */
     public Application() {
-    	new VueFenetre(this);
+    	vueFenetre = new VueFenetre(this);
     }
 
     /**
@@ -63,14 +63,16 @@ public class Application {
         // TODO implement here
     }
     
-    public Reseau chargerReseauXML(){
+    public boolean chargerReseauXML(){
     	Reseau reseau = new Reseau();
     	boolean chargementOK = reseau.chargerReseauXML(null);
     	if(chargementOK){
     		tournee = new Tournee(reseau);
+    		this.vueFenetre.vueReseau.chargerVueReseau(reseau.getTroncons(), reseau.getPoints());
+    		this.vueFenetre.vueReseau.repaint();
     	}
     	
-    	return reseau;
+    	return chargementOK;
     }
     
     public boolean chargerDemandeLivraisonXML(){
