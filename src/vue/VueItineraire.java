@@ -38,6 +38,11 @@ public class VueItineraire implements VueDessinable {
 		};
 	}
 
+    /**
+     * @author Vincent
+     * @param unTroncon
+     * test de l'existence d'une ligne pour eviter la superposition
+     */
 public static boolean zoneEstVide(VueTroncon unTroncon) {
 	
 	int [] pointsX = {

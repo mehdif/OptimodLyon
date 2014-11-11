@@ -14,9 +14,9 @@ public class VueTroncon implements VueDessinable {
 
     public VuePoint origine;
     public VuePoint destination;
-	public Color couleur;
 	public static final float EPAISSEUR_TRAIT_TRONCON_RESEAU = 2.0f;
 	public static final float EPAISSEUR_TRAIT_TRONCON_TOURNEE = 3.0f;
+	private Color couleur;
 	
 	/****************************************************
 	 ****************** Constructeurs ********************
@@ -39,7 +39,7 @@ public class VueTroncon implements VueDessinable {
     public VueTroncon(int x1,int y1,int x2, int y2){
     	origine = new VuePoint(x1,y1);
     	destination = new VuePoint(x2,y2);
-    	//couleur = new Color();
+    	couleur = Color.BLACK;
     }
 
 	/****************************************************
@@ -71,6 +71,7 @@ public class VueTroncon implements VueDessinable {
 		int y1 = (this.origine.getY());
 		int x2 = (this.destination.getX());
 		int y2 = (this.destination.getY());
+		g2d.setColor(this.couleur);
 		g2d.setStroke(new BasicStroke(EPAISSEUR_TRAIT_TRONCON_RESEAU));
 		g2d.drawLine(x1, y1, x2, y2);
 		

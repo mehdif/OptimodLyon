@@ -1,8 +1,10 @@
 package vue;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
+
 
 /**
  * @author Hexanome 4301
@@ -13,6 +15,7 @@ public class VuePoint implements VueCliquable, VueDessinable {
     private int y;
     private double rayon;
     private final double OFFSET = 5;
+    private Color couleur = Color.BLACK;
     
 	/****************************************************
 	 ****************** Constructeurs ********************
@@ -72,6 +75,7 @@ public class VuePoint implements VueCliquable, VueDessinable {
 		int y = (this.y);
 		Ellipse2D rond = new Ellipse2D.Double( (double) x - OFFSET , (double) y - OFFSET, this.rayon, this.rayon);
 		//g.fillOval(x - offset , y - offset, 10, 10);
+		g2d.setColor(this.couleur);
 		g2d.fill(rond);
     }
 	
