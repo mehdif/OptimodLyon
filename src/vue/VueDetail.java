@@ -65,7 +65,7 @@ public class VueDetail {
     /**
      * @return
      */
-    public Boolean initialiser(JFrame frame) {		
+    public void initialiser(JFrame frame) {		
 		//Vue de droite pour les d�tails du point de livraison s�lectionn�
 		JPanel vueDetail = new JPanel(new GridLayout(8, 1));
 		frame.getContentPane().add(vueDetail, BorderLayout.EAST);
@@ -100,7 +100,6 @@ public class VueDetail {
 		onClicAjouterDemande();
 		onClicSupprimerDemande();
 		//Fin vue de droite
-        return null;
     }
 
 }

@@ -46,10 +46,9 @@ public class VueReseau implements VueDessinable {
     /**
      * @return
      */
-    public Boolean initialiser(JFrame frame) {
+    public void initialiser(JFrame frame) {
 		JPanel vueReseau = new JPanel();
 		frame.getContentPane().add(vueReseau, BorderLayout.CENTER);
-        return null;
     }
 
 }
