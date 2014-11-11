@@ -82,7 +82,7 @@ public class VueMenu {
 	public void onClicChargerDemandeLivraison() {
 		btnChargerDemandeLivraison.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				application.chargerDemandeLivraisonXML();
+				//application.chargerDemandeLivraisonXML();
 			}
 		});
 	}
