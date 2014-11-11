@@ -73,8 +73,8 @@ public class Reseau {
 	 * Permet de charger le réseau depuis un fichier XML
 	 * 
 	 * @param nomFichier
-	 *            : nom du fichier XML que l'on veut charger. Si null, le fichier
-	 *            est choisi via l'explorateur de fichier
+	 *            : nom du fichier XML que l'on veut charger. Si null, le
+	 *            fichier est choisi via l'explorateur de fichier
 	 * @return true si le chargement s'est passé correctement, false sinon
 	 */
 	public boolean chargerReseauXML(String nomFichier) {
@@ -85,7 +85,7 @@ public class Reseau {
 			} else {
 				xml = new File(nomFichier);
 			}
-			if(null == xml){
+			if (null == xml) {
 				return false;
 			}
 			if (!XMLReader.validerXML(xml.getAbsolutePath(), "xsd/reseau.xsd")) {
@@ -117,8 +117,16 @@ public class Reseau {
 									.getNodeValue()),
 							Integer.parseInt(listeAttributs.getNamedItem("id")
 									.getNodeValue()));
-					pointsBuffer.put(Integer.parseInt(listeAttributs
-							.getNamedItem("id").getNodeValue()), p);
+					// Si le point n'a jamais été défini on le rajoute à la map
+					if(null == pointsBuffer.get(p.getAdresse())) {
+						pointsBuffer.put(
+								Integer.parseInt(listeAttributs.getNamedItem(
+										"id").getNodeValue()), p);
+					}
+					else{
+						System.out.println("Erreur : un ou plusieurs point est défini plusieurs fois : abandon du chargement du réseau");
+						return false ;
+					}
 				}
 			}
 
@@ -175,6 +183,7 @@ public class Reseau {
 			}
 			this.points = pointsBuffer;
 			this.troncons = tronconsBuffer;
+			System.out.println("Chargement du réseau réussi");
 			return true;
 		} catch (ParserConfigurationException e) {
 			System.out.println("Erreur de configuration du parseur DOM");

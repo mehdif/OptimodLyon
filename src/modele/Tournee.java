@@ -127,8 +127,8 @@ public class Tournee {
 	 * Permet de charger les demandes de livraison depuis un fichier XML
 	 * 
 	 * @param nomFichier
-	 *            : nom du fichier XML que l'on veut charger. Si null, le fichier
-	 *            est choisi via l'explorateur de fichier
+	 *            : nom du fichier XML que l'on veut charger. Si null, le
+	 *            fichier est choisi via l'explorateur de fichier
 	 * @return true si le chargement s'est passé correctement, false sinon
 	 */
 	public boolean chargerDonneesDemandeXML(String nomFichier) {
@@ -172,8 +172,9 @@ public class Tournee {
 								.equals("Plage")) {
 
 							// Récupération des attributs de PlageHoraire
-							PlageHoraire plage = chargerPlage(listeElementsOrdre2
-									.item(j));
+							PlageHoraire plage = chargerPlage(
+									listeElementsOrdre2.item(j),
+									listePlagesBuffer);
 							if (null == plage) {
 								return false;
 							}
@@ -220,6 +221,7 @@ public class Tournee {
 				for (int i = 0; i < listePlagesBuffer.size(); i++) {
 					ajouterPlageHoraire(listePlagesBuffer.get(i));
 				}
+				System.out.println("Chargement des livraisons réussi");
 				return true;
 			} else {
 				System.out
@@ -248,17 +250,81 @@ public class Tournee {
 	 * @param element
 	 * @return PlageHoraire crée
 	 */
-	private PlageHoraire chargerPlage(Node element) {
+	private PlageHoraire chargerPlage(Node element,
+			List<PlageHoraire> listePlages) {
 		try {
 			// Récupération des attributs de PlageHoraire
 			NamedNodeMap listeAttributs = element.getAttributes();
 			String debut = listeAttributs.getNamedItem("heureDebut")
 					.getNodeValue();
 			String fin = listeAttributs.getNamedItem("heureFin").getNodeValue();
+
+			// Verification du format des heures
+			String[] debutSplit = debut.split(":");
+			String[] finSplit = fin.split(":");
+			if (debutSplit.length != 3 || finSplit.length != 3) {
+				System.out
+						.println("Erreur : le format (HH:mm:ss) d'heure d'une ou plusieurs plages n'est pas respecté, abandon du chargement des livraisons");
+				return null;
+			}
+			if (Integer.parseInt(debutSplit[0]) > 23
+					|| Integer.parseInt(finSplit[0]) > 23) {
+				System.out
+						.println("Erreur : le format (HH:mm:ss) d'heure d'une ou plusieurs plages n'est pas respecté, abandon du chargement des livraisons");
+				return null;
+			}
+			if (Integer.parseInt(debutSplit[1]) > 59
+					|| Integer.parseInt(finSplit[1]) > 59
+					|| Integer.parseInt(debutSplit[2]) > 59
+					|| Integer.parseInt(finSplit[2]) > 59) {
+				System.out
+						.println("Erreur : le format (HH:mm:ss) d'heure d'une ou plusieurs plages n'est pas respecté, abandon du chargement des livraisons");
+				return null;
+			}
+
 			Calendar calDebut = Calendar.getInstance();
 			Calendar calFin = Calendar.getInstance();
 			calDebut.setTime(dateFormat.parse(debut));
 			calFin.setTime(dateFormat.parse(fin));
+
+			boolean superpositionPlage = false;
+			for (int i = 0; i < listePlages.size(); i++) {
+				Calendar debutTest = listePlages.get(i).getDebut();
+				Calendar finTest = listePlages.get(i).getFin();
+				// Si le debut d'une plage que l'on a déjà inséré est comprise
+				// dans la plage que l'on veut inserer
+				if (debutTest.getTime().after(calDebut.getTime())
+						&& debutTest.getTime().before(calFin.getTime())) {
+					superpositionPlage = true;
+					break;
+				}
+				// Si la fin d'une plage que l'on a déjà inséré est comprise
+				// dans la plage que l'on veut inserer
+				else if (finTest.getTime().after(calDebut.getTime())
+						&& finTest.getTime().before(calFin.getTime())) {
+					superpositionPlage = true;
+					break;
+				}
+				// Si le debut de la plage que l'on veut inserer est comprise
+				// dans une plage que l'on a déjà inséré
+				else if (calDebut.getTime().after(debutTest.getTime())
+						&& calDebut.getTime().before(finTest.getTime())) {
+					superpositionPlage = true;
+					break;
+				}
+				// Si la fin de la plage que l'on veut inserer est comprise dans
+				// une plage que l'on a déjà inséré
+				else if (calFin.getTime().after(debutTest.getTime())
+						&& calFin.getTime().before(finTest.getTime())) {
+					superpositionPlage = true;
+					break;
+				}
+			}
+			if (superpositionPlage) {
+				System.out
+						.println("Erreur : Une ou plusieurs plages horaires se superposent, abandon du chargement des livraisons");
+				return null;
+			}
 			return new PlageHoraire(calDebut, calFin);
 		} catch (ParseException e) {
 			System.out.println("Erreur lors du parsing des dates");
