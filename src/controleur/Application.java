@@ -65,10 +65,16 @@ public class Application {
     
     public boolean chargerReseauXML(){
     	Reseau reseau = new Reseau();
-    	if(reseau.chargerReseauXML()){
+    	boolean chargementOK = reseau.chargerReseauXML(null);
+    	if(chargementOK){
     		tournee = new Tournee(reseau);
     	}
-    	return reseau.chargerReseauXML();
+    	return chargementOK;
+    }
+    
+    public boolean chargerDemandeLivraisonXML(){
+    	boolean chargementOK = tournee.chargerDonneesDemandeXML(null);
+    	return chargementOK;
     }
     
     public static void main(String []args){
@@ -82,6 +88,7 @@ public class Application {
     	
     	//Main pour l'interface graphique
     	//new VueFenetre();
+    	new Application();
     }
 
 }
