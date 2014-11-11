@@ -82,7 +82,7 @@ public class VueMenu {
 	public void onClicChargerDemandeLivraison() {
 		btnChargerDemandeLivraison.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//application.chargerDemandeLivraisonXML();
+				application.chargerDemandeLivraisonXML();
 			}
 		});
 	}
@@ -100,8 +100,7 @@ public class VueMenu {
 	/**
 	 * @return
 	 */
-	public Boolean initialiser(JFrame frame) {
-		Boolean creation = true;
+	public void initialiser(JFrame frame) {
 		// Vue menu du haut pour les boutons de chargement
 		JPanel vueMenuHaut = new JPanel(new GridLayout(1, 2));
 		frame.getContentPane().add(vueMenuHaut, BorderLayout.NORTH);
@@ -136,7 +135,5 @@ public class VueMenu {
 		vueMenuGauche.add(btnGenererFeuilleDeRoute);
 		onClicGenererFeuilleDeRoute();
 		// Fin vue menu de gauche
-		return creation;
 	}
-
 }
