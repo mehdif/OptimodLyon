@@ -5,9 +5,9 @@ package modele;
  */
 public class Point {
 	
-	//private Integer longitude;
-	//private Integer latitude;
-	private int adresse;
+	private Integer longitude;
+	private Integer latitude;
+	private Integer adresse;
 	//private DemandeLivraison uneDemande;
 	//public Reseau reseau;
 
@@ -18,7 +18,7 @@ public class Point {
 		
 	}
 	
-	public Point(int adresse) {
+	public Point(Integer adresse) {
 		this.adresse = adresse;
 	}
 
@@ -29,9 +29,9 @@ public class Point {
 	 * @param latitude
 	 * @param adresse
 	 */
-	public Point(Integer longitude, Integer latitude, int adresse) {
-		//this.longitude = longitude;
-		//this.latitude = latitude;
+	public Point(Integer longitude, Integer latitude, Integer adresse) {
+		this.longitude = longitude;
+		this.latitude = latitude;
 		this.adresse = adresse;
 	}
 	
@@ -39,7 +39,7 @@ public class Point {
      ********************* Getter  **********************
      ****************************************************/
 
-	/*public Integer getLongitude() {
+	public Integer getLongitude() {
 		return longitude;
 	}
 
@@ -47,17 +47,7 @@ public class Point {
 		return latitude;
 	}
 	
-
-
-	public DemandeLivraison getUneDemande() {
-		return uneDemande;
-	}
-
-	public Reseau getReseau() {
-		return reseau;
-	}*/
-	
-	public int getAdresse() {
+	public Integer getAdresse() {
 		return adresse;
 	}
 }

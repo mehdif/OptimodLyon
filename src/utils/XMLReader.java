@@ -54,12 +54,10 @@ public class XMLReader {
         // 5. Vérifie le document
         try {
             validator.validate(source);
-            // System.out.println(fichierXML+ " est valide.");
             return true;
         }
         catch (SAXException ex) {
-             System.out.println(fichierXML + " n'est pas valide car ");
-             System.out.println(ex.getMessage());
+             System.out.println(fichierXML + " n'est pas valide");
             return false;
         } 
 	}

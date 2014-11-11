@@ -4,9 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.*;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -31,8 +28,7 @@ public class VueDetail {
     /**
      * 
      */
-    public VueDetail(JFrame frame) {
-    	initialiser(frame);
+    public VueDetail() {
     }
 
     /**
@@ -101,6 +97,8 @@ public class VueDetail {
 		
 		btnSupprimerAjouter = new JButton("Supprimer / Ajouter");
 		vueDetail.add(btnSupprimerAjouter);
+		onClicAjouterDemande();
+		onClicSupprimerDemande();
 		//Fin vue de droite
         return null;
     }

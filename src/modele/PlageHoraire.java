@@ -11,7 +11,7 @@ public class PlageHoraire {
 
 	private Calendar debut;
     private Calendar fin;
-    private List <DemandeLivraison> demandeLivraison = new ArrayList<DemandeLivraison>();
+    private List <DemandeLivraison> listeDemandeLivraison = new ArrayList<DemandeLivraison>();
     private Boolean dispo;
     
     /****************************************************
@@ -27,7 +27,7 @@ public class PlageHoraire {
 	}
 
 	public List<DemandeLivraison> getDemandeLivraison() {
-		return demandeLivraison;
+		return listeDemandeLivraison;
 	}
 
 	public Boolean getDispo() {
@@ -72,9 +72,8 @@ public class PlageHoraire {
      * @param demandeLivraison
      * @return
      */
-    public Boolean ajouterDemandeLivraison(DemandeLivraison demandeLivraison) {
-        this.demandeLivraison.add(demandeLivraison);
-        return null;
+    public boolean ajouterDemandeLivraison(DemandeLivraison demandeLivraison) {
+        return listeDemandeLivraison.add(demandeLivraison);
     }
 
     /**
