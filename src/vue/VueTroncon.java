@@ -31,9 +31,10 @@ public class VueTroncon implements VueDessinable {
      * @param x2 coordonnee x de la VuePoint destination
      * @param y2 coordonnee y de la VuePoint destination
      */
-    public VueTroncon(int x1,int y1,int x2, int y2){
+    public VueTroncon(int x1,int y1,int x2, int y2, Color uneCouleur){
     	origine = new VuePoint(x1,y1);
     	destination = new VuePoint(x2,y2);
+    	//couleur = new Color();
     }
 
 	/****************************************************
@@ -56,8 +57,7 @@ public class VueTroncon implements VueDessinable {
      * @return bool, égal à true si la ligne s'est correctement dessiné, false sinon
      */
 	@Override
-	public Boolean dessiner(Graphics g) {
-		boolean bool = true;
+	public void dessiner(Graphics g) {
 		// TODO on ne peux pas caster un double en int directement. 
 		int x1 = (this.origine.getX());
 		int y1 = (this.origine.getY());
@@ -65,7 +65,6 @@ public class VueTroncon implements VueDessinable {
 		int y2 = (this.destination.getY());
 		g.drawLine(x1, y1, x2, y2);
 		
-		return bool;
 	}
 	
 	public void dessiner(Graphics g, int decalage){

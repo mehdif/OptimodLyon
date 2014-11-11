@@ -115,7 +115,7 @@ public class VueReseau  extends JPanel implements VueDessinable {
      * @return bool true si tout les �l�ments ont pu se dessiner
      */
 	@Override
-	public Boolean dessiner(Graphics g) {
+	public void dessiner(Graphics g) {
 		boolean bool = true;
 		for(int i=0; i<vuesPoints.size(); i++){
             vuesPoints.get(i).dessiner(g);
