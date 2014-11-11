@@ -1,7 +1,5 @@
 package controleur;
 
-import java.awt.EventQueue;
-
 import modele.Client;
 import modele.PlageHoraire;
 import modele.Reseau;
@@ -34,9 +32,6 @@ public class Application {
      */
     public VueFenetre vueFenetre ;
 
-
-
-
     /**
      * 
      */
@@ -67,24 +62,15 @@ public class Application {
         // TODO implement here
     }
     
-    /public static void main(String []args){
-    	// Code permettant de charger le réseau puis les livraisons
-    	final Reseau reseau = new Reseau() ;
-    	reseau.chargerReseauXML(null);
-    	tournee = new Tournee(reseau);
-    	//tournee.chargerDonneesDemandeXML();
-    	
-    	//Main pour l'interface graphique
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-			    	VueFenetre window = new VueFenetre(reseau);
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+//    public boolean chargerReseauXML(){
+//    	Reseau reseau = new Reseau();
+//    	if(reseau.chargerReseauXML()){
+//    		tournee = new Tournee(reseau);
+//    	}
+//    	return reseau.chargerReseauXML();
+//    }
+    
+    public static void main(String []args){
     	// Code permettant de charger le réseau puis les livraisons
 		// Reseau reseau = new Reseau() ;
 		// reseau.chargerReseauXML(null);
