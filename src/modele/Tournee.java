@@ -109,12 +109,92 @@ public class Tournee {
 	}
 
 	/**
-     * 
-     */
-	private void calculerTournee() {
+	 * 
+	 */
+	public void calculerTournee() {
 		// TODO implement here
 	}
 
+	
+	private void chocoImplementation() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private ArrayList<ArrayList<Integer>> prepareChoco() {
+		// TODO Auto-generated method stub
+	
+    	return null;
+	}
+	
+	/** Computes the number of Combinations 
+	 * 
+	 * @param demandeLivraison : list of demandeLivraison
+	 * @return a list of points array : for each array there's origin and destination
+	 */
+	private ArrayList<Point[]> getCombinaisons(List<DemandeLivraison> demandeLivraison){
+		int n = demandeLivraison.size();
+//		//Point[] tempCouple = null; 
+//
+//		int   numberOfCombinations = numberOfCombinations(2,n);
+//		int increment = 0 ;
+//		while (increment != numberOfCombinations){
+//
+//			 for(Point[] couple : tempList){
+//				 
+//				if(!couple.equals(tempCouple)){
+//					
+//					tempList.add(tempCouple);
+//				}
+//			}
+//			
+//			increment++;
+//		}
+//		
+//		
+		ArrayList <Point[]> tempList = null;
+
+		for (int i = 0;i < demandeLivraison.size() ; i++){
+			for (int j= i+1 ;j < demandeLivraison.size() ; j++){
+				Point [] tempCouple= {demandeLivraison.get(i).getPointDeLivraison(),demandeLivraison.get(j).getPointDeLivraison()};
+				tempList.add(tempCouple);
+			}
+		}
+
+		if (tempList.size()!=numberOfCombinations(2,n)){
+			System.out.println("Combinaisons manquantes");
+		}
+		
+		return tempList;
+	}
+	
+
+
+	/** Returns the number of combinations of k elements within n
+	 * 
+	 * @param k
+	 * @param n
+	 * @return
+	 */
+	private int numberOfCombinations(int k, int n) {
+		// TODO Auto-generated method stub
+		return factorielle(n)/(factorielle(k)*factorielle(n-k));
+	}
+	
+	/** Factorielle
+	 * 
+	 * @param number
+	 * @return
+	 */
+	private int factorielle (int number){
+		int fact = 1;
+		for(int i = number; i >= 1; i--){
+			fact = fact*i;
+		}
+		
+		return fact;
+	}
+	
 	/**
 	 * @return
 	 */

@@ -110,9 +110,11 @@ public class VueMenu {
 	public void onClicChargerDemandeLivraison() {
 		btnChargerDemandeLivraison.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				application.chargerDemandeLivraisonXML();
+				boolean chargementOK = application.chargerDemandeLivraisonXML();
 				application.vueFenetre.refresh();
-					
+				if(chargementOK == true){
+					btnGenererFeuilleDeRoute.setEnabled(true);
+				}	
 			}
 		});
 	}
@@ -162,6 +164,7 @@ public class VueMenu {
 		onClicRedo();
 
 		btnGenererFeuilleDeRoute = new JButton("Generer feuille de route");
+		btnGenererFeuilleDeRoute.setEnabled(false);
 		vueMenuGauche.add(btnGenererFeuilleDeRoute);
 		onClicGenererFeuilleDeRoute();
 		// Fin vue menu de gauche

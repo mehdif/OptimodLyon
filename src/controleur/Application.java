@@ -38,6 +38,7 @@ public class Application {
      */
     public void calculerTournee() {
         // TODO implement here
+    	tournee.calculerTournee();
     }
 
     /**
