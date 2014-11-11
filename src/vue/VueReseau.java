@@ -51,6 +51,7 @@ public class VueReseau  extends JPanel implements VueDessinable {
      */
     public void chargerVueReseau(List<Troncon> troncons,Map<Integer, Point> points) {
    		
+    	this.vuesPoints.clear();
     	//Remplissage de la liste vuesPoints
     		
 		Set<Integer> listKeys=points.keySet();  // Obtenir la liste des cles
@@ -71,13 +72,13 @@ public class VueReseau  extends JPanel implements VueDessinable {
 		//Remplissage de la liste vueTroncons
 		for(int i=0;i<troncons.size();i++){
 			Troncon t = troncons.get(i);
-			Point origine = t.getOrigine();
-			Point destination = t.getDestination();
+			Point origine = new Point(t.getOrigine().getLongitude(), t.getOrigine().getLatitude(), t.getOrigine().getAdresse());
+			Point destination = new Point(t.getDestination().getLongitude(), t.getDestination().getLatitude(), t.getDestination().getAdresse());
 			
-//			VueTroncon vueTroncon = new VueTroncon(origine.getLongitude(),origine.getLatitude(),destination.getLongitude(),destination.getLatitude());
-//			if(vueTroncon != null){
-//				vuesTroncons.add(vueTroncon);
-//			}
+			VueTroncon vueTroncon = new VueTroncon(origine.getLongitude(),origine.getLatitude(),destination.getLongitude(),destination.getLatitude());
+			if(vueTroncon != null){
+				vuesTroncons.add(vueTroncon);
+			}
 		}
     }
 
@@ -119,13 +120,16 @@ public class VueReseau  extends JPanel implements VueDessinable {
      */
 	@Override
 	public void dessiner(Graphics g) {
+		
 		for(int i=0; i<vuesPoints.size(); i++){
             vuesPoints.get(i).dessiner(g);
 		}
-//		for(int j=0; j<vuesTroncons.size();j++){
-//			vuesTroncons.get(j).dessiner(g);
-//		}
-//		vueTournee.dessiner(g);
+		for(int j=0; j<vuesTroncons.size();j++){
+			vuesTroncons.get(j).dessiner(g);
+			System.out.println(j);
+		}
+		if(vueTournee != null)
+		vueTournee.dessiner(g);
 		
 	}
 
