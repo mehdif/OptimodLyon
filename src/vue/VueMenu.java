@@ -72,8 +72,11 @@ public class VueMenu {
 		btnChargerReseau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setUpStreams();
-				application.chargerReseauXML();
+				boolean chargementOK = application.chargerReseauXML();
 				application.vueFenetre.refresh();
+				if(chargementOK == true){
+					btnChargerDemandeLivraison.setEnabled(true);
+				}
 			}
 		});
 		return null;
@@ -109,6 +112,7 @@ public class VueMenu {
 			public void actionPerformed(ActionEvent arg0) {
 				application.chargerDemandeLivraisonXML();
 				application.vueFenetre.refresh();
+					
 			}
 		});
 	}
@@ -135,8 +139,8 @@ public class VueMenu {
 		vueMenuHaut.add(btnChargerReseau);
 		onClicChargerReseau();
 
-		btnChargerDemandeLivraison = new JButton(
-				"Charger les demandes de livraison");
+		btnChargerDemandeLivraison = new JButton("Charger les demandes de livraison");
+		btnChargerDemandeLivraison.setEnabled(false);
 		vueMenuHaut.add(btnChargerDemandeLivraison);
 		onClicChargerDemandeLivraison();
 		// Fin vue menu du haut
