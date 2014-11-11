@@ -1,7 +1,12 @@
 package controleur;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import modele.Client;
+import modele.DemandeLivraison;
 import modele.PlageHoraire;
+import modele.Point;
 import modele.Reseau;
 import modele.Tournee;
 import vue.VueFenetre;
@@ -38,9 +43,13 @@ public class Application {
      */
     public void calculerTournee() {
         // TODO implement here
+    	tournee.calculerTournee();
+
     }
 
-    /**
+    
+
+	/**
      * 
      */
     public void dessinerReseau() {
@@ -96,14 +105,6 @@ public class Application {
     	//Main pour l'interface graphique
     	//new VueFenetre();
     	new Application();
-
-
-
-
-
-
-
-
 
 
     }

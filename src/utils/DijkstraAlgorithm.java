@@ -1,4 +1,4 @@
-package modele;
+package utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,6 +8,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import modele.Point;
+import modele.Troncon;
 
 
 public class DijkstraAlgorithm {
