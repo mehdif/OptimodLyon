@@ -1,5 +1,6 @@
 package vue;
 
+import java.awt.Graphics;
 import java.util.*;
 
 /**
@@ -16,9 +17,8 @@ public class VueEntrepot extends VuePoint {
     /**
      * @return
      */
-    public Boolean dessiner() {
+    public void dessiner(Graphics g) {
         // TODO implement here
-        return null;
     }
 
 }

@@ -61,14 +61,12 @@ public class VuePoint implements VueCliquable, VueDessinable {
 	 * @return bool, égal à true si le rond s'est correctement dessiné, false sinon
 	 */
 	@Override
-    public Boolean dessiner(Graphics g) {
-		boolean bool = true;
+    public void dessiner(Graphics g) {
 		int x = (this.x);
 		int y = (this.y);
 		
 		g.fillOval(x, y, 10, 10);
 		
-        return bool;
     }
 	
 	/**
