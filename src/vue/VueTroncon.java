@@ -1,5 +1,6 @@
 package vue;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 
@@ -10,7 +11,7 @@ public class VueTroncon implements VueDessinable {
 
     public VuePoint origine;
     public VuePoint destination;
-	
+	public Color couleur;
 	
 	/****************************************************
 	 ****************** Constructeurs ********************
@@ -62,10 +63,19 @@ public class VueTroncon implements VueDessinable {
 		int y1 = (this.origine.getY());
 		int x2 = (this.destination.getX());
 		int y2 = (this.destination.getY());
-		
 		g.drawLine(x1, y1, x2, y2);
 		
 		return bool;
+	}
+	
+	public void dessiner(Graphics g, int decalage){
+		
+		int x1 = (this.origine.getX());
+		int y1 = (this.origine.getY());
+		int x2 = (this.destination.getX());
+		int y2 = (this.destination.getY());
+		
+		g.drawLine(x1 + decalage, y1 + decalage, x2 + decalage, y2 + decalage);
 	}
 
 

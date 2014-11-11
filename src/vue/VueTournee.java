@@ -21,7 +21,12 @@ public class VueTournee implements VueDessinable {
 
 	@Override
 	public Boolean dessiner(Graphics g) {
-		// TODO 
+
+		// TODO
+
+		for (VueItineraire uneVueItineraire : vuesItineraire) {
+			uneVueItineraire.dessiner(g);
+		};
 		return null;
 	}
 
