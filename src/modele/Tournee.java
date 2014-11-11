@@ -15,6 +15,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -30,29 +31,30 @@ public class Tournee {
 	private List<PlageHoraire> plagesHoraires = new ArrayList<PlageHoraire>();
 	private Entrepot entrepot;
 	private Reseau reseau;
-	
+
 	/****************************************************
 	 ****************** Constructeur ********************
 	 ****************************************************/
-	
+
 	/**
 	 * Constructeur par défaut
 	 */
 	public Tournee() {
 	}
-	
+
 	/**
 	 * Constructeur à un paramètre
+	 * 
 	 * @param reseau
 	 */
 	public Tournee(Reseau reseau) {
 		this.reseau = reseau;
 	}
-	
+
 	/****************************************************
 	 ********************* Getter **********************
 	 ****************************************************/
-	
+
 	public List<Itineraire> getItineraires() {
 		return itineraires;
 	}
@@ -69,7 +71,9 @@ public class Tournee {
 		return reseau;
 	}
 
-	
+	/****************************************************
+	 *************** Méthodes de classes ****************
+	 ****************************************************/
 
 	/**
 	 * @return
@@ -93,8 +97,7 @@ public class Tournee {
 	 * @return
 	 */
 	private Boolean ajouterPlageHoraire(PlageHoraire plage) {
-		plagesHoraires.add(plage);
-		return null;
+		return plagesHoraires.add(plage);
 	}
 
 	/**
@@ -121,95 +124,194 @@ public class Tournee {
 	}
 
 	/**
-     * 
-     */
-	public void chargerDonneesDemandeXML() {
-		try {		
-			File xml = XMLReader.ouvrirFichier();
-//			StreamSource ssXml =  new StreamSource(xml);
-//			SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI); 
-//			StreamSource xsd = new StreamSource(new File("C:/Users/Sonia/git/OptimodLyon/livraison.xsd"));
-//	
-//			Schema schema = factory.newSchema(xsd);
-//			Validator validator = schema.newValidator();
-//			validator.validate(ssXml);
-			
-			DocumentBuilder constructeur = DocumentBuilderFactory
-					.newInstance().newDocumentBuilder();
+	 * Permet de charger les demandes de livraison depuis un fichier XML
+	 * 
+	 * @param nomFichier
+	 *            : nom du fichier XML que l'on veut charger. Si null, le fichier
+	 *            est choisi via l'explorateur de fichier
+	 * @return true si le chargement s'est passé correctement, false sinon
+	 */
+	public boolean chargerDonneesDemandeXML(String nomFichier) {
+		try {
+			File xml;
+			if (null == nomFichier) {
+				xml = XMLReader.ouvrirFichier();
+			} else {
+				xml = new File(nomFichier);
+			}
+			if (null == xml) {
+				return false;
+			}
+			if (!XMLReader.validerXML(xml.getAbsolutePath(),
+					"xsd/livraison.xsd")) {
+				return false;
+			}
 
-			// lecture du contenu d'un fichier XML avec DOM
+			// Lecture du contenu d'un fichier XML avec DOM
+			DocumentBuilder constructeur = DocumentBuilderFactory.newInstance()
+					.newDocumentBuilder();
 			Document documentXML = constructeur.parse(xml);
 			Element racine = documentXML.getDocumentElement();
-			NodeList listeElements = racine.getChildNodes();
-			
-			for (int i = 0; i < listeElements.getLength(); i++) {
-				NamedNodeMap listeAttributs = listeElements.item(i)
-						.getAttributes();
-				if (listeElements.item(i).getNodeName()
-						.equals("PlagesHoraires")) {
-					NodeList listeSousElements = listeElements.item(i)
-							.getChildNodes();
-					for (int j = 0; j < listeSousElements.getLength(); j++) {
-						
-						if (listeSousElements.item(j).getNodeName()
-								.equals("Plage")) {
-							listeAttributs = listeSousElements.item(j)
-									.getAttributes();
-							
-							String debut = listeAttributs.getNamedItem(
-									"heureDebut").getNodeValue();
-							String fin = listeAttributs
-									.getNamedItem("heureFin").getNodeValue();
-							Calendar calDebut = Calendar.getInstance();
-							Calendar calFin = Calendar.getInstance();
+			NodeList listeElementsOrdre1 = racine.getChildNodes();
+			NamedNodeMap listeAttributs = null;
 
-							calDebut.setTime(dateFormat.parse(debut));
-							calFin.setTime(dateFormat.parse(fin));
-							PlageHoraire plage = new PlageHoraire(calDebut, calFin);
-							
-							listeSousElements = listeSousElements.item(j).getChildNodes().item(1).getChildNodes();
-							for(int k = 0; k< listeSousElements.getLength() ; k++){
-								if (listeSousElements.item(k).getNodeName()
-										.equals("Livraison")){
-									listeAttributs = listeSousElements.item(k)
-											.getAttributes();
-									Integer adresse = Integer.parseInt(listeAttributs.getNamedItem("adresse").getNodeValue());
-									Integer idClient = Integer.parseInt(listeAttributs.getNamedItem("client").getNodeValue());
-									Integer id = Integer.parseInt(listeAttributs.getNamedItem("id").getNodeValue()); 
-									Client client = new Client(idClient);
-									Point pointDeLivraison = reseau.getPoints().get(adresse);
-									DemandeLivraison uneDemande = new DemandeLivraison(pointDeLivraison, client,
-											plage, false, id);
-									plage.ajouterDemandeLivraison(uneDemande);
-									ajouterPlageHoraire(plage);
+			// Creation d'objets buffers qui permettent de ne pas directement
+			// instancié Tournee afin qu'on puisse vérifier d'abord qu'il n'y ai
+			// pas d'incohérence entre les livraisons renseignées et le réseau
+			// chargé au préalable
+			List<PlageHoraire> listePlagesBuffer = new ArrayList<PlageHoraire>();
+			Point pointEntrepotBuffer = null;
+
+			for (int i = 0; i < listeElementsOrdre1.getLength(); i++) {
+				if (listeElementsOrdre1.item(i).getNodeName()
+						.equals("PlagesHoraires")) {
+					NodeList listeElementsOrdre2 = listeElementsOrdre1.item(i)
+							.getChildNodes();
+					for (int j = 0; j < listeElementsOrdre2.getLength(); j++) {
+						if (listeElementsOrdre2.item(j).getNodeName()
+								.equals("Plage")) {
+
+							// Récupération des attributs de PlageHoraire
+							PlageHoraire plage = chargerPlage(listeElementsOrdre2
+									.item(j));
+							if (null == plage) {
+								return false;
+							}
+
+							NodeList listeElementsOrdre3 = listeElementsOrdre2
+									.item(j).getChildNodes();
+							NodeList listeElementsOrdre4 = listeElementsOrdre3
+									.item(1).getChildNodes();
+							for (int k = 0; k < listeElementsOrdre4.getLength(); k++) {
+								if (listeElementsOrdre4.item(k).getNodeName()
+										.equals("Livraison")) {
+
+									// Récupération des attributs de
+									// DemandeLivraison
+									DemandeLivraison demandeLivraison = chargerDemandeLivraison(
+											listeElementsOrdre4.item(k), plage);
+									if (null == demandeLivraison) {
+										return false;
+									}
+									plage.ajouterDemandeLivraison(demandeLivraison);
 								}
 							}
+							listePlagesBuffer.add(plage);
 						}
 					}
-				} else if (listeElements.item(i).getNodeName()
-						.equals("Entrepot")){
-					listeAttributs = listeElements.item(i)
+				} else if (listeElementsOrdre1.item(i).getNodeName()
+						.equals("Entrepot")) {
+					listeAttributs = listeElementsOrdre1.item(i)
 							.getAttributes();
-					Integer adresseEntrepot = Integer.parseInt(listeAttributs.getNamedItem("adresse").getNodeValue());
-					Point pointEntrepot = reseau.getPoints().get(adresseEntrepot);
-					Entrepot entrepot = new Entrepot(pointEntrepot.getLongitude(), pointEntrepot.getLatitude(), pointEntrepot.getAdresse());
-					this.entrepot = entrepot ;
+					Integer adresseEntrepot = Integer.parseInt(listeAttributs
+							.getNamedItem("adresse").getNodeValue());
+					pointEntrepotBuffer = reseau.getPoints().get(
+							adresseEntrepot);
 				}
 			}
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// Si le pointEntrepotBuffer n'est pas null c'est que tous les
+			// points renseignés pour les livraisons et l'entrepôt sont bien des
+			// points appartenant au réseau
+			if (null != pointEntrepotBuffer) {
+				this.entrepot = new Entrepot(
+						pointEntrepotBuffer.getLongitude(),
+						pointEntrepotBuffer.getLatitude(),
+						pointEntrepotBuffer.getAdresse());
+				for (int i = 0; i < listePlagesBuffer.size(); i++) {
+					ajouterPlageHoraire(listePlagesBuffer.get(i));
+				}
+				return true;
+			} else {
+				System.out
+						.println("Erreur : l'entrepôt décrit dans le document ne correspond pas à un des points du réseau, abandon du chargement des livraisons");
+				return false;
+			}
 		} catch (SAXException e) {
 			System.out.println("Erreur lors du parsing du document");
 			System.out.println("lors de l'appel a construteur.parse(xml)");
+			return false;
 		} catch (IOException e) {
 			System.out.println("Erreur d'entree/sortie");
 			System.out.println("lors de l'appel a construteur.parse(xml)");
+			return false;
 		} catch (ParserConfigurationException e) {
 			System.out.println("Erreur de configuration du parseur DOM");
 			System.out
 					.println("lors de l'appel a fabrique.newDocumentBuilder();");
+			return false;
 		}
 	}
 
+	/**
+	 * Permet de creer une plage horaire à partir d'un noeud DOM
+	 * 
+	 * @param element
+	 * @return PlageHoraire crée
+	 */
+	private PlageHoraire chargerPlage(Node element) {
+		try {
+			// Récupération des attributs de PlageHoraire
+			NamedNodeMap listeAttributs = element.getAttributes();
+			String debut = listeAttributs.getNamedItem("heureDebut")
+					.getNodeValue();
+			String fin = listeAttributs.getNamedItem("heureFin").getNodeValue();
+			Calendar calDebut = Calendar.getInstance();
+			Calendar calFin = Calendar.getInstance();
+			calDebut.setTime(dateFormat.parse(debut));
+			calFin.setTime(dateFormat.parse(fin));
+			return new PlageHoraire(calDebut, calFin);
+		} catch (ParseException e) {
+			System.out.println("Erreur lors du parsing des dates");
+			return null;
+		}
+	}
+
+	/**
+	 * Permet de creer une demande de livraison à partir d'un noeud DOM et de la
+	 * plage horaire associée
+	 * 
+	 * @param element
+	 * @param plage
+	 * @return DemandeLivraison crée
+	 */
+	private DemandeLivraison chargerDemandeLivraison(Node element,
+			PlageHoraire plage) {
+		NamedNodeMap listeAttributs = element.getAttributes();
+		Integer adresse = Integer.parseInt(listeAttributs.getNamedItem(
+				"adresse").getNodeValue());
+		Integer idClient = Integer.parseInt(listeAttributs.getNamedItem(
+				"client").getNodeValue());
+		Integer id = Integer.parseInt(listeAttributs.getNamedItem("id")
+				.getNodeValue());
+		Client client = new Client(idClient);
+		// Vérification si l'adresse récupéré correspond à l'adresse d'un point
+		// du réseau
+		Point pointDeLivraison = reseau.getPoints().get(adresse);
+		if (null == pointDeLivraison) {
+			System.out
+					.println("Erreur : le document renseigné possède un ou plusieurs points de livraison inconnus, abandon du chargement des livraisons");
+			return null;
+		}
+		return new DemandeLivraison(pointDeLivraison, client, plage, false, id);
+	}
+
+	// TODO : méthode à effacer avant le rendu, sert juste à tester
+	public void afficherTournee() {
+		System.out
+				.println("Entrepot : " + entrepot.getAdresse() + " " + "("
+						+ entrepot.getLongitude() + ", "
+						+ entrepot.getLatitude() + ")");
+		for (int i = 0; i < getPlagesHoraires().size(); i++) {
+			System.out.println("Plage horaire : "
+					+ getPlagesHoraires().get(i).getDebut().getTime() + " - "
+					+ getPlagesHoraires().get(i).getFin().getTime());
+			for (int j = 0; j < getPlagesHoraires().get(i)
+					.getDemandeLivraison().size(); j++) {
+				System.out.println(" >> Point de livraison : "
+						+ getPlagesHoraires().get(i).getDemandeLivraison()
+								.get(j).getPointDeLivraison().getAdresse());
+			}
+		}
+
+	}
 }

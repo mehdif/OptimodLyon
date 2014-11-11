@@ -1,3 +1,4 @@
+
 package vue;
 
 import java.awt.BasicStroke;
@@ -82,6 +83,4 @@ public class VueTroncon implements VueDessinable {
 		g2d.setStroke(new BasicStroke(EPAISSEUR_TRAIT_TRONCON_TOURNEE));
 		g.drawLine(x1 + decalage, y1 + decalage, x2 + decalage, y2 + decalage);
 	}
-
-
 }

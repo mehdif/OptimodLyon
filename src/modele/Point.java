@@ -7,14 +7,19 @@ public class Point {
 	
 	private Integer longitude;
 	private Integer latitude;
-	private int adresse;
-	private DemandeLivraison uneDemande;
-	public Reseau reseau;
+	private Integer adresse;
+	//private DemandeLivraison uneDemande;
+	//public Reseau reseau;
 
 	/**
 	 * Constructeur par défaut
 	 */
 	public Point() {
+		
+	}
+	
+	public Point(Integer adresse) {
+		this.adresse = adresse;
 	}
 
 	/**
@@ -24,7 +29,7 @@ public class Point {
 	 * @param latitude
 	 * @param adresse
 	 */
-	public Point(Integer longitude, Integer latitude, int adresse) {
+	public Point(Integer longitude, Integer latitude, Integer adresse) {
 		this.longitude = longitude;
 		this.latitude = latitude;
 		this.adresse = adresse;
@@ -42,15 +47,7 @@ public class Point {
 		return latitude;
 	}
 	
-	public int getAdresse() {
+	public Integer getAdresse() {
 		return adresse;
-	}
-
-	public DemandeLivraison getUneDemande() {
-		return uneDemande;
-	}
-
-	public Reseau getReseau() {
-		return reseau;
 	}
 }

@@ -15,6 +15,7 @@ public class Application {
      * 
      */
     public Application() {
+    	new VueFenetre(this);
     }
 
     /**
