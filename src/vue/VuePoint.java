@@ -1,6 +1,8 @@
 package vue;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.Ellipse2D;
 
 /**
  * @author Hexanome 4301
@@ -9,6 +11,8 @@ public class VuePoint implements VueCliquable, VueDessinable {
 
     private int x;
     private int y;
+    private double rayon;
+    private final double OFFSET = 5;
     
 	/****************************************************
 	 ****************** Constructeurs ********************
@@ -30,6 +34,7 @@ public class VuePoint implements VueCliquable, VueDessinable {
     public VuePoint(int x, int y) {
     	this.x = x;
     	this.y = y;
+    	this.rayon = 10;
     }
 
 
@@ -62,11 +67,12 @@ public class VuePoint implements VueCliquable, VueDessinable {
 	 */
 	@Override
     public void dessiner(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;
 		int x = (this.x);
 		int y = (this.y);
-		
-		g.fillOval(x, y, 10, 10);
-		
+		Ellipse2D rond = new Ellipse2D.Double( (double) x - OFFSET , (double) y - OFFSET, this.rayon, this.rayon);
+		//g.fillOval(x - offset , y - offset, 10, 10);
+		g2d.fill(rond);
     }
 	
 	/**
@@ -83,4 +89,5 @@ public class VuePoint implements VueCliquable, VueDessinable {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 }

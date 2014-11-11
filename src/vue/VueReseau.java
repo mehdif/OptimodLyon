@@ -52,6 +52,7 @@ public class VueReseau  extends JPanel implements VueDessinable {
     public void chargerVueReseau(List<Troncon> troncons,Map<Integer, Point> points) {
    		
     	this.vuesPoints.clear();
+    	this.vuesTroncons.clear();
     	//Remplissage de la liste vuesPoints
     		
 		Set<Integer> listKeys=points.keySet();  // Obtenir la liste des cles
@@ -120,16 +121,19 @@ public class VueReseau  extends JPanel implements VueDessinable {
      */
 	@Override
 	public void dessiner(Graphics g) {
+
+		// Dessin des points
 		
 		for(int i=0; i<vuesPoints.size(); i++){
             vuesPoints.get(i).dessiner(g);
 		}
+
+		//Dessin des troncons
+		
 		for(int j=0; j<vuesTroncons.size();j++){
 			vuesTroncons.get(j).dessiner(g);
 			System.out.println(j);
 		}
-		if(vueTournee != null)
-		vueTournee.dessiner(g);
 		
 	}
 

@@ -15,8 +15,8 @@ public class VueTroncon implements VueDessinable {
     public VuePoint origine;
     public VuePoint destination;
 	public Color couleur;
-	public static final float EPAISSEUR_TRAIT_TRONCON_RESEAU = 1.0f;
-	public static final float EPAISSEUR_TRAIT_TRONCON_TOURNEE = 2.0f;
+	public static final float EPAISSEUR_TRAIT_TRONCON_RESEAU = 2.0f;
+	public static final float EPAISSEUR_TRAIT_TRONCON_TOURNEE = 3.0f;
 	
 	/****************************************************
 	 ****************** Constructeurs ********************
@@ -54,7 +54,9 @@ public class VueTroncon implements VueDessinable {
 		return destination;
 	}
     
-    
+
+
+	
     /**
      * Dessine pour un troncon une ligne reliant la vue point origine a la vue point destination
      * 
@@ -74,7 +76,15 @@ public class VueTroncon implements VueDessinable {
 		
 	}
 	
-	public void dessiner(Graphics g, int decalage){
+    /**
+     * Dessine pour un troncon une ligne decalee en cas de superposition
+     * 
+     * @param g
+     * @param decalage
+     * @return bool, égal à true si la ligne s'est correctement dessiné, false sinon
+     */
+	public void dessiner(Graphics g, int decalage) {
+		// TODO Auto-generated method stub
 		Graphics2D g2d = (Graphics2D) g;
 		int x1 = (this.origine.getX());
 		int y1 = (this.origine.getY());
@@ -82,5 +92,8 @@ public class VueTroncon implements VueDessinable {
 		int y2 = (this.destination.getY());
 		g2d.setStroke(new BasicStroke(EPAISSEUR_TRAIT_TRONCON_TOURNEE));
 		g.drawLine(x1 + decalage, y1 + decalage, x2 + decalage, y2 + decalage);
+		
 	}
+	
+
 }
