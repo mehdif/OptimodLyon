@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -23,6 +25,27 @@ public class VueMenu {
 	private JButton btnRedo;
 	private JButton btnGenererFeuilleDeRoute;
 	private Application application;
+	// Redirection de la sortie standard
+	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+
+	/****************************************************
+	 ********************* Getter **********************
+	 ****************************************************/
+
+	public ByteArrayOutputStream getOutContent() {
+		return outContent;
+	}
+
+	/****************************************************
+	 *************** Méthodes de classes ****************
+	 ****************************************************/
+
+	/**
+	 * setUpStreams permettent de récupérer la sortie standard
+	 */
+	public void setUpStreams() {
+		System.setOut(new PrintStream(outContent));
+	}
 
 	/**
      * 
@@ -48,7 +71,9 @@ public class VueMenu {
 	public Boolean onClicChargerReseau() {
 		btnChargerReseau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				setUpStreams();
 				application.chargerReseauXML();
+				application.vueFenetre.refresh();
 			}
 		});
 		return null;
@@ -83,6 +108,7 @@ public class VueMenu {
 		btnChargerDemandeLivraison.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				application.chargerDemandeLivraisonXML();
+				application.vueFenetre.refresh();
 			}
 		});
 	}
