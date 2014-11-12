@@ -9,6 +9,7 @@ import modele.PlageHoraire;
 import modele.Point;
 import modele.Reseau;
 import modele.Tournee;
+import vue.VueEntrepot;
 import vue.VueFenetre;
 import vue.VuePoint;
 
@@ -62,6 +63,10 @@ public class Application {
 
 		this.vueFenetre.vueReseau.getVuesPoints().clear();
 		
+		VueEntrepot vueEntrepot = new VueEntrepot(this.tournee.getEntrepot().getLongitude(), this.tournee.getEntrepot().getLatitude());
+		vueEntrepot.setCouleur(Color.RED);
+		this.vueFenetre.vueReseau.getVuesPoints().add(vueEntrepot);
+		
 		Map<Integer, Point> points = this.tournee.getReseau().getPoints();
 		Iterator iterator = points.entrySet().iterator();
 		while (iterator.hasNext()) {
@@ -78,6 +83,7 @@ public class Application {
 			} else
 				this.vueFenetre.vueReseau.getVuesPoints().add(vuePointCourant);
 		}
+		
 		
 		this.vueFenetre.vueReseau.repaint();
     }
