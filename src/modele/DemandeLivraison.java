@@ -8,7 +8,7 @@ public class DemandeLivraison {
 
 	private Point pointDeLivraison;
     private Client client;
-    private PlageHoraire unePlageHoraire;
+    private PlageHoraire plageHoraire;
     private Boolean confirmee;
     private Integer id;
     
@@ -26,7 +26,7 @@ public class DemandeLivraison {
      * Constructeur avec tout les paramètres
      * @param pointDeLivraison
      * @param client
-     * @param unePlageHoraire
+     * @param plageHoraire
      * @param confirmee
      * @param id
      */
@@ -34,7 +34,7 @@ public class DemandeLivraison {
 			PlageHoraire unePlageHoraire, Boolean confirmee, Integer id) {
 		this.pointDeLivraison = pointDeLivraison;
 		this.client = client;
-		this.unePlageHoraire = unePlageHoraire;
+		this.plageHoraire = unePlageHoraire;
 		this.confirmee = confirmee;
 		this.id = id;
 	}
@@ -51,8 +51,8 @@ public class DemandeLivraison {
 		return client;
 	}
 
-	public PlageHoraire getUnePlageHoraire() {
-		return unePlageHoraire;
+	public PlageHoraire getPlageHoraire() {
+		return plageHoraire;
 	}
 
 	public Boolean getConfirmee() {

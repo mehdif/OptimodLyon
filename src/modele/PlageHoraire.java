@@ -79,9 +79,8 @@ public class PlageHoraire {
     /**
      * @return
      */
-    private Boolean supprimerDemandeLivraison() {
-        // TODO implement here
-        return null;
+    public boolean supprimerDemandeLivraison(DemandeLivraison demandeLivraison) {
+        return listeDemandeLivraison.remove(demandeLivraison);
     }
 
     /**

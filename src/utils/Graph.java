@@ -1,7 +1,10 @@
-package modele;
+package utils;
 
 
 import java.util.List;
+
+import modele.Point;
+import modele.Troncon;
 
 public class Graph {
     private final List<Point> points;
