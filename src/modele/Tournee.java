@@ -205,7 +205,7 @@ public class Tournee {
 
 	/**
 	 * Permet de charger les demandes de livraison depuis un fichier XML
-	 * 
+	 * @author Sonia
 	 * @param nomFichier
 	 *            : nom du fichier XML que l'on veut charger. Si null, le
 	 *            fichier est choisi via l'explorateur de fichier

@@ -1,7 +1,9 @@
 package controleur;
 
 import modele.Client;
+import modele.DemandeLivraison;
 import modele.PlageHoraire;
+import modele.Point;
 import modele.Reseau;
 import modele.Tournee;
 import vue.VueFenetre;
@@ -11,75 +13,64 @@ import vue.VueFenetre;
  */
 public class Application {
 
-    /**
+	public Receveur receveur;
+	public static Tournee tournee;
+	public VueFenetre vueFenetre;
+
+	/**
      * 
      */
-    public Application() {
-    	vueFenetre = new VueFenetre(this);
-    }
+	public Application() {
+		vueFenetre = new VueFenetre(this);
+	}
 
-    /**
+	/**
      * 
      */
-    public Receveur receveur;
+	public void calculerTournee() {
+		// TODO implement here
+		tournee.calculerTournee();
+	}
 
-    /**
+	/**
      * 
      */
-    public static Tournee tournee;
+	public void dessinerReseau() {
+		// TODO implement here
+	}
 
-    /**
+	/**
      * 
      */
-    public VueFenetre vueFenetre ;
+	public void genererFeuilleDeRoute() {
+		// TODO implement here
+	}
 
-    /**
-     * 
-     */
-    public void calculerTournee() {
-        // TODO implement here
-    	tournee.calculerTournee();
-    }
+	/**
+	 * @param client
+	 * @param adresse
+	 * @param plageHoraire
+	 */
+	public void affichageInfos(Client client, Integer adresse,
+			PlageHoraire plageHoraire) {
+		// TODO implement here
+	}
 
-    /**
-     * 
-     */
-    public void dessinerReseau() {
-        // TODO implement here
-    }
+	public boolean chargerReseauXML() {
+		Reseau reseau = new Reseau();
+		boolean chargementOK = reseau.chargerReseauXML(null);
+		if (chargementOK) {
+			tournee = new Tournee(reseau);
+		}
+		return chargementOK;
+	}
 
-    /**
-     * 
-     */
-    public void genererFeuilleDeRoute() {
-        // TODO implement here
-    }
+	public boolean chargerDemandeLivraisonXML() {
+		boolean chargementOK = tournee.chargerDonneesDemandeXML(null);
+		return chargementOK;
+	}
 
-    /**
-     * @param client 
-     * @param adresse 
-     * @param plageHoraire
-     */
-    public void affichageInfos(Client client, Integer adresse, PlageHoraire plageHoraire) {
-        // TODO implement here
-    }
-    
-    public boolean chargerReseauXML(){
-    	Reseau reseau = new Reseau();
-    	boolean chargementOK = reseau.chargerReseauXML(null);
-    	if(chargementOK){
-    		tournee = new Tournee(reseau);
-    	}
-    	return chargementOK;
-    }
-    
-    public boolean chargerDemandeLivraisonXML(){
-    	boolean chargementOK = tournee.chargerDonneesDemandeXML(null);
-    	return chargementOK;
-    }
-    
-    public static void main(String []args){
-    	new Application();
-    }
-
+	public static void main(String[] args) {
+		new Application();
+	}
 }
