@@ -129,16 +129,6 @@ public class Application {
     }
     
     public static void main(String []args){
-    	// Code permettant de charger le réseau puis les livraisons
-		// Reseau reseau = new Reseau() ;
-		// reseau.chargerReseauXML(null);
-		// //reseau.afficherReseau();
-		// tournee = new Tournee(reseau);
-		// tournee.chargerDonneesDemandeXML(null);
-		 //tournee.afficherTournee();
-    	
-    	//Main pour l'interface graphique
-    	//new VueFenetre();
     	new Application();
     }
 

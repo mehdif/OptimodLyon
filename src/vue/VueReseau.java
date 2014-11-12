@@ -2,9 +2,7 @@
 package vue;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
@@ -40,14 +38,16 @@ public class VueReseau  extends JPanel implements VueDessinable {
 	 */
 	public VueReseau(){
 		
-    	this.addMouseListener(new MouseAdapter() { 
+    	addMouseListener(new MouseAdapter() { 
             public void mouseClicked(MouseEvent me) { 
-                System.out.println(me.getPoint());
-                List<VuePoint> l = trouverVue(me.getX());
-                for (Iterator<VuePoint> iter = l.iterator(); iter.hasNext();) {
-        			VuePoint element = (VuePoint) iter.next();
-        			System.out.println(element.getClass());
-        		}
+                System.out.println(me.getX());
+                System.out.println(me.getComponent());
+                System.out.println(me.getSource());
+//                List<VuePoint> l = trouverVue(me.getPoint());
+//                for (Iterator<VuePoint> iter = l.iterator(); iter.hasNext();) {
+//        			VuePoint element = (VuePoint) iter.next();
+//        			System.out.println(element.getClass());
+//        		}
               } 
             });
 	}
@@ -153,25 +153,22 @@ public class VueReseau  extends JPanel implements VueDessinable {
      */
 	@Override
 	public void dessiner(Graphics g) {
-
 		this.dessinerTroncons(g);
 		this.dessinerPoints(g);
-
-	
 	}
 
-	public List<VuePoint> trouverVue(int x) {
-		List<VuePoint> l = new ArrayList<VuePoint>();
-		for (Iterator<VuePoint> iter = vuesPoints.iterator(); iter.hasNext();) {
-			VuePoint element = (VuePoint) iter.next();
-			if(element.getX() ==x){
-				l.add(element);
-			}
-		}
-		return l;
-	}
+//	public List<VuePoint> trouverVue(java.awt.Point p) {
+//		List<VuePoint> l = new ArrayList<VuePoint>();
+//		for (Iterator<VuePoint> iter = vuesPoints.iterator(); iter.hasNext();) {
+//			VuePoint element = (VuePoint) iter.next();
+//			if(this.contains(p)){
+//				l.add(element);
+//			}
+//		}
+//		return l;
+//	}
 
-	
+
     @Override
 	public void paintComponent(Graphics g) {
     	this.dessiner(g);
