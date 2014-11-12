@@ -1,5 +1,6 @@
 package vue;
 
+import java.awt.Graphics;
 
 /**
  * 
@@ -9,6 +10,7 @@ public interface VueDessinable {
     /**
      * @return
      */
-    public Boolean dessiner();
-
+    public void dessiner(Graphics g);
+ 
+ 
 }

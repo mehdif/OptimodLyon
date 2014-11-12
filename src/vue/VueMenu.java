@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import modele.Reseau;
 import controleur.Application;
 
 /**
@@ -25,6 +26,8 @@ public class VueMenu {
 	private JButton btnRedo;
 	private JButton btnGenererFeuilleDeRoute;
 	private Application application;
+	
+	
 	// Redirection de la sortie standard
 	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
@@ -46,7 +49,7 @@ public class VueMenu {
 	public void setUpStreams() {
 		System.setOut(new PrintStream(outContent));
 	}
-
+	
 	/**
      * 
      */
@@ -72,8 +75,11 @@ public class VueMenu {
 		btnChargerReseau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setUpStreams();
-				application.chargerReseauXML();
+				boolean chargementOK = application.chargerReseauXML();
 				application.vueFenetre.refresh();
+				if(chargementOK == true){
+					btnChargerDemandeLivraison.setEnabled(true);
+				}
 			}
 		});
 		return null;
@@ -107,8 +113,13 @@ public class VueMenu {
 	public void onClicChargerDemandeLivraison() {
 		btnChargerDemandeLivraison.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				application.chargerDemandeLivraisonXML();
+
+				boolean chargementOK = application.chargerDemandeLivraisonXML();
 				application.vueFenetre.refresh();
+				if(chargementOK == true){
+					btnGenererFeuilleDeRoute.setEnabled(true);
+					application.afficherDemandesLivraison();
+				}	
 			}
 		});
 	}
@@ -135,8 +146,8 @@ public class VueMenu {
 		vueMenuHaut.add(btnChargerReseau);
 		onClicChargerReseau();
 
-		btnChargerDemandeLivraison = new JButton(
-				"Charger les demandes de livraison");
+		btnChargerDemandeLivraison = new JButton("Charger les demandes de livraison");
+		btnChargerDemandeLivraison.setEnabled(false);
 		vueMenuHaut.add(btnChargerDemandeLivraison);
 		onClicChargerDemandeLivraison();
 		// Fin vue menu du haut
@@ -158,9 +169,9 @@ public class VueMenu {
 		onClicRedo();
 
 		btnGenererFeuilleDeRoute = new JButton("Generer feuille de route");
+		btnGenererFeuilleDeRoute.setEnabled(false);
 		vueMenuGauche.add(btnGenererFeuilleDeRoute);
 		onClicGenererFeuilleDeRoute();
 		// Fin vue menu de gauche
 	}
-
 }

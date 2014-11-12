@@ -1,5 +1,9 @@
 package vue;
 
+import java.awt.Graphics;
+import java.awt.Polygon;
+import java.awt.Shape;
+import java.awt.geom.Area;
 import java.util.*;
 
 /**
@@ -18,13 +22,43 @@ public class VueItineraire implements VueDessinable {
      */
     public List <VueTroncon> vuesTroncon;
 
+    public static final int DECALAGE = 1;
+    
+	@Override
+	public void dessiner(Graphics g) {
+		// TODO Auto-generated method stub
+		for (VueTroncon uneVueTroncon : vuesTroncon) {
+			if (zoneEstVide(uneVueTroncon)) {
+
+				uneVueTroncon.dessiner(g);
+			} else {
+
+				uneVueTroncon.dessiner(g, DECALAGE);
+			}
+		};
+	}
 
     /**
-     * @return
+     * @author Vincent
+     * @param unTroncon
+     * test de l'existence d'une ligne pour eviter la superposition
      */
-    public Boolean dessiner() {
-        // TODO implement here
-        return null;
-    }
+public static boolean zoneEstVide(VueTroncon unTroncon) {
+	
+	int [] pointsX = {
+			unTroncon.getOrigine().getX(),
+			unTroncon.getDestination().getX(),
+			};
+	
+	int []pointsY = {
+			unTroncon.getOrigine().getY(),
+			unTroncon.getDestination().getY(),
+			};
+	
+	Polygon TronconTest = new Polygon(pointsX, pointsY, 4);
+	
+   Area zoneTest = new Area(TronconTest);
+   return zoneTest.isEmpty();
+}
 
 }
