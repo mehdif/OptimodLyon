@@ -2,7 +2,11 @@
 package vue;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.*;
 
 import javax.swing.JFrame;
@@ -12,6 +16,11 @@ import modele.Point;
 import modele.Troncon;
 
 /**
+ * VueReseau hérite de la classe JPanel et de ses méthodes de dessin.
+ * La classe est constituée d'une liste de vuesPoints et une liste de vuesTroncons.
+ * Chacune des vues de ces liste sont appelées à se dessiner sur le JPanel grâce à la
+ * méthode dessiner implémentée depuis l'interface VueDessinable
+ * 
  * @author Hexanome 4301
  */
 public class VueReseau  extends JPanel implements VueDessinable {
@@ -31,17 +40,38 @@ public class VueReseau  extends JPanel implements VueDessinable {
 	 */
 	public VueReseau(){
 		
+    	this.addMouseListener(new MouseAdapter() { 
+            public void mouseClicked(MouseEvent me) { 
+                System.out.println(me.getPoint());
+                List<VuePoint> l = trouverVue(me.getX());
+                for (Iterator<VuePoint> iter = l.iterator(); iter.hasNext();) {
+        			VuePoint element = (VuePoint) iter.next();
+        			System.out.println(element.getClass());
+        		}
+              } 
+            });
 	}
+    
 	/**
-	 * Constructeur appelant la méthode d'initialisation qui insère la vueReseau
-	 * dans une JFrame
-	 * 
-	 * @param frame , le cadre JFrame contenant la vueReseau
+	 * Dessine tous les points du réseau
 	 */
-    public VueReseau(JFrame frame) {
-    	initialiser(frame);
+    
+    public void dessinerPoints(Graphics g){
+		
+		for(int i=0; i<vuesPoints.size(); i++){
+            vuesPoints.get(i).dessiner(g);
+		}
     }
     
+	/**
+	 * Dessine tous les troncons du réseau
+	 */
+    public void dessinerTroncons(Graphics g){
+    	
+		for(int j=0; j<vuesTroncons.size();j++){
+			vuesTroncons.get(j).dessiner(g);
+		}
+    }
     /**
      * Constructeur de la vueReseau à partir des paramètres précédement 
      * chargés dans le modèle
@@ -51,6 +81,8 @@ public class VueReseau  extends JPanel implements VueDessinable {
      */
     public void chargerVueReseau(List<Troncon> troncons,Map<Integer, Point> points) {
    		
+    	this.vuesPoints.clear();
+    	this.vuesTroncons.clear();
     	//Remplissage de la liste vuesPoints
     		
 		Set<Integer> listKeys=points.keySet();  // Obtenir la liste des cles
@@ -61,7 +93,7 @@ public class VueReseau  extends JPanel implements VueDessinable {
 		{
 			Object key= it.next();
 			Point p = points.get(key);
-			
+		
 			VuePoint vuePoint = new VuePoint(p.getLongitude(),p.getLatitude());
 			if(vuePoint != null){
 				this.vuesPoints.add(vuePoint);
@@ -71,13 +103,13 @@ public class VueReseau  extends JPanel implements VueDessinable {
 		//Remplissage de la liste vueTroncons
 		for(int i=0;i<troncons.size();i++){
 			Troncon t = troncons.get(i);
-			Point origine = t.getOrigine();
-			Point destination = t.getDestination();
+			Point origine = new Point(t.getOrigine().getLongitude(), t.getOrigine().getLatitude(), t.getOrigine().getAdresse());
+			Point destination = new Point(t.getDestination().getLongitude(), t.getDestination().getLatitude(), t.getDestination().getAdresse());
 			
-//			VueTroncon vueTroncon = new VueTroncon(origine.getLongitude(),origine.getLatitude(),destination.getLongitude(),destination.getLatitude());
-//			if(vueTroncon != null){
-//				vuesTroncons.add(vueTroncon);
-//			}
+			VueTroncon vueTroncon = new VueTroncon(origine.getLongitude(),origine.getLatitude(),destination.getLongitude(),destination.getLatitude());
+			if(vueTroncon != null){
+				vuesTroncons.add(vueTroncon);
+			}
 		}
     }
 
@@ -119,18 +151,28 @@ public class VueReseau  extends JPanel implements VueDessinable {
      */
 	@Override
 	public void dessiner(Graphics g) {
-		for(int i=0; i<vuesPoints.size(); i++){
-            vuesPoints.get(i).dessiner(g);
-		}
-//		for(int j=0; j<vuesTroncons.size();j++){
-//			vuesTroncons.get(j).dessiner(g);
-//		}
-//		vueTournee.dessiner(g);
-		
+
+		this.dessinerTroncons(g);
+		this.dessinerPoints(g);
+
+	
 	}
 
+	public List<VuePoint> trouverVue(int x) {
+		List<VuePoint> l = new ArrayList<VuePoint>();
+		for (Iterator<VuePoint> iter = vuesPoints.iterator(); iter.hasNext();) {
+			VuePoint element = (VuePoint) iter.next();
+			if(element.getX() ==x){
+				l.add(element);
+			}
+		}
+		return l;
+	}
+
+	
     @Override
 	public void paintComponent(Graphics g) {
     	this.dessiner(g);
 	}
+
 }

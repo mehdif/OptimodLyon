@@ -1,14 +1,31 @@
 package vue;
 
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.Graphics2D;
+import java.awt.geom.Ellipse2D;
+
+import javax.swing.JComponent;
+import javax.swing.JPanel;
 
 /**
  * @author Hexanome 4301
  */
-public class VuePoint implements VueCliquable, VueDessinable {
+public class VuePoint extends JComponent implements VueCliquable, VueDessinable {
 
-    private int x;
+	private static final long serialVersionUID = 1L;
+	private int x;
     private int y;
+    private final double RAYON = 10;
+    private final double OFFSET = RAYON/2;
+    private Color couleur = Color.BLACK;
+    
     
 	/****************************************************
 	 ****************** Constructeurs ********************
@@ -52,6 +69,10 @@ public class VuePoint implements VueCliquable, VueDessinable {
 	public void setY(int y) {
 		this.y = y;
 	}
+	
+	public void setCouleur(Color uneCouleur){
+		this.couleur = uneCouleur;
+	}
 
 	/**
 	 * Dessine un rond pour une vuePoint a partir des coordonnees x et y en attribut de
@@ -62,24 +83,35 @@ public class VuePoint implements VueCliquable, VueDessinable {
 	 */
 	@Override
     public void dessiner(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;
 		int x = (this.x);
 		int y = (this.y);
-		
-		g.fillOval(x, y, 10, 10);
-		
+		Ellipse2D rond = new Ellipse2D.Double( (double) x - OFFSET , (double) y - OFFSET, RAYON, RAYON);
+		g2d.setColor(this.couleur);
+		g2d.fill(rond);
     }
+	
+	
+	public void paintComponent(Graphics g){
+		g.setColor(Color.red);
+		dessiner(g);	
+	}
 	
 	/**
      * @return
      */
     public Boolean onClicPoint() {
-        // TODO implement here
+        System.out.println("boom");
         return null;
     }
 
-
-
+	@Override
 	public Boolean estClique() {
+		this.onClicPoint();
+		return null;
+	}
+
+	public Rectangle getVue() {
 		// TODO Auto-generated method stub
 		return null;
 	}

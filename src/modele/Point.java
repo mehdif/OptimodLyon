@@ -8,7 +8,7 @@ public class Point {
 	private Integer longitude;
 	private Integer latitude;
 	private Integer adresse;
-	//private DemandeLivraison uneDemande;
+	private DemandeLivraison uneDemande;
 	//public Reseau reseau;
 
 	/**
@@ -33,6 +33,7 @@ public class Point {
 		this.longitude = longitude;
 		this.latitude = latitude;
 		this.adresse = adresse;
+		this.uneDemande = null;
 	}
 	
 	 /****************************************************
@@ -49,5 +50,20 @@ public class Point {
 	
 	public Integer getAdresse() {
 		return adresse;
+	}
+	
+	public void setDemandeLivraison(DemandeLivraison uneDemande)
+	{
+		this.uneDemande = uneDemande;
+	}
+	/**
+	 * Test l'existence d'une demande de livraison pour un point
+	 */
+	public Boolean possedeUneDemande() {
+		
+		if (this.uneDemande != null)
+			return true;
+		else
+			return false;
 	}
 }
