@@ -14,6 +14,7 @@ import java.awt.geom.Ellipse2D;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+
 /**
  * @author Hexanome 4301
  */
@@ -115,4 +116,5 @@ public class VuePoint extends JComponent implements VueCliquable, VueDessinable 
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 }

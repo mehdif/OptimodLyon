@@ -72,6 +72,7 @@ public class VueReseau  extends JPanel implements VueDessinable {
 			vuesTroncons.get(j).dessiner(g);
 		}
     }
+    
     /**
      * Constructeur de la vueReseau à partir des paramètres précédement 
      * chargés dans le modèle
@@ -116,6 +117,7 @@ public class VueReseau  extends JPanel implements VueDessinable {
 	/****************************************************
 	 ********************* Getter **********************
 	 ****************************************************/
+    
     public List<VuePoint> getVuesPoints() {
 		return vuesPoints;
 	}
