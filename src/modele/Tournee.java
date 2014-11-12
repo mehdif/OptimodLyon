@@ -194,6 +194,10 @@ public class Tournee {
 										return false;
 									}
 									plage.ajouterDemandeLivraison(demandeLivraison);
+									reseau.getPointViaAdresse(
+											demandeLivraison.getPointDeLivraison().getAdresse()).setDemandeLivraison(demandeLivraison
+											);
+
 								}
 							}
 							listePlagesBuffer.add(plage);

@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import modele.Reseau;
 import controleur.Application;
 
 /**
@@ -25,6 +26,8 @@ public class VueMenu {
 	private JButton btnRedo;
 	private JButton btnGenererFeuilleDeRoute;
 	private Application application;
+	
+	
 	// Redirection de la sortie standard
 	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
@@ -46,7 +49,7 @@ public class VueMenu {
 	public void setUpStreams() {
 		System.setOut(new PrintStream(outContent));
 	}
-
+	
 	/**
      * 
      */
@@ -110,10 +113,12 @@ public class VueMenu {
 	public void onClicChargerDemandeLivraison() {
 		btnChargerDemandeLivraison.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+
 				boolean chargementOK = application.chargerDemandeLivraisonXML();
 				application.vueFenetre.refresh();
 				if(chargementOK == true){
 					btnGenererFeuilleDeRoute.setEnabled(true);
+					application.afficherDemandesLivraison();
 				}	
 			}
 		});
@@ -169,5 +174,4 @@ public class VueMenu {
 		onClicGenererFeuilleDeRoute();
 		// Fin vue menu de gauche
 	}
-
 }
