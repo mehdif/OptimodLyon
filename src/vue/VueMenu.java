@@ -47,7 +47,7 @@ public class VueMenu {
 	 * setUpStreams permettent de récupérer la sortie standard
 	 */
 	public void setUpStreams() {
-		System.setOut(new PrintStream(outContent));
+		//System.setOut(new PrintStream(outContent));
 	}
 	
 	/**

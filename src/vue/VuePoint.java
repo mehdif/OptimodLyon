@@ -18,11 +18,17 @@ public class VuePoint implements VueCliquable, VueDessinable {
     private final double OFFSET = RAYON/2;
     private Color couleur = Color.BLACK;
     
+    private boolean clique = false;
+    private Ellipse2D shape;
     
 	/****************************************************
 	 ****************** Constructeurs ********************
 	 ****************************************************/
 	
+	public boolean isClique() {
+		return clique;
+	}
+
 	/**
 	 * Constructeur par défaut de VuePoint
 	 */
@@ -78,22 +84,22 @@ public class VuePoint implements VueCliquable, VueDessinable {
 		Graphics2D g2d = (Graphics2D) g;
 		int x = (this.x);
 		int y = (this.y);
-		Ellipse2D rond = new Ellipse2D.Double( (double) x - OFFSET , (double) y - OFFSET, RAYON, RAYON);
+		this.shape = new Ellipse2D.Double( (double) x - OFFSET , (double) y - OFFSET, RAYON, RAYON);
 		g2d.setColor(this.couleur);
-		g2d.fill(rond);
+		g2d.fill(this.shape);
     }
+
+	public Ellipse2D getShape() {
+		return shape;
+	}
 
 	/**
      * @return
      */
-    public Boolean onClicPoint() {
-        System.out.println("boom");
+	@Override
+    public Boolean onClique() {
+        this.clique = true;
+        this.setCouleur(Color.BLUE);
         return null;
     }
-
-	@Override
-	public Boolean estClique() {
-		this.onClicPoint();
-		return null;
-	}
 }
