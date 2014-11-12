@@ -12,7 +12,7 @@ public class Troncon {
     private Point destination;
 
 	/**
-	 * Constructeur avec tous les paramètres
+	 * Constructeur avec tous les parametres
 	 * @param nomRue
 	 * @param vitesse
 	 * @param distance

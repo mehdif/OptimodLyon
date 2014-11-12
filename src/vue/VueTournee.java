@@ -1,5 +1,6 @@
 package vue;
 
+import java.awt.Graphics;
 import java.util.*;
 
 /**
@@ -18,13 +19,14 @@ public class VueTournee implements VueDessinable {
      */
     public List <VueItineraire> vuesItineraire;
 
+	@Override
+	public void dessiner(Graphics g) {
 
-    /**
-     * @return
-     */
-    public Boolean dessiner() {
-        // TODO implement here
-        return null;
-    }
+		// TODO
+
+		for (VueItineraire uneVueItineraire : vuesItineraire) {
+			uneVueItineraire.dessiner(g);
+		};
+	}
 
 }
