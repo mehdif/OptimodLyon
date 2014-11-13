@@ -1,5 +1,7 @@
 package modele;
 
+import java.util.Calendar;
+
 
 /**
  * @author Hexanome 4301
@@ -11,6 +13,7 @@ public class DemandeLivraison {
     private PlageHoraire plageHoraire;
     private Boolean confirmee;
     private Integer id;
+    private Calendar horaireDePassage;
     
     /****************************************************
 	 ****************** Constructeur ********************
@@ -37,6 +40,7 @@ public class DemandeLivraison {
 		this.plageHoraire = unePlageHoraire;
 		this.confirmee = confirmee;
 		this.id = id;
+		this.plageHoraire = null;
 	}
     
     /****************************************************
@@ -62,4 +66,14 @@ public class DemandeLivraison {
 	public Integer getId() {
 		return id;
 	}
+
+	public Calendar getHoraireDePassage() {
+		return horaireDePassage;
+	}
+
+	public void setHoraireDePassage(Calendar horaireDePassage) {
+		this.horaireDePassage = horaireDePassage;
+	}
+	
+	
 }
