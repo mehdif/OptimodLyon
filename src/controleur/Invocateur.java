@@ -43,15 +43,16 @@ public class Invocateur {
 	 * 
 	 * @author Sonia
 	 */
-	protected boolean undo() {
+	public boolean undo() {
 		// Si l'indice commandeEnCours est Ã©gal Ã  zero, on a aucune action Ã  annuler
 		if(commandeEnCours == 0){
-			System.out.println("Aucune opÃ©ration Ã  annuler");
+			System.out.println("Annulation de la dernière opération : échec");
 			return false;
 		}
 		Commande derniereCommande = commandes.get(commandeEnCours-1);
 		derniereCommande.unexecute();
 		commandeEnCours--;
+		System.out.println("Annulation de la dernière opération : succès");
 		return true;
 	}
 	
@@ -61,15 +62,16 @@ public class Invocateur {
 	 * 
 	 * @author Sonia
 	 */
-	protected boolean redo() {
+	public boolean redo() {
 		// Si l'indice commandeEnCours correspond Ã  la tÃªte de la liste commandes, on a plus d'action Ã  refaire
 		if(commandeEnCours == commandes.size()){
-			System.out.println("Aucune opÃ©ration Ã  refaire");
+			System.out.println("Rétablissement de la dernière opération annulée : échec");
 			return false;
 		}
 		Commande derniereCommandeAnnule = commandes.get(commandeEnCours);
 		derniereCommandeAnnule.execute();
 		commandeEnCours++;
+		System.out.println("Rétablissement de la dernière opération annulée : succès");
 		return true;
 	}
 

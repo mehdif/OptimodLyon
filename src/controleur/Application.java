@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import modele.Client;
+import modele.DemandeLivraison;
 import modele.Itineraire;
 import modele.PlageHoraire;
 import modele.Point;
@@ -22,31 +23,85 @@ import vue.VueTournee;
  */
 public class Application {
 
-    /**
-     * 
-     */
-    public Application() {
-    	vueFenetre = new VueFenetre(this);
-    }
+	public Receveur receveur;
+	public static Tournee tournee;
+	public VueFenetre vueFenetre;
+	private Invocateur invocateur;
 
-    /**
-     * 
-     */
-    public Receveur receveur;
+	/****************************************************
+	 ****************** Constructeur ********************
+	 ****************************************************/
+	
+	/**
+	 * Constructeur par défaut
+	 */
+	public Application() {
+		invocateur = new Invocateur();
+		receveur = new Receveur();
+		vueFenetre = new VueFenetre(this);
+		
+		Reseau reseau = new Reseau();
+		boolean chargementOK = reseau
+				.chargerReseauXML("xmlPourTests/planSimplifie_BienForme.xml");
+		if (chargementOK) {
+			tournee = new Tournee(reseau);
+		}
+		tournee.chargerDonneesDemandeXML("xmlPourTests/livraisonSimplifie_BienForme.xml");
 
-    /**
-     * 
-     */
-    public static Tournee tournee;
+		tournee.afficherTournee();
 
-    /**
-     * 
-     */
-    public VueFenetre vueFenetre ;
+		// Premiere commande
+		Point point1 = new Point(84, 84, 84);
+		Client client1 = new Client(84);
+		receveur = new Receveur();
+		DemandeLivraison uneDemandeLivraison1 = new DemandeLivraison(point1,
+				client1, tournee.getPlagesHoraires().get(0), false, 4);
+		CommandeAjouterDemandeLivraison commandeAjouterDemandeLivraison1 = new CommandeAjouterDemandeLivraison(
+				receveur, tournee, uneDemandeLivraison1);
 
-    /**
-     * 
-     */
+		// Premiere commande
+		Point point2 = new Point(69, 69, 69);
+		Client client2 = new Client(69);
+		
+		DemandeLivraison uneDemandeLivraison2 = new DemandeLivraison(point2,
+				client2, tournee.getPlagesHoraires().get(0), false, 5);
+		CommandeAjouterDemandeLivraison commandeAjouterDemandeLivraison2 = new CommandeAjouterDemandeLivraison(
+				receveur, tournee, uneDemandeLivraison2);
+
+		System.out.println();
+		System.out.println();
+		invocateur.ajouterDemandeLivraison(commandeAjouterDemandeLivraison1);
+		invocateur.ajouterDemandeLivraison(commandeAjouterDemandeLivraison2);
+		tournee.afficherTournee();
+		
+	}
+
+
+	/****************************************************
+	 ********************* Getter **********************
+	 ****************************************************/
+	
+	public Receveur getReceveur() {
+		return receveur;
+	}
+
+	public static Tournee getTournee() {
+		return tournee;
+	}
+
+	public VueFenetre getVueFenetre() {
+		return vueFenetre;
+	}
+
+	public Invocateur getInvocateur() {
+		return invocateur;
+	}
+
+	
+	/****************************************************
+	 *************** MÃ©thodes de classes ****************
+	 ****************************************************/
+
     public void calculerTournee() {
         // TODO implement here
     }
