@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import modele.Client;
+import modele.DemandeLivraison;
 import modele.Itineraire;
 import modele.PlageHoraire;
 import modele.Point;
@@ -22,31 +23,50 @@ import vue.VueTournee;
  */
 public class Application {
 
-    /**
-     * 
-     */
-    public Application() {
-    	vueFenetre = new VueFenetre(this);
-    }
+	public Receveur receveur;
+	public static Tournee tournee;
+	public VueFenetre vueFenetre;
+	private Invocateur invocateur;
 
-    /**
-     * 
-     */
-    public Receveur receveur;
+	/****************************************************
+	 ****************** Constructeur ********************
+	 ****************************************************/
+	
+	/**
+	 * Constructeur par défaut
+	 */
+	public Application() {
+		invocateur = new Invocateur();
+		receveur = new Receveur();
+		vueFenetre = new VueFenetre(this);	
+	}
 
-    /**
-     * 
-     */
-    public static Tournee tournee;
 
-    /**
-     * 
-     */
-    public VueFenetre vueFenetre ;
+	/****************************************************
+	 ********************* Getter **********************
+	 ****************************************************/
+	
+	public Receveur getReceveur() {
+		return receveur;
+	}
 
-    /**
-     * 
-     */
+	public static Tournee getTournee() {
+		return tournee;
+	}
+
+	public VueFenetre getVueFenetre() {
+		return vueFenetre;
+	}
+
+	public Invocateur getInvocateur() {
+		return invocateur;
+	}
+
+	
+	/****************************************************
+	 *************** MÃ©thodes de classes ****************
+	 ****************************************************/
+
     public void calculerTournee() {
         // TODO implement here
     }

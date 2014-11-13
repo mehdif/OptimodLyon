@@ -47,7 +47,7 @@ public class VueMenu {
 	 * setUpStreams permettent de récupérer la sortie standard
 	 */
 	public void setUpStreams() {
-		//System.setOut(new PrintStream(outContent));
+		System.setOut(new PrintStream(outContent));
 	}
 	
 	/**
@@ -63,7 +63,6 @@ public class VueMenu {
 	public Boolean onClicCalculerTournee() {
 		btnCalculerTournee.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
 				application.afficherItineraire();
 
 			}
@@ -94,6 +93,12 @@ public class VueMenu {
 	public Boolean onClicUndo() {
 		btnUndo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				setUpStreams();
+				boolean undoOK = application.getInvocateur().undo();
+				application.vueFenetre.refresh();
+				if (undoOK == true){
+					btnUndo.setEnabled(true);
+				}
 			}
 		});
 		return null;
@@ -105,6 +110,12 @@ public class VueMenu {
 	public Boolean onClicRedo() {
 		btnRedo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				setUpStreams();
+				boolean redoOK = application.getInvocateur().redo();
+				application.vueFenetre.refresh();
+				if (redoOK == true){
+					btnRedo.setEnabled(true);
+				}
 			}
 		});
 		return null;
@@ -116,7 +127,6 @@ public class VueMenu {
 	public void onClicChargerDemandeLivraison() {
 		btnChargerDemandeLivraison.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
 				boolean chargementOK = application.chargerDemandeLivraisonXML();
 				application.vueFenetre.refresh();
 				if(chargementOK == true){
@@ -164,10 +174,12 @@ public class VueMenu {
 		onClicCalculerTournee();
 
 		btnUndo = new JButton("Undo");
+		//btnUndo.setEnabled(false);
 		vueMenuGauche.add(btnUndo);
 		onClicUndo();
 
 		btnRedo = new JButton("Redo");
+		//btnRedo.setEnabled(false);
 		vueMenuGauche.add(btnRedo);
 		onClicRedo();
 
