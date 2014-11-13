@@ -36,9 +36,9 @@ public class VueTroncon implements VueDessinable {
      * @param x2 coordonnee x de la VuePoint destination
      * @param y2 coordonnee y de la VuePoint destination
      */
-    public VueTroncon(int x1,int y1,int x2, int y2){
-    	origine = new VuePoint(x1,y1);
-    	destination = new VuePoint(x2,y2);
+    public VueTroncon(int x1,int y1,int adresse1,int x2, int y2, int adresse2){
+    	origine = new VuePoint(x1,y1,adresse1);
+    	destination = new VuePoint(x2,y2,adresse2);
     	couleur = Color.BLACK;
     }
 

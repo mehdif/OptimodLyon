@@ -61,6 +61,5 @@ public class VueFenetre {
     public void refresh(){
 		vueListe.refresh(vueMenu.getOutContent());
     }
-    
-    
+       
 }

@@ -14,6 +14,7 @@ public class VuePoint implements VueCliquable, VueDessinable {
 
 	private int x;
     private int y;
+    private int adresse;
     private final double RAYON = 10;
     private final double OFFSET = RAYON/2;
     private Color couleur = Color.BLACK;
@@ -46,9 +47,10 @@ public class VuePoint implements VueCliquable, VueDessinable {
      * @param x
      * @param y
      */
-    public VuePoint(int x, int y) {
+    public VuePoint(int x, int y, int adresse) {
     	this.x = x;
     	this.y = y;
+    	this.adresse = adresse;
     }
 
 
@@ -60,16 +62,12 @@ public class VuePoint implements VueCliquable, VueDessinable {
 		return x;
 	}
 
-	public void setX(int x) {
-		this.x = x;
-	}
-
 	public int getY() {
 		return y;
 	}
-
-	public void setY(int y) {
-		this.y = y;
+	
+	public int getAdresse() {
+		return adresse;
 	}
 	
 	public void setCouleur(Color uneCouleur){

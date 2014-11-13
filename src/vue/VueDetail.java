@@ -10,6 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
 
+import controleur.Application;
 import modele.Client;
 import modele.PlageHoraire;
 
@@ -23,7 +24,6 @@ public class VueDetail {
 	private JTextPane ChampClient;
 	private JTextPane ChampAdresse;
 	private JTextPane champPlageHoraire;
-		
 
 
     /**

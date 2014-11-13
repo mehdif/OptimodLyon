@@ -32,8 +32,10 @@ public class VueItineraire implements VueDessinable {
     		VueTroncon uneVueTroncon = new VueTroncon(
     				unTroncon.getOrigine().getLongitude(), 
     				unTroncon.getOrigine().getLatitude(),
+    				unTroncon.getOrigine().getAdresse(),
     				unTroncon.getDestination().getLongitude(),
-    				unTroncon.getDestination().getLatitude() );
+    				unTroncon.getDestination().getLatitude(),
+    				unTroncon.getDestination().getAdresse());
     		uneVueTroncon.setCouleur(uneCouleur);
     		this.vuesTroncon.add(uneVueTroncon);
     	}

@@ -18,8 +18,8 @@ public class VueEntrepot extends VuePoint {
 		// TODO Auto-generated constructor stub
 	}
 
-	public VueEntrepot(int x, int y) {
-		super(x, y);
+	public VueEntrepot(int x, int y, int adresse) {
+		super(x, y, adresse);
 		// TODO Auto-generated constructor stub
 	}
 
