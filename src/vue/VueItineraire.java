@@ -69,16 +69,6 @@ public class VueItineraire implements VueDessinable {
      */
 public static boolean zoneEstVide(VueTroncon unTroncon) {
 	
-	int [] pointsX = {
-			unTroncon.getOrigine().getX(),
-			unTroncon.getDestination().getX(),
-			};
-	
-	int []pointsY = {
-			unTroncon.getOrigine().getY(),
-			unTroncon.getDestination().getY(),
-			};
-	
 	Line2D TronconTest = new Line2D.Double((double) unTroncon.getOrigine().getX(), (double) unTroncon.getOrigine().getY(), (double) unTroncon.getDestination().getX(),(double) unTroncon.getDestination().getY());
    Area zoneTest = new Area(TronconTest);
    return zoneTest.isEmpty();

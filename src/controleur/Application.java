@@ -80,6 +80,7 @@ public class Application {
                         
                         Map.Entry unPoint = (Map.Entry) iterator.next();
                         Point pointCourant = (Point) (unPoint.getValue());
+                        
                         VuePoint vuePointCourant = new VuePoint(pointCourant.getLongitude(), pointCourant.getLatitude(), pointCourant.getAdresse());
                         
                         //Test de l'existence d'une demande de livraison associee au point courant
@@ -160,6 +161,13 @@ public class Application {
             Troncon troncon5 = new Troncon("e", 1.0, 1.0, point4, point5);
             Troncon troncon6 = new Troncon("f", 1.0, 1.0, point5, point6);
             
+            Troncon troncon7 = new Troncon("a", 1.0, 1.0, point0, point1);
+            Troncon troncon8 = new Troncon("b", 1.0, 1.0, point1, point2);
+            Troncon troncon9 = new Troncon("c", 1.0, 1.0, point2, point3);
+            Troncon troncon10 = new Troncon("d", 1.0, 1.0, point3, point4);
+            Troncon troncon11 = new Troncon("e", 1.0, 1.0, point4, point5);
+            Troncon troncon12 = new Troncon("f", 1.0, 1.0, point5, point6);
+            
             Itineraire unItineraire = new Itineraire();
             unItineraire.ajouterTroncon(troncon1);
             unItineraire.ajouterTroncon(troncon2);
@@ -167,6 +175,9 @@ public class Application {
             unItineraire.ajouterTroncon(troncon4);
             unItineraire.ajouterTroncon(troncon5);
             unItineraire.ajouterTroncon(troncon6);
+            
+            //unItineraire.ajouterTroncon(troncon7);
+
             
             VueItineraire uneVueItineraire = new VueItineraire(unItineraire.getTroncons(), Color.RED);
             VueTournee uneVueTournee = new VueTournee();

@@ -204,10 +204,17 @@ public class VueReseau extends JPanel implements VueDessinable {
 	 */
 	@Override
 	public void dessiner(Graphics g) {
-		this.dessinerTroncons(g);
-		this.dessinerPoints(g);
-		if (this.vueTournee != null)
+
+		if (this.vueTournee != null) {
+			this.dessinerTroncons(g);
 			this.dessinerTournee(g);
+			this.vueTournee = null;
+		} else {
+			this.dessinerTroncons(g);
+
+		}
+		this.dessinerPoints(g);
+
 	}
 
 	// public List<VuePoint> trouverVue(java.awt.Point p) {
