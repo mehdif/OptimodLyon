@@ -63,6 +63,9 @@ public class VueMenu {
 	public Boolean onClicCalculerTournee() {
 		btnCalculerTournee.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				application.afficherItineraire();
+
 			}
 		});
 		return null;

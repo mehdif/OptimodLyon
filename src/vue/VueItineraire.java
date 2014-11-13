@@ -1,10 +1,13 @@
 package vue;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
 import java.awt.Shape;
 import java.awt.geom.Area;
 import java.util.*;
+
+import modele.Troncon;
 
 /**
  * @author Hexanome 4301
@@ -15,6 +18,25 @@ public class VueItineraire implements VueDessinable {
      * 
      */
     public VueItineraire() {
+    }
+
+    /**
+     * Constructeur de VueItineraire à partir de troncons
+     */
+    public VueItineraire( List<Troncon> desTroncons, Color uneCouleur ) {
+    	
+    	this.vuesTroncon = new ArrayList<VueTroncon>();
+    	
+    	for(Troncon unTroncon : desTroncons) {
+    		
+    		VueTroncon uneVueTroncon = new VueTroncon(
+    				unTroncon.getOrigine().getLongitude(), 
+    				unTroncon.getOrigine().getLatitude(),
+    				unTroncon.getDestination().getLongitude(),
+    				unTroncon.getDestination().getLatitude() );
+    		uneVueTroncon.setCouleur(uneCouleur);
+    		this.vuesTroncon.add(uneVueTroncon);
+    	}
     }
 
     /**
