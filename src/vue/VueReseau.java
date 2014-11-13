@@ -67,6 +67,7 @@ public class VueReseau extends JPanel implements VueDessinable {
 						}
 					}
 				}
+				
 
 			}
 
