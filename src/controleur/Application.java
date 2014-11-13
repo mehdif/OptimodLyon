@@ -1,7 +1,9 @@
 package controleur;
 import java.awt.Color;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
 import modele.Client;
 import modele.DemandeLivraison;
 import modele.Itineraire;
@@ -63,7 +65,8 @@ public class Application {
      * Dessine le reseau dans la fenetre principale.
      */
     public void dessinerReseau(Reseau unReseau) {
-                this.vueFenetre.vueReseau.chargerVueReseau(unReseau.getTroncons(), unReseau.getPoints());
+		this.vueFenetre.vueReseau.chargerVueReseau(unReseau.getTroncons(),
+				unReseau.getPoints());
                 this.vueFenetre.vueReseau.repaint();
     }
     /**
@@ -76,27 +79,42 @@ public class Application {
                 Map<Integer, Point> points = this.tournee.getReseau().getPoints();
                 Iterator iterator = points.entrySet().iterator();
                 
+                Map<PlageHoraire, Color> mapCouleur = new HashMap<PlageHoraire, Color>();
+                mapCouleur.clear();
                 while (iterator.hasNext()) {
                         
                         Map.Entry unPoint = (Map.Entry) iterator.next();
                         Point pointCourant = (Point) (unPoint.getValue());
-                        
-                        VuePoint vuePointCourant = new VuePoint(pointCourant.getLongitude(), pointCourant.getLatitude(), pointCourant.getAdresse());
-                        
-                        //Test de l'existence d'une demande de livraison associee au point courant
+			VuePoint vuePointCourant = new VuePoint(
+					pointCourant.getLongitude(), pointCourant.getLatitude(),
+					pointCourant.getAdresse());
+
+			// Test de l'existence d'une demande de livraison associee au point
+			// courant
                         if (pointCourant.possedeUneDemande()) {
-                        
-                                vuePointCourant.setCouleur(Color.RED);
+                        	
+                        	//Test de l'existence d'une couleur associee a une plage horaire
+                            if( ( mapCouleur.get( pointCourant.getUneDemande().getPlageHoraire() ) ) == null )
+                            {
+                            	Color randomCouleur = new Color( alea(255), alea(255), alea(255) );
+                            	mapCouleur.put(pointCourant.getUneDemande().getPlageHoraire() , randomCouleur);
+                            }
+                            
+				vuePointCourant.setCouleurNonClique(mapCouleur.get( pointCourant.getUneDemande().getPlageHoraire() ));
                                 this.vueFenetre.vueReseau.getVuesPoints().add(vuePointCourant);
                         
-                        } else
+			} else {
+				vuePointCourant.setCouleurNonClique(Color.BLACK);
                                 this.vueFenetre.vueReseau.getVuesPoints().add(vuePointCourant);
                 }
+		}
                 
                 //Affichage de l'entrepot
                 
-                VueEntrepot vueEntrepot = new VueEntrepot(this.tournee.getEntrepot().getLongitude(), this.tournee.getEntrepot().getLatitude(), this.tournee.getEntrepot().getAdresse());
-                vueEntrepot.setCouleur(Color.GREEN);
+		VueEntrepot vueEntrepot = new VueEntrepot(this.tournee.getEntrepot()
+				.getLongitude(), this.tournee.getEntrepot().getLatitude(),
+				this.tournee.getEntrepot().getAdresse());
+		vueEntrepot.setCouleurNonClique(Color.GREEN);
                 this.vueFenetre.vueReseau.getVuesPoints().add(vueEntrepot);
                 
                 //Rafraichissement de l'affichage
@@ -114,7 +132,8 @@ public class Application {
      * @param adresse 
      * @param plageHoraire
      */
-    public void affichageInfos(Client client, Integer adresse, PlageHoraire plageHoraire) {
+	public void affichageInfos(Client client, Integer adresse,
+			PlageHoraire plageHoraire) {
         // TODO implement here
     }
     
@@ -161,13 +180,6 @@ public class Application {
             Troncon troncon5 = new Troncon("e", 1.0, 1.0, point4, point5);
             Troncon troncon6 = new Troncon("f", 1.0, 1.0, point5, point6);
             
-            Troncon troncon7 = new Troncon("a", 1.0, 1.0, point0, point1);
-            Troncon troncon8 = new Troncon("b", 1.0, 1.0, point1, point2);
-            Troncon troncon9 = new Troncon("c", 1.0, 1.0, point2, point3);
-            Troncon troncon10 = new Troncon("d", 1.0, 1.0, point3, point4);
-            Troncon troncon11 = new Troncon("e", 1.0, 1.0, point4, point5);
-            Troncon troncon12 = new Troncon("f", 1.0, 1.0, point5, point6);
-            
             Itineraire unItineraire = new Itineraire();
             unItineraire.ajouterTroncon(troncon1);
             unItineraire.ajouterTroncon(troncon2);
@@ -176,10 +188,8 @@ public class Application {
             unItineraire.ajouterTroncon(troncon5);
             unItineraire.ajouterTroncon(troncon6);
             
-            //unItineraire.ajouterTroncon(troncon7);
-
-            
-            VueItineraire uneVueItineraire = new VueItineraire(unItineraire.getTroncons(), Color.RED);
+		VueItineraire uneVueItineraire = new VueItineraire(
+				unItineraire.getTroncons(), Color.RED);
             VueTournee uneVueTournee = new VueTournee();
             uneVueTournee.ajouterVueItineraire(uneVueItineraire);
             //*/
@@ -190,15 +200,24 @@ public class Application {
     public void recupererPoint(int adresse){
     	Point point = tournee.getReseau().getPointViaAdresse(adresse);
     	if(null != point.getUneDemande()){
-    		String idClient = point.getUneDemande().getClient().getId().toString();
+			String idClient = point.getUneDemande().getClient().getId()
+					.toString();
     		String adresseString = new Integer(adresse).toString();
-    		String heureDebut = point.getUneDemande().getPlageHoraire().getDebut().getTime().toString();
-    		String heureFin = point.getUneDemande().getPlageHoraire().getFin().getTime().toString();
-    		vueFenetre.affichageInfos(idClient, adresseString, heureDebut, heureFin);
+			String heureDebut = point.getUneDemande().getPlageHoraire()
+					.getDebut().getTime().toString();
+			String heureFin = point.getUneDemande().getPlageHoraire().getFin()
+					.getTime().toString();
+			vueFenetre.affichageInfos(idClient, adresseString, heureDebut,
+					heureFin);
     	}
-    	//System.out.println(point.getAdresse()+ " : " + "(" + point.getLongitude() + ", " + point.getLatitude()+ ")");
+		// System.out.println(point.getAdresse()+ " : " + "(" +
+		// point.getLongitude() + ", " + point.getLatitude()+ ")");
     	//System.out.println(point.getUneDemande());
     }
+    
+    private int alea(int max){
+		return (int) (Math.random() * max);
+	}
            
     public static void main(String []args){
             new Application();

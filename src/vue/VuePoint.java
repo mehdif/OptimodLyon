@@ -15,12 +15,15 @@ public class VuePoint implements VueCliquable, VueDessinable {
 	private int x;
     private int y;
     private int adresse;
-    private final double RAYON = 10;
-    private final double OFFSET = RAYON/2;
-    private Color couleur = Color.BLACK;
+    protected final double RAYON = 10;
+    protected final double OFFSET = RAYON/2;
+    protected Color couleur = Color.BLACK;
+    //private Color couleurClique = Color.YELLOW;
+    private Color couleurNonClique;
     
-    private boolean clique = false;
-    private Ellipse2D shape;
+    
+    protected boolean clique = false;
+    protected Ellipse2D shape;
     
 	/****************************************************
 	 ****************** Constructeurs ********************
@@ -70,8 +73,20 @@ public class VuePoint implements VueCliquable, VueDessinable {
 		return adresse;
 	}
 	
+	public Color getCouleur() {
+		return this.couleur;
+	}
+	
 	public void setCouleur(Color uneCouleur){
 		this.couleur = uneCouleur;
+	}
+	
+	public Color getCouleurNonClique(){
+		return this.couleurNonClique;
+	}
+	
+	public void setCouleurNonClique(Color uneCouleur){
+		this.couleurNonClique = uneCouleur;
 	}
 
 	/**
@@ -91,6 +106,7 @@ public class VuePoint implements VueCliquable, VueDessinable {
 		if(clique){
 			this.setCouleur(Color.YELLOW);
 		}
+		else this.setCouleur(this.couleurNonClique);
 		g2d.setColor(this.couleur);
 		g2d.fill(this.shape);
     }
