@@ -1,5 +1,6 @@
 package utils;
 
+@SuppressWarnings("serial")
 public class TourneeException extends Exception {
 	/** 
 	* Crée une nouvelle instance de ReseauException 
@@ -15,5 +16,5 @@ public class TourneeException extends Exception {
 	public TourneeException(String message) {  
 		super(message); 
 	} 
-
+	
 }

@@ -264,9 +264,9 @@ public class Tournee {
 							PlageHoraire plage = chargerPlage(
 									listeElementsOrdre2.item(j),
 									listePlagesBuffer);
-//							if (null == plage) {
-//								return false;
-//							}
+							if (null == plage) {
+								return false;
+							}
 
 							NodeList listeElementsOrdre3 = listeElementsOrdre2
 									.item(j).getChildNodes();
@@ -280,6 +280,9 @@ public class Tournee {
 									// DemandeLivraison
 									DemandeLivraison demandeLivraison = chargerDemandeLivraison(
 											listeElementsOrdre4.item(k), plage);
+									if (null == demandeLivraison) {
+										return false;
+									}
 									plage.ajouterDemandeLivraison(demandeLivraison);
 									reseau.getPointViaAdresse(
 											demandeLivraison
@@ -346,7 +349,7 @@ public class Tournee {
 	 * @author Sonia
 	 */
 	private PlageHoraire chargerPlage(Node element,
-			List<PlageHoraire> listePlages) throws TourneeException {
+			List<PlageHoraire> listePlages) {
 		try {
 			// Récupération des attributs de PlageHoraire
 			NamedNodeMap listeAttributs = element.getAttributes();
@@ -419,6 +422,9 @@ public class Tournee {
 		} catch (ParseException e) {
 			System.out.println(Properties.PARSEEXCEPTION_MESSAGE);
 			return null;
+		} catch (TourneeException e) {
+			System.out.println(e.getMessage());
+			return null;
 		}
 	}
 
@@ -434,23 +440,30 @@ public class Tournee {
 	 * @author Sonia
 	 */
 	private DemandeLivraison chargerDemandeLivraison(Node element,
-			PlageHoraire plage) throws TourneeException {
-		NamedNodeMap listeAttributs = element.getAttributes();
-		Integer adresse = Integer.parseInt(listeAttributs.getNamedItem(
-				Properties.ATTRIBUTE_ADRESSE).getNodeValue());
-		Integer idClient = Integer.parseInt(listeAttributs.getNamedItem(
-				Properties.ATTRIBUTE_CLIENT).getNodeValue());
-		Integer id = Integer.parseInt(listeAttributs.getNamedItem(
-				Properties.ATTRIBUTE_ID).getNodeValue());
-		Client client = new Client(idClient);
-		// Vérification si l'adresse récupéré correspond à l'adresse d'un point
-		// du réseau
-		Point pointDeLivraison = reseau.getPoints().get(adresse);
-		if (null == pointDeLivraison) {
-
-			throw new TourneeException(Properties.ERREUR_TOURNEE_POINT_INCONNU);
+			PlageHoraire plage) {
+		try {
+			NamedNodeMap listeAttributs = element.getAttributes();
+			Integer adresse = Integer.parseInt(listeAttributs.getNamedItem(
+					Properties.ATTRIBUTE_ADRESSE).getNodeValue());
+			Integer idClient = Integer.parseInt(listeAttributs.getNamedItem(
+					Properties.ATTRIBUTE_CLIENT).getNodeValue());
+			Integer id = Integer.parseInt(listeAttributs.getNamedItem(
+					Properties.ATTRIBUTE_ID).getNodeValue());
+			Client client = new Client(idClient);
+			// Vérification si l'adresse récupéré correspond à l'adresse d'un
+			// point
+			// du réseau
+			Point pointDeLivraison = reseau.getPoints().get(adresse);
+			if (null == pointDeLivraison) {
+				throw new TourneeException(
+						Properties.ERREUR_TOURNEE_POINT_INCONNU);
+			}
+			return new DemandeLivraison(pointDeLivraison, client, plage, false,
+					id);
+		} catch (TourneeException e) {
+			System.out.println(e.getMessage());
+			return null;
 		}
-		return new DemandeLivraison(pointDeLivraison, client, plage, false, id);
 	}
 
 	// TODO : méthode à effacer avant le rendu, sert juste à tester

@@ -1,9 +1,10 @@
 package test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
 
@@ -15,6 +16,8 @@ import modele.Tournee;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import utils.Properties;
 
 public class TourneeTest {
 	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -36,15 +39,17 @@ public class TourneeTest {
 	/**
 	 * Test avec un fichier bien formé et sans anomalie, vérification de l'objet
 	 * tournee crée
+	 * 
+	 * @author Sonia
 	 */
 	@Test
 	public void testChargerDonneesDemandeXML_BienFormeSansAnomalie() {
 		Reseau reseau = new Reseau();
-		reseau.chargerReseauXML("xmlPourTests/planSimplifie_BienForme.xml");
+		reseau.chargerReseauXML(Properties.CHEMIN_XML_TEST_RESEAU_SIMPLIFIE_OK);
 		Tournee tournee = new Tournee(reseau);
 
 		assertTrue(tournee
-				.chargerDonneesDemandeXML("xmlPourTests/livraisonSimplifie_BienForme.xml"));
+				.chargerDonneesDemandeXML(Properties.CHEMIN_XML_TEST_DEMANDES_SIMPLIFIE_OK));
 		List<PlageHoraire> listePlages = tournee.getPlagesHoraires();
 		List<DemandeLivraison> demandesLivraison = null;
 
@@ -88,44 +93,136 @@ public class TourneeTest {
 	/**
 	 * Test avec un fichier bien formé mais présentant l'anomalie suivante : une
 	 * des livraisons se fait à un point inconnu du réseau
+	 * 
+	 * @author Sonia
 	 */
 	@Test
 	public void testChargerDonneesDemandeXML_BienFormeAvecAnomalie1() {
 		Reseau reseau = new Reseau();
-		reseau.chargerReseauXML("xmlPourTests/planSimplifie_BienForme.xml");
+		reseau.chargerReseauXML(Properties.CHEMIN_XML_TEST_RESEAU_SIMPLIFIE_OK);
 		Tournee tournee = new Tournee(reseau);
 		assertFalse(tournee
-				.chargerDonneesDemandeXML("xmlPourTests/livraisonSimplifie_BienFormeAvecAnomalie1.xml"));
-		assertEquals(
-				outContent.toString(),
-				"Erreur : le document renseigné possède un ou plusieurs points de livraison inconnus, abandon du chargement des livraisons\r\n");
+				.chargerDonneesDemandeXML(Properties.CHEMIN_XML_TEST_DEMANDES_POINT_INCONNU));
+		assertEquals(outContent.toString(), Properties.CHARGEMENT_RESEAU_OK
+				+ "\r\n" + Properties.ERREUR_TOURNEE_POINT_INCONNU + "\r\n");
 	}
 
 	/**
 	 * Test avec un fichier bien formé mais présentant l'anomalie suivante :
 	 * l'entrepot ne fait pas référence à un point connu du réseau
+	 * 
+	 * @author Sonia
 	 */
 	@Test
 	public void testChargerDonneesDemandeXML_BienFormeAvecAnomalie2() {
 		Reseau reseau = new Reseau();
-		reseau.chargerReseauXML("xmlPourTests/planSimplifie_BienForme.xml");
+		reseau.chargerReseauXML(Properties.CHEMIN_XML_TEST_RESEAU_SIMPLIFIE_OK);
 		Tournee tournee = new Tournee(reseau);
 		assertFalse(tournee
-				.chargerDonneesDemandeXML("xmlPourTests/livraisonSimplifie_BienFormeAvecAnomalie2.xml"));
-		assertEquals(
-				outContent.toString(),
-				"Erreur : l'entrepôt décrit dans le document ne correspond pas à un des points du réseau, abandon du chargement des livraisons\r\n");
+				.chargerDonneesDemandeXML(Properties.CHEMIN_XML_TEST_DEMANDES_ENTREPOT_INCONNU));
+		assertEquals(outContent.toString(), Properties.CHARGEMENT_RESEAU_OK
+				+ "\r\n" + Properties.ERREUR_TOURNEE_ENTREPOT_INCONNU + "\r\n");
 	}
 
+	/**
+	 * Test avec un fichier bien formé mais présentant l'anomalie suivante : une
+	 * heure d'une plage horaire est aberrante (123:78:69 par ex)
+	 * 
+	 * @author Sonia
+	 */
+	@Test
+	public void testChargerDonneesDemandeXML_BienFormeAvecAnomalie3() {
+		Reseau reseau = new Reseau();
+		reseau.chargerReseauXML(Properties.CHEMIN_XML_TEST_RESEAU_SIMPLIFIE_OK);
+		Tournee tournee = new Tournee(reseau);
+		assertFalse(tournee
+				.chargerDonneesDemandeXML(Properties.CHEMIN_XML_TEST_DEMANDES_HEURE_ABERRANTE));
+		assertEquals(outContent.toString(), Properties.CHARGEMENT_RESEAU_OK
+				+ "\r\n" + Properties.ERREUR_FORMAT_PLAGE + "\r\n");
+	}
+
+	/**
+	 * Test avec un fichier bien formé mais présentant l'anomalie suivante : 2
+	 * plages se superposent
+	 * 
+	 * @author Sonia
+	 */
+	@Test
+	public void testChargerDonneesDemandeXML_BienFormeAvecAnomalie4() {
+		Reseau reseau = new Reseau();
+		reseau.chargerReseauXML(Properties.CHEMIN_XML_TEST_RESEAU_SIMPLIFIE_OK);
+		Tournee tournee = new Tournee(reseau);
+		assertFalse(tournee
+				.chargerDonneesDemandeXML(Properties.CHEMIN_XML_TEST_DEMANDES_SUPERPOSITION_PLAGE_1));
+		assertEquals(outContent.toString(), Properties.CHARGEMENT_RESEAU_OK
+				+ "\r\n" + Properties.ERREUR_SUPERPOSITION_PLAGE + "\r\n");
+	}
+
+	/**
+	 * Test avec un fichier bien formé mais présentant l'anomalie suivante : 2
+	 * plages se superposent
+	 * 
+	 * @author Sonia
+	 */
+	@Test
+	public void testChargerDonneesDemandeXML_BienFormeAvecAnomalie5() {
+		Reseau reseau = new Reseau();
+		reseau.chargerReseauXML(Properties.CHEMIN_XML_TEST_RESEAU_SIMPLIFIE_OK);
+		Tournee tournee = new Tournee(reseau);
+		assertFalse(tournee
+				.chargerDonneesDemandeXML(Properties.CHEMIN_XML_TEST_DEMANDES_SUPERPOSITION_PLAGE_2));
+		assertEquals(outContent.toString(), Properties.CHARGEMENT_RESEAU_OK
+				+ "\r\n" + Properties.ERREUR_SUPERPOSITION_PLAGE + "\r\n");
+	}
+
+	/**
+	 * Test avec un fichier bien formé mais présentant l'anomalie suivante :
+	 * l'heure de début et de fin d'une plage sont identiques
+	 * 
+	 * @author Sonia
+	 */
+	@Test
+	public void testChargerDonneesDemandeXML_BienFormeAvecAnomalie6() {
+		Reseau reseau = new Reseau();
+		reseau.chargerReseauXML(Properties.CHEMIN_XML_TEST_RESEAU_SIMPLIFIE_OK);
+		Tournee tournee = new Tournee(reseau);
+		assertFalse(tournee
+				.chargerDonneesDemandeXML(Properties.CHEMIN_XML_TEST_DEMANDES_PLAGE_VIDE));
+		assertEquals(outContent.toString(), Properties.CHARGEMENT_RESEAU_OK
+				+ "\r\n" + Properties.ERREUR_VIDE_PLAGE + "\r\n");
+	}
+	
+	/**
+	 * Test avec un fichier bien formé mais présentant l'anomalie suivante :
+	 * l'heure de début et de fin d'une plage sont échangées
+	 * 
+	 * @author Sonia
+	 */
+	@Test
+	public void testChargerDonneesDemandeXML_BienFormeAvecAnomalie7() {
+		Reseau reseau = new Reseau();
+		reseau.chargerReseauXML(Properties.CHEMIN_XML_TEST_RESEAU_SIMPLIFIE_OK);
+		Tournee tournee = new Tournee(reseau);
+		assertFalse(tournee
+				.chargerDonneesDemandeXML(Properties.CHEMIN_XML_TEST_DEMANDES_PLAGE_FIN_DEBUT));
+		assertEquals(outContent.toString(), Properties.CHARGEMENT_RESEAU_OK
+				+ "\r\n" + Properties.ERREUR_FIN_DEBUT_PLAGE + "\r\n");
+	}
+
+	/**
+	 * Test avec un fichier de demandes de livraison mal forme
+	 * 
+	 * @author Sonia
+	 */
 	@Test
 	public void testChargerDonneesDemandeXML_MalForme() {
 		Reseau reseau = new Reseau();
-		reseau.chargerReseauXML("xmlPourTests/plan20x20_wellFormed.xml");
+		reseau.chargerReseauXML(Properties.CHEMIN_XML_TEST_RESEAU_SIMPLIFIE_OK);
 		Tournee tournee = new Tournee(reseau);
-		tournee.chargerDonneesDemandeXML("xmlPourTests/livraison20x20-2_notWellFormed.xml");
-		File xml = new File("xmlPourTests/livraison20x20-2_notWellFormed.xml");
-		assertEquals(outContent.toString(), xml.getAbsolutePath()
-				+ " n'est pas valide\r\n");
+		assertFalse(tournee
+				.chargerDonneesDemandeXML(Properties.CHEMIN_XML_TEST_DEMANDES_MALFORME));
+		assertEquals(outContent.toString(), Properties.CHARGEMENT_RESEAU_OK
+				+ "\r\n" + Properties.XML_NON_VALIDE + "\r\n");
 	}
 
 }

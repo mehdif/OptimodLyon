@@ -47,8 +47,8 @@ public class Reseau {
 	/**
 	 * Constructeur avec tout les paramètres
 	 * 
-	 * @param troncons
-	 * @param points
+	 * @param troncons : liste des tronçons composant le réseau
+	 * @param points : map des points composant le réseau
 	 */
 	public Reseau(List<Troncon> troncons, Map<Integer, Point> points) {
 		this.troncons = troncons;
@@ -185,17 +185,13 @@ public class Reseau {
 			System.out.println(Properties.CHARGEMENT_RESEAU_OK);
 			return true;
 		} catch (ParserConfigurationException e) {
-			System.out.println("Erreur de configuration du parseur DOM");
-			System.out
-					.println("lors de l'appel a fabrique.newDocumentBuilder();");
+			System.out.println(Properties.PARSERCONFIGURATIONEXCEPTION_MESSAGE);
 			return false;
 		} catch (SAXException e) {
-			System.out.println("Erreur lors du parsing du document");
-			System.out.println("lors de l'appel a constructeur.parse(xml)");
+			System.out.println(Properties.SAXEXCEPTION_MESSAGE);
 			return false;
 		} catch (IOException e) {
-			System.out.println("Erreur d'entree/sortie");
-			System.out.println("lors de l'appel a constructeur.parse(xml)");
+			System.out.println(Properties.IOEXCEPTION_MESSAGE);
 			return false;
 		} catch (ReseauException e) {
 			System.out.println(e.getMessage());

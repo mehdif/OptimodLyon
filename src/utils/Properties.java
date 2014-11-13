@@ -14,6 +14,12 @@ public final class Properties {
 			"Rétablissement de la dernière opération annulée : SUCCES");
 	public static String REDO_KO = new String(
 			"Rétablissement de la dernière opération annulée : ECHEC");
+	
+	/**
+	 * Message propre à la classe XMLReader
+	 */
+	public static String XML_NON_VALIDE = new String("Erreur : Le fichier XML est invalide");
+	
 
 	/**
 	 * Message propre à la classe Reseau
@@ -86,5 +92,26 @@ public final class Properties {
 	
 	public static String PARSERCONFIGURATIONEXCEPTION_MESSAGE = new String("Erreur de configuration du parseur DOM lors de l'appel à fabrique.newDocumentBuilder(), abandon du chargement des livraisons");
 	
+	/**
+	 * Fichiers tests
+	 */
+	 public static String CHEMIN_XML_TEST_RESEAU_MALFORME = new String("xmlPourTests/Reseau/MalForme/plan20x20_notWellFormed.xml");
+	 public static String CHEMIN_XML_TEST_RESEAU_OK = new String("xmlPourTests/Reseau/BienForme_SansAnomalie/plan20x20_wellformed.xml");
+	 public static String CHEMIN_XML_TEST_RESEAU_SIMPLIFIE_OK = new String("xmlPourTests/Reseau/Simplifie_BienForme_SansAnomalie/planSimplifie_BienForme.xml");
+	 public static String CHEMIN_XML_TEST_RESEAU_DESTINATION_INCONNUE = new String("xmlPourTests/Reseau/Simplifie_BienForme_AvecAnomalie/DestinationInconnue.xml");
+	 public static String CHEMIN_XML_TEST_RESEAU_NOEUD_SURDEFINI = new String("xmlPourTests/Reseau/Simplifie_BienForme_AvecAnomalie/NoeudSurdefini.xml");
+	 public static String CHEMIN_XML_TEST_RESEAU_ORIGINE_DEST_IDENTIQUE = new String("xmlPourTests/Reseau/Simplifie_BienForme_AvecAnomalie/OrigineDestinationIdentique.xml");
 
+	 
+	 public static String CHEMIN_XML_TEST_DEMANDES_MALFORME = new String("xmlPourTests/DemandesLivraisons/MalForme/livraison20x20-2_notWellFormed.xml");
+	 public static String CHEMIN_XML_TEST_DEMANDES_OK = new String("xmlPourTests/DemandesLivraisons/BienForme_SansAnomalie/livraison20x20-2_wellformed.xml");
+	 public static String CHEMIN_XML_TEST_DEMANDES_SIMPLIFIE_OK = new String("xmlPourTests/DemandesLivraisons/Simplifie_BienForme_SansAnomalie/livraisonSimplifie_BienForme.xml");
+	 public static String CHEMIN_XML_TEST_DEMANDES_ENTREPOT_INCONNU = new String("xmlPourTests/DemandesLivraisons/Simplifie_BienForme_AvecAnomalie/EntrepotInconnu.xml");
+	 public static String CHEMIN_XML_TEST_DEMANDES_HEURE_ABERRANTE = new String("xmlPourTests/DemandesLivraisons/Simplifie_BienForme_AvecAnomalie/PlageHeureAberrante.xml");
+	 public static String CHEMIN_XML_TEST_DEMANDES_POINT_INCONNU = new String("xmlPourTests/DemandesLivraisons/Simplifie_BienForme_AvecAnomalie/PointInconnu.xml");
+	 public static String CHEMIN_XML_TEST_DEMANDES_SUPERPOSITION_PLAGE_1 = new String("xmlPourTests/DemandesLivraisons/Simplifie_BienForme_AvecAnomalie/SuperpositionPlage.xml");
+	 public static String CHEMIN_XML_TEST_DEMANDES_SUPERPOSITION_PLAGE_2 = new String("xmlPourTests/DemandesLivraisons/Simplifie_BienForme_AvecAnomalie/SuperpositionPlage_2.xml");
+	 public static String CHEMIN_XML_TEST_DEMANDES_PLAGE_VIDE = new String("xmlPourTests/DemandesLivraisons/Simplifie_BienForme_AvecAnomalie/PlageVide.xml");
+	 public static String CHEMIN_XML_TEST_DEMANDES_PLAGE_FIN_DEBUT = new String("xmlPourTests/DemandesLivraisons/Simplifie_BienForme_AvecAnomalie/PlageFinDebut.xml");
+	 
 }

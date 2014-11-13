@@ -57,7 +57,7 @@ public class XMLReader {
             return true;
         }
         catch (SAXException ex) {
-             System.out.println(fichierXML + " n'est pas valide");
+             System.out.println(Properties.XML_NON_VALIDE);
             return false;
         } 
 	}

@@ -1,5 +1,6 @@
 package utils;
 
+@SuppressWarnings("serial")
 public class ReseauException extends Exception {
 	
 	/** 
