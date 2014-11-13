@@ -28,5 +28,14 @@ public class VueTournee implements VueDessinable {
 			uneVueItineraire.dessiner(g);
 		};
 	}
+	
+    /**
+     * Methode ajoutant une vue itineraire a la vue tournee
+     */
+	public void ajouterVueItineraire(VueItineraire uneVueItineraire){
+		
+		this.vuesItineraire.add(uneVueItineraire);
+		
+	}
 
 }

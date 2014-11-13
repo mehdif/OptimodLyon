@@ -96,5 +96,12 @@ public class VueTroncon implements VueDessinable {
 		
 	}
 	
+    /**
+     * Change la couleur de la vue troncon
+     */
+	public void setCouleur(Color couleur) {
+		this.couleur = couleur;
+	}
+	
 
 }
