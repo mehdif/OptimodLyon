@@ -52,8 +52,11 @@ public class Point {
 		return adresse;
 	}
 	
-	public void setDemandeLivraison(DemandeLivraison uneDemande)
-	{
+	public DemandeLivraison getUneDemande() {
+		return uneDemande;
+	}
+
+	public void setDemandeLivraison(DemandeLivraison uneDemande) {
 		this.uneDemande = uneDemande;
 	}
 	/**

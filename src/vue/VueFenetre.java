@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 
+import modele.Client;
+import modele.PlageHoraire;
 import controleur.Application;
 
 /**

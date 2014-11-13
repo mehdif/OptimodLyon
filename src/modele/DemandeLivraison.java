@@ -40,7 +40,7 @@ public class DemandeLivraison implements Comparable<DemandeLivraison> {
 		this.plageHoraire = unePlageHoraire;
 		this.confirmee = confirmee;
 		this.id = id;
-		this.plageHoraire = null;
+		this.plageHoraire = unePlageHoraire;
 	}
     
     /****************************************************

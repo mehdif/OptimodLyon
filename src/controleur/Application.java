@@ -96,7 +96,7 @@ public class Application {
                 //Affichage de l'entrepot
                 
                 VueEntrepot vueEntrepot = new VueEntrepot(this.tournee.getEntrepot().getLongitude(), this.tournee.getEntrepot().getLatitude(), this.tournee.getEntrepot().getAdresse());
-                vueEntrepot.setCouleur(Color.YELLOW);
+                vueEntrepot.setCouleur(Color.GREEN);
                 this.vueFenetre.vueReseau.getVuesPoints().add(vueEntrepot);
                 
                 //Rafraichissement de l'affichage
@@ -187,6 +187,19 @@ public class Application {
             this.vueFenetre.vueReseau.repaint();
     }
             
+    public void recupererPoint(int adresse){
+    	Point point = tournee.getReseau().getPointViaAdresse(adresse);
+    	if(null != point.getUneDemande()){
+    		String idClient = point.getUneDemande().getClient().getId().toString();
+    		String adresseString = new Integer(adresse).toString();
+    		String heureDebut = point.getUneDemande().getPlageHoraire().getDebut().getTime().toString();
+    		String heureFin = point.getUneDemande().getPlageHoraire().getFin().getTime().toString();
+    		vueFenetre.affichageInfos(idClient, adresseString, heureDebut, heureFin);
+    	}
+    	//System.out.println(point.getAdresse()+ " : " + "(" + point.getLongitude() + ", " + point.getLatitude()+ ")");
+    	//System.out.println(point.getUneDemande());
+    }
+           
     public static void main(String []args){
             new Application();
     }

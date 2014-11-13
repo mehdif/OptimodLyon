@@ -62,6 +62,7 @@ public class VueReseau extends JPanel implements VueDessinable {
 							// name
 							vuePointClique = v;
 							v.onClique();
+							application.vueFenetre.adressePointClique();
 							repaint();
 						}
 					}
