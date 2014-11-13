@@ -52,11 +52,7 @@ public class Point {
 	public Integer getAdresse() {
 		return adresse;
 	}
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> branch 'master' of https://github.com/mehdif/OptimodLyon.git
 	public DemandeLivraison getUneDemande() {
 		return uneDemande;
 	}
