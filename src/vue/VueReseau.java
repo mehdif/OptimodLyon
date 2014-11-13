@@ -63,10 +63,12 @@ public class VueReseau extends JPanel implements VueDessinable {
 							// name
 							vuePointClique = v;
 							v.onClique();
+							application.vueFenetre.adressePointClique();
 							repaint();
 						}
 					}
 				}
+				
 
 			}
 
@@ -126,7 +128,8 @@ public class VueReseau extends JPanel implements VueDessinable {
 			Object key = it.next();
 			Point p = points.get(key);
 
-			VuePoint vuePoint = new VuePoint(p.getLongitude(), p.getLatitude(), p.getAdresse());
+			VuePoint vuePoint = new VuePoint(p.getLongitude(), p.getLatitude(),
+					p.getAdresse());
 			if (vuePoint != null) {
 				this.vuesPoints.add(vuePoint);
 			}
@@ -142,8 +145,9 @@ public class VueReseau extends JPanel implements VueDessinable {
 					.getAdresse());
 
 			VueTroncon vueTroncon = new VueTroncon(origine.getLongitude(),
-					origine.getLatitude(), origine.getAdresse(), destination.getLongitude(),
-					destination.getLatitude(), destination.getAdresse());
+					origine.getLatitude(), origine.getAdresse(),
+					destination.getLongitude(), destination.getLatitude(),
+					destination.getAdresse());
 			if (vueTroncon != null) {
 				vuesTroncons.add(vueTroncon);
 			}

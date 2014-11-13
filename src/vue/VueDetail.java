@@ -21,8 +21,8 @@ public class VueDetail {
 	
 	private JButton btnAjouter;
 	private JButton btnSupprimer;
-	private JTextPane ChampClient;
-	private JTextPane ChampAdresse;
+	private JTextPane champClient;
+	private JTextPane champAdresse;
 	private JTextPane champPlageHoraire;
 
 
@@ -47,10 +47,14 @@ public class VueDetail {
      * @param adresse 
      * @param plageHoraire
      */
-    public void affichageInfos(Client client, Integer adresse, PlageHoraire plageHoraire) {
-    	ChampClient.setText(client.toString());
-		ChampAdresse.setText(Integer.toString(adresse));
-		champPlageHoraire.setText(plageHoraire.toString());
+    public void affichageInfos(String client, String adresse, String heureDebut, String heureFin) {
+    	champClient.setText(client);
+		champAdresse.setText(adresse);
+		champPlageHoraire.setText(heureDebut + "\n" + heureFin);
+		champClient.repaint();
+		champAdresse.repaint();
+		champPlageHoraire.repaint();
+		
     }
 
     /**
@@ -79,15 +83,15 @@ public class VueDetail {
 		txtpnClient.setText("Client :");
 		vueDetail.add(txtpnClient);
 		
-		ChampClient = new JTextPane();
-		vueDetail.add(ChampClient);
+		champClient = new JTextPane();
+		vueDetail.add(champClient);
 		
 		JTextPane txtpnAdresse = new JTextPane();
 		txtpnAdresse.setText("Adresse :");
 		vueDetail.add(txtpnAdresse);
 		
-		ChampAdresse = new JTextPane();
-		vueDetail.add(ChampAdresse);
+		champAdresse = new JTextPane();
+		vueDetail.add(champAdresse);
 		
 		JTextPane txtpnPlageHoraire = new JTextPane();
 		txtpnPlageHoraire.setText("Plage horaire de livraison :");

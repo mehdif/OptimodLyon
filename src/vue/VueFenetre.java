@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 
+import modele.Client;
+import modele.PlageHoraire;
 import controleur.Application;
 
 /**
@@ -61,5 +63,20 @@ public class VueFenetre {
     public void refresh(){
 		vueListe.refresh(vueMenu.getOutContent());
     }
-       
+    
+    public void adressePointClique(){
+    	// TODO
+    	//System.out.println("WAaaaaaaaaaaaa");
+    	application.recupererPoint(vueReseau.getVuePointClique().getAdresse());
+    }
+    
+    /**
+     * @param client 
+     * @param adresse 
+     * @param plageHoraire
+     */
+    public void affichageInfos(String client, String adresse, String heureDebut, String heureFin) {
+    	vueDetail.affichageInfos(client, adresse, heureDebut, heureFin);
+    }
+    
 }

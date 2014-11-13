@@ -125,15 +125,6 @@ public class Application {
     public void genererFeuilleDeRoute() {
 
     }
-
-    /**
-     * @param client 
-     * @param adresse 
-     * @param plageHoraire
-     */
-    public void affichageInfos(Client client, Integer adresse, PlageHoraire plageHoraire) {
-        // TODO implement here
-    }
     
     /**
      * Charge et dessine le plan du reseau.
@@ -146,14 +137,11 @@ public class Application {
                     this.dessinerReseau(reseau);
 
             }
-            
             return chargementOK;
     }
     
     public boolean chargerDemandeLivraisonXML(){
             boolean chargementOK = tournee.chargerDonneesDemandeXML(null);
-            
-
             this.vueFenetre.vueReseau.repaint();
             return chargementOK;
     }
@@ -199,7 +187,20 @@ public class Application {
             this.vueFenetre.vueReseau.setVueTournee(uneVueTournee);
             this.vueFenetre.vueReseau.repaint();
     }
-            
+    
+    public void recupererPoint(int adresse){
+    	Point point = tournee.getReseau().getPointViaAdresse(adresse);
+    	if(null != point.getUneDemande()){
+    		String idClient = point.getUneDemande().getClient().getId().toString();
+    		String adresseString = new Integer(adresse).toString();
+    		String heureDebut = point.getUneDemande().getPlageHoraire().getDebut().getTime().toString();
+    		String heureFin = point.getUneDemande().getPlageHoraire().getFin().getTime().toString();
+    		vueFenetre.affichageInfos(idClient, adresseString, heureDebut, heureFin);
+    	}
+    	//System.out.println(point.getAdresse()+ " : " + "(" + point.getLongitude() + ", " + point.getLatitude()+ ")");
+    	//System.out.println(point.getUneDemande());
+    }
+           
     public static void main(String []args){
             new Application();
     }
