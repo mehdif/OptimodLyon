@@ -95,7 +95,7 @@ public class Application {
                 //Affichage de l'entrepot
                 
                 VueEntrepot vueEntrepot = new VueEntrepot(this.tournee.getEntrepot().getLongitude(), this.tournee.getEntrepot().getLatitude(), this.tournee.getEntrepot().getAdresse());
-                vueEntrepot.setCouleur(Color.YELLOW);
+                vueEntrepot.setCouleur(Color.GREEN);
                 this.vueFenetre.vueReseau.getVuesPoints().add(vueEntrepot);
                 
                 //Rafraichissement de l'affichage
