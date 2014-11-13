@@ -92,6 +92,11 @@ public class VuePoint implements VueCliquable, VueDessinable {
 	public Ellipse2D getShape() {
 		return shape;
 	}
+	
+	public void paintComponent(Graphics g) {
+
+		dessiner(g);
+	}
 
 	/**
      * @return
