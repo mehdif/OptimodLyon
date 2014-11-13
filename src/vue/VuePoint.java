@@ -29,6 +29,10 @@ public class VuePoint implements VueCliquable, VueDessinable {
 		return clique;
 	}
 
+	public void setClique(boolean clique) {
+		this.clique = clique;
+	}
+
 	/**
 	 * Constructeur par défaut de VuePoint
 	 */
@@ -85,6 +89,10 @@ public class VuePoint implements VueCliquable, VueDessinable {
 		int x = (this.x);
 		int y = (this.y);
 		this.shape = new Ellipse2D.Double( (double) x - OFFSET , (double) y - OFFSET, RAYON, RAYON);
+	
+		if(clique){
+			this.setCouleur(Color.BLUE);
+		}
 		g2d.setColor(this.couleur);
 		g2d.fill(this.shape);
     }
@@ -105,7 +113,6 @@ public class VuePoint implements VueCliquable, VueDessinable {
     public Boolean onClique() {
         this.clique = true;
         System.out.println("Point x: " + this.getX() +"\ny : " + this.getY() );
-        this.setCouleur(Color.BLUE);
         return null;
     }
 }

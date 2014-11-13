@@ -12,6 +12,7 @@ public class VueTournee implements VueDessinable {
      * 
      */
     public VueTournee() {
+    	vuesItineraire = new ArrayList<VueItineraire>();
     }
 
     /**
