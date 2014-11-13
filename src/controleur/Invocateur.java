@@ -2,6 +2,8 @@ package controleur;
 
 import java.util.*;
 
+import utils.Properties;
+
 /**
  * @author Hexanome 4301
  */
@@ -38,6 +40,18 @@ public class Invocateur {
 	}
 	
 	/**
+	 * Permet d'executer la commande "supprimer une demande de livraison"
+	 * @param commande : la commande Ã  exÃ©cuter
+	 * 
+	 * @author Sonia
+	 */
+	protected void supprimerDemandeLivraison(Commande commande) {
+		commande.execute();
+		ajouterCommande(commande);
+		commandeEnCours++;
+	}
+	
+	/**
 	 * Permet d'annuler la derniÃ¨re action effectuÃ©e
 	 * @return true si l'annulation de la derniÃ¨re action est possible, false sinon
 	 * 
@@ -46,13 +60,13 @@ public class Invocateur {
 	public boolean undo() {
 		// Si l'indice commandeEnCours est Ã©gal Ã  zero, on a aucune action Ã  annuler
 		if(commandeEnCours == 0){
-			System.out.println("Annulation de la dernière opération : échec");
+			System.out.println(Properties.UNDO_KO);
 			return false;
 		}
 		Commande derniereCommande = commandes.get(commandeEnCours-1);
 		derniereCommande.unexecute();
 		commandeEnCours--;
-		System.out.println("Annulation de la dernière opération : succès");
+		System.out.println(Properties.UNDO_OK);
 		return true;
 	}
 	
@@ -65,13 +79,13 @@ public class Invocateur {
 	public boolean redo() {
 		// Si l'indice commandeEnCours correspond Ã  la tÃªte de la liste commandes, on a plus d'action Ã  refaire
 		if(commandeEnCours == commandes.size()){
-			System.out.println("Rétablissement de la dernière opération annulée : échec");
+			System.out.println(Properties.REDO_KO);
 			return false;
 		}
 		Commande derniereCommandeAnnule = commandes.get(commandeEnCours);
 		derniereCommandeAnnule.execute();
 		commandeEnCours++;
-		System.out.println("Rétablissement de la dernière opération annulée : succès");
+		System.out.println(Properties.REDO_OK);
 		return true;
 	}
 

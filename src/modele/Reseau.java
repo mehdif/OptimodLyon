@@ -19,6 +19,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import utils.Properties;
 import utils.ReseauException;
 import utils.XMLReader;
 
@@ -29,7 +30,7 @@ public class Reseau {
 
 	private List<Troncon> troncons;
 	/**
-	 * Integer : Adresse (afin de pouvoir accéder au point via son adresse)
+	 * Integer : Adresse (afin de pouvoir accéder aux points via leur adresses)
 	 */
 	private Map<Integer, Point> points;
 
@@ -77,6 +78,8 @@ public class Reseau {
 	 *            : nom du fichier XML que l'on veut charger. Si null, le
 	 *            fichier est choisi via l'explorateur de fichier
 	 * @return true si le chargement s'est passé correctement, false sinon
+	 * 
+	 * @author Sonia
 	 */
 	public boolean chargerReseauXML(String nomFichier) {
 		try {
@@ -89,7 +92,7 @@ public class Reseau {
 			if (null == xml) {
 				return false;
 			}
-			if (!XMLReader.validerXML(xml.getAbsolutePath(), "xsd/reseau.xsd")) {
+			if (!XMLReader.validerXML(xml.getAbsolutePath(), Properties.CHEMIN_XSD_RESEAU)) {
 				return false;
 			}
 
@@ -125,7 +128,7 @@ public class Reseau {
 										"id").getNodeValue()), p);
 					}
 					else{
-						throw new ReseauException("Erreur : un ou plusieurs point est défini plusieurs fois : abandon du chargement du réseau") ;
+						throw new ReseauException(Properties.ERREUR_RESEAU_POINT_SURDEFINI) ;
 					}
 				}
 			}
@@ -155,7 +158,7 @@ public class Reseau {
 											.getNodeValue());
 							if (idPointDestination.equals(pointOrigine
 									.getAdresse())) {
-								throw new ReseauException("Erreur : l'adresse du point de destination mentionné dans un ou plusieurs tronçons est égale à l'adresse du point de d'origine, abandon du chargement du plan");
+								throw new ReseauException(Properties.ERREUR_RESEAU_ORIGINE_DESTINATION);
 							}
 							Double distance = Double.parseDouble(listeAttributs
 									.getNamedItem("longueur").getNodeValue()
@@ -168,7 +171,7 @@ public class Reseau {
 							pointDestination = (Point) pointsBuffer
 									.get(idPointDestination);
 							if (null == pointDestination) {
-								throw new ReseauException("Erreur : le point de destination mentionné dans un ou plusieurs tronçons n'est pas connu, abandon du chargement du plan");
+								throw new ReseauException(Properties.ERREUR_RESEAU_DESTINATION_INCONNUE);
 							}
 							Troncon t = new Troncon(nomRue, vitesse, distance,
 									pointOrigine, pointDestination);
@@ -179,7 +182,7 @@ public class Reseau {
 			}
 			this.points = pointsBuffer;
 			this.troncons = tronconsBuffer;
-			System.out.println("Chargement du réseau réussi");
+			System.out.println(Properties.CHARGEMENT_RESEAU_OK);
 			return true;
 		} catch (ParserConfigurationException e) {
 			System.out.println("Erreur de configuration du parseur DOM");

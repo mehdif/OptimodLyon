@@ -19,6 +19,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import utils.Properties;
 import utils.TourneeException;
 import utils.XMLReader;
 
@@ -212,11 +213,12 @@ public class Tournee {
 	/**
 	 * Permet de charger les demandes de livraison depuis un fichier XML
 	 * 
-	 * @author Sonia
 	 * @param nomFichier
 	 *            : nom du fichier XML que l'on veut charger. Si null, le
 	 *            fichier est choisi via l'explorateur de fichier
 	 * @return true si le chargement s'est passé correctement, false sinon
+	 * 
+	 * @author Sonia
 	 */
 	public boolean chargerDonneesDemandeXML(String nomFichier) {
 		try {
@@ -230,7 +232,7 @@ public class Tournee {
 				return false;
 			}
 			if (!XMLReader.validerXML(xml.getAbsolutePath(),
-					"xsd/livraison.xsd")) {
+					Properties.CHEMIN_XSD_TOURNEE)) {
 				return false;
 			}
 
@@ -251,20 +253,20 @@ public class Tournee {
 
 			for (int i = 0; i < listeElementsOrdre1.getLength(); i++) {
 				if (listeElementsOrdre1.item(i).getNodeName()
-						.equals("PlagesHoraires")) {
+						.equals(Properties.NODE_PLAGESHORAIRES)) {
 					NodeList listeElementsOrdre2 = listeElementsOrdre1.item(i)
 							.getChildNodes();
 					for (int j = 0; j < listeElementsOrdre2.getLength(); j++) {
 						if (listeElementsOrdre2.item(j).getNodeName()
-								.equals("Plage")) {
+								.equals(Properties.NODE_PLAGE)) {
 
 							// Récupération des attributs de PlageHoraire
 							PlageHoraire plage = chargerPlage(
 									listeElementsOrdre2.item(j),
 									listePlagesBuffer);
-							if (null == plage) {
-								return false;
-							}
+//							if (null == plage) {
+//								return false;
+//							}
 
 							NodeList listeElementsOrdre3 = listeElementsOrdre2
 									.item(j).getChildNodes();
@@ -272,16 +274,12 @@ public class Tournee {
 									.item(1).getChildNodes();
 							for (int k = 0; k < listeElementsOrdre4.getLength(); k++) {
 								if (listeElementsOrdre4.item(k).getNodeName()
-										.equals("Livraison")) {
+										.equals(Properties.NODE_LIVRAISON)) {
 
 									// Récupération des attributs de
 									// DemandeLivraison
 									DemandeLivraison demandeLivraison = chargerDemandeLivraison(
 											listeElementsOrdre4.item(k), plage);
-									if (null == demandeLivraison) {
-										// TODO ajouter le test associé
-										throw new TourneeException("Erreur");
-									}
 									plage.ajouterDemandeLivraison(demandeLivraison);
 									reseau.getPointViaAdresse(
 											demandeLivraison
@@ -296,11 +294,12 @@ public class Tournee {
 						}
 					}
 				} else if (listeElementsOrdre1.item(i).getNodeName()
-						.equals("Entrepot")) {
+						.equals(Properties.NODE_ENTREPOT)) {
 					listeAttributs = listeElementsOrdre1.item(i)
 							.getAttributes();
 					Integer adresseEntrepot = Integer.parseInt(listeAttributs
-							.getNamedItem("adresse").getNodeValue());
+							.getNamedItem(Properties.ATTRIBUTE_ADRESSE)
+							.getNodeValue());
 					pointEntrepotBuffer = reseau.getPoints().get(
 							adresseEntrepot);
 				}
@@ -316,23 +315,20 @@ public class Tournee {
 				for (int i = 0; i < listePlagesBuffer.size(); i++) {
 					ajouterPlageHoraire(listePlagesBuffer.get(i));
 				}
-				System.out.println("Chargement des livraisons réussi");
+				System.out.println(Properties.CHARGEMENT_TOURNEE_OK);
 				return true;
 			} else {
-				throw new TourneeException("Erreur : l'entrepôt décrit dans le document ne correspond pas à un des points du réseau, abandon du chargement des livraisons");
+				throw new TourneeException(
+						Properties.ERREUR_TOURNEE_ENTREPOT_INCONNU);
 			}
 		} catch (SAXException e) {
-			System.out.println("Erreur lors du parsing du document");
-			System.out.println("lors de l'appel a construteur.parse(xml)");
+			System.out.println(Properties.SAXEXCEPTION_MESSAGE);
 			return false;
 		} catch (IOException e) {
-			System.out.println("Erreur d'entree/sortie");
-			System.out.println("lors de l'appel a construteur.parse(xml)");
+			System.out.println(Properties.IOEXCEPTION_MESSAGE);
 			return false;
 		} catch (ParserConfigurationException e) {
-			System.out.println("Erreur de configuration du parseur DOM");
-			System.out
-					.println("lors de l'appel a fabrique.newDocumentBuilder();");
+			System.out.println(Properties.PARSERCONFIGURATIONEXCEPTION_MESSAGE);
 			return false;
 		} catch (TourneeException e) {
 			System.out.println(e.getMessage());
@@ -345,37 +341,35 @@ public class Tournee {
 	 * 
 	 * @param element
 	 * @return PlageHoraire crée
+	 * @throws TourneeException
+	 * 
+	 * @author Sonia
 	 */
 	private PlageHoraire chargerPlage(Node element,
-			List<PlageHoraire> listePlages) {
+			List<PlageHoraire> listePlages) throws TourneeException {
 		try {
 			// Récupération des attributs de PlageHoraire
 			NamedNodeMap listeAttributs = element.getAttributes();
-			String debut = listeAttributs.getNamedItem("heureDebut")
-					.getNodeValue();
-			String fin = listeAttributs.getNamedItem("heureFin").getNodeValue();
+			String debut = listeAttributs.getNamedItem(
+					Properties.ATTRIBUTE_HEUREDEBUT).getNodeValue();
+			String fin = listeAttributs.getNamedItem(
+					Properties.ATTRIBUTE_HEUREFIN).getNodeValue();
 
 			// Verification du format des heures
 			String[] debutSplit = debut.split(":");
 			String[] finSplit = fin.split(":");
 			if (debutSplit.length != 3 || finSplit.length != 3) {
-				System.out
-						.println("Erreur : le format (HH:mm:ss) d'heure d'une ou plusieurs plages n'est pas respecté, abandon du chargement des livraisons");
-				return null;
+				throw new TourneeException(Properties.ERREUR_FORMAT_PLAGE);
 			}
 			if (Integer.parseInt(debutSplit[0]) > 23
 					|| Integer.parseInt(finSplit[0]) > 23) {
-				System.out
-						.println("Erreur : le format (HH:mm:ss) d'heure d'une ou plusieurs plages n'est pas respecté, abandon du chargement des livraisons");
-				return null;
+				throw new TourneeException(Properties.ERREUR_FORMAT_PLAGE);
 			}
 			if (Integer.parseInt(debutSplit[1]) > 59
 					|| Integer.parseInt(finSplit[1]) > 59
 					|| Integer.parseInt(debutSplit[2]) > 59
 					|| Integer.parseInt(finSplit[2]) > 59) {
-				System.out
-						.println("Erreur : le format (HH:mm:ss) d'heure d'une ou plusieurs plages n'est pas respecté, abandon du chargement des livraisons");
-				return null;
+				throw new TourneeException(Properties.ERREUR_FORMAT_PLAGE);
 			}
 
 			Calendar calDebut = Calendar.getInstance();
@@ -383,7 +377,12 @@ public class Tournee {
 			calDebut.setTime(dateFormat.parse(debut));
 			calFin.setTime(dateFormat.parse(fin));
 
-			boolean superpositionPlage = false;
+			if (calDebut.after(calFin)) {
+				throw new TourneeException(Properties.ERREUR_FIN_DEBUT_PLAGE);
+			} else if (calDebut.equals(calFin)) {
+				throw new TourneeException(Properties.ERREUR_VIDE_PLAGE);
+			}
+
 			for (int i = 0; i < listePlages.size(); i++) {
 				Calendar debutTest = listePlages.get(i).getDebut();
 				Calendar finTest = listePlages.get(i).getFin();
@@ -391,39 +390,34 @@ public class Tournee {
 				// dans la plage que l'on veut inserer
 				if (debutTest.getTime().after(calDebut.getTime())
 						&& debutTest.getTime().before(calFin.getTime())) {
-					superpositionPlage = true;
-					break;
+					throw new TourneeException(
+							Properties.ERREUR_SUPERPOSITION_PLAGE);
 				}
 				// Si la fin d'une plage que l'on a déjà inséré est comprise
 				// dans la plage que l'on veut inserer
 				else if (finTest.getTime().after(calDebut.getTime())
 						&& finTest.getTime().before(calFin.getTime())) {
-					superpositionPlage = true;
-					break;
+					throw new TourneeException(
+							Properties.ERREUR_SUPERPOSITION_PLAGE);
 				}
 				// Si le debut de la plage que l'on veut inserer est comprise
 				// dans une plage que l'on a déjà inséré
 				else if (calDebut.getTime().after(debutTest.getTime())
 						&& calDebut.getTime().before(finTest.getTime())) {
-					superpositionPlage = true;
-					break;
+					throw new TourneeException(
+							Properties.ERREUR_SUPERPOSITION_PLAGE);
 				}
 				// Si la fin de la plage que l'on veut inserer est comprise dans
 				// une plage que l'on a déjà inséré
 				else if (calFin.getTime().after(debutTest.getTime())
 						&& calFin.getTime().before(finTest.getTime())) {
-					superpositionPlage = true;
-					break;
+					throw new TourneeException(
+							Properties.ERREUR_SUPERPOSITION_PLAGE);
 				}
-			}
-			if (superpositionPlage) {
-				System.out
-						.println("Erreur : Une ou plusieurs plages horaires se superposent, abandon du chargement des livraisons");
-				return null;
 			}
 			return new PlageHoraire(calDebut, calFin);
 		} catch (ParseException e) {
-			System.out.println("Erreur lors du parsing des dates");
+			System.out.println(Properties.PARSEEXCEPTION_MESSAGE);
 			return null;
 		}
 	}
@@ -435,26 +429,26 @@ public class Tournee {
 	 * @param element
 	 * @param plage
 	 * @return DemandeLivraison crée
-	 * @throws TourneeException 
+	 * @throws TourneeException
+	 * 
+	 * @author Sonia
 	 */
 	private DemandeLivraison chargerDemandeLivraison(Node element,
 			PlageHoraire plage) throws TourneeException {
 		NamedNodeMap listeAttributs = element.getAttributes();
 		Integer adresse = Integer.parseInt(listeAttributs.getNamedItem(
-				"adresse").getNodeValue());
+				Properties.ATTRIBUTE_ADRESSE).getNodeValue());
 		Integer idClient = Integer.parseInt(listeAttributs.getNamedItem(
-				"client").getNodeValue());
-		Integer id = Integer.parseInt(listeAttributs.getNamedItem("id")
-				.getNodeValue());
+				Properties.ATTRIBUTE_CLIENT).getNodeValue());
+		Integer id = Integer.parseInt(listeAttributs.getNamedItem(
+				Properties.ATTRIBUTE_ID).getNodeValue());
 		Client client = new Client(idClient);
 		// Vérification si l'adresse récupéré correspond à l'adresse d'un point
 		// du réseau
 		Point pointDeLivraison = reseau.getPoints().get(adresse);
 		if (null == pointDeLivraison) {
-			
-			throw new TourneeException("Erreur : le document renseigné possède un ou plusieurs points de livraison inconnus, abandon du chargement des livraisons");
-			//System.out.println("Erreur : le document renseigné possède un ou plusieurs points de livraison inconnus, abandon du chargement des livraisons");
-			//return null;
+
+			throw new TourneeException(Properties.ERREUR_TOURNEE_POINT_INCONNU);
 		}
 		return new DemandeLivraison(pointDeLivraison, client, plage, false, id);
 	}
