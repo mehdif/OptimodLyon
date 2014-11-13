@@ -100,10 +100,10 @@ public class Application {
     
 
     /**
-     * 
+     * Methode generant la feuille de route dans un fichier texte
      */
     public void genererFeuilleDeRoute() {
-        // TODO implement here
+
     }
 
     /**
