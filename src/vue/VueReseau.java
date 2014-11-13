@@ -15,11 +15,10 @@ import modele.Point;
 import modele.Troncon;
 
 /**
- * VueReseau hérite de la classe JPanel et de ses méthodes de dessin. La
- * classe est constituée d'une liste de vuesPoints et une liste de
- * vuesTroncons. Chacune des vues de ces liste sont appelées à se dessiner sur
- * le JPanel grâce à la méthode dessiner implémentée depuis l'interface
- * VueDessinable
+ * VueReseau hérite de la classe JPanel et de ses méthodes de dessin. La classe
+ * est constituée d'une liste de vuesPoints et une liste de vuesTroncons.
+ * Chacune des vues de ces liste sont appelées à se dessiner sur le JPanel grâce
+ * à la méthode dessiner implémentée depuis l'interface VueDessinable
  * 
  * @author Hexanome 4301
  */
@@ -106,9 +105,16 @@ public class VueReseau extends JPanel implements VueDessinable {
 		}
 	}
 
+	public void dessinerTournee(Graphics g) {
+
+		for (VueItineraire uneVueItineraire : this.vueTournee.vuesItineraire) {
+			uneVueItineraire.dessiner(g);
+		}
+	}
+
 	/**
-	 * Constructeur de la vueReseau à partir des paramètres précédement
-	 * chargés dans le modèle
+	 * Constructeur de la vueReseau à partir des paramètres précédement chargés
+	 * dans le modèle
 	 * 
 	 * @param troncons
 	 * @param points
@@ -175,8 +181,8 @@ public class VueReseau extends JPanel implements VueDessinable {
 	}
 
 	/**
-	 * Méthode d'initialisation. Insère le JPanel: vueReseau au centre du
-	 * cadre frame passé en paramètre
+	 * Méthode d'initialisation. Insère le JPanel: vueReseau au centre du cadre
+	 * frame passé en paramètre
 	 * 
 	 * @param frame
 	 * 
@@ -202,6 +208,8 @@ public class VueReseau extends JPanel implements VueDessinable {
 	public void dessiner(Graphics g) {
 		this.dessinerTroncons(g);
 		this.dessinerPoints(g);
+		if (this.vueTournee != null)
+			this.dessinerTournee(g);
 	}
 
 	// public List<VuePoint> trouverVue(java.awt.Point p) {
