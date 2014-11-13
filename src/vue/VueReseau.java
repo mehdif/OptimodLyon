@@ -41,20 +41,24 @@ public class VueReseau  extends JPanel implements VueDessinable {
     	addMouseListener(new MouseAdapter() { 
             public void mouseClicked(MouseEvent me) { 
             	for (VuePoint v : vuesPoints) {
-
-                    if (v.getShape().contains(me.getPoint())) {//check if mouse is clicked within shape
-
-                        //we can either just print out the object class name
-                        System.out.println("Clicked a "+v.getClass());
-                    }
-                }
+            	
+            		if(null != v.getShape() && null != me.getPoint() ){
+	                    if (v.getShape().contains(me.getPoint())) {//check if mouse is clicked within shape
+	
+	                        //we can either just print out the object class name
+	                        System.out.println("Clicked a "+v.getClass());
+	                    }
+            		}
+            	}
+               
               } 
             public void mouseEntered(MouseEvent me) { 
             	for (VuePoint v : vuesPoints) {
-
-                    if (v.getShape().contains(me.getPoint())) {
-                    	setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-                    }
+            		if(null != v.getShape() && null != me.getPoint() ){
+	                    if (v.getShape().contains(me.getPoint())) {
+	                    	setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+	                    }
+            		}
                 }
               }
             });
