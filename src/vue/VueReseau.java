@@ -44,9 +44,8 @@ public class VueReseau  extends JPanel implements VueDessinable {
             	
             		if(null != v.getShape() && null != me.getPoint() ){
 	                    if (v.getShape().contains(me.getPoint())) {//check if mouse is clicked within shape
-	
 	                        //we can either just print out the object class name
-	                        System.out.println("Clicked a "+v.getClass());
+	                        System.out.println(me.getPoint().toString() + " Clicked a "+v.getClass());
 	                    }
             		}
             	}

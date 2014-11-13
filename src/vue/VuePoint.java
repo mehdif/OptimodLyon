@@ -104,6 +104,7 @@ public class VuePoint implements VueCliquable, VueDessinable {
 	@Override
     public Boolean onClique() {
         this.clique = true;
+        System.out.println("Point x: " + this.getX() +"\ny : " + this.getY() );
         this.setCouleur(Color.BLUE);
         return null;
     }
