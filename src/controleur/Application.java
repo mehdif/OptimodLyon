@@ -18,7 +18,16 @@ public class Application {
      * 
      */
     public Application() {
-        vueFenetre = new VueFenetre(this);
+    	Reseau reseau = new Reseau();
+        boolean chargementOK = reseau
+                .chargerReseauXML("xmlPourTests/planSimplifie_BienForme.xml");
+        if (chargementOK) {
+            tournee = new Tournee(reseau);
+        }
+        tournee.chargerDonneesDemandeXML("xmlPourTests/livraisonSimplifie_BienFormeAnomalie1.xml");
+
+
+       // vueFenetre = new VueFenetre(this);
     }
     /**
      * 

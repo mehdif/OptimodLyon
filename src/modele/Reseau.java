@@ -19,6 +19,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import utils.ReseauException;
 import utils.XMLReader;
 
 /**
@@ -124,8 +125,7 @@ public class Reseau {
 										"id").getNodeValue()), p);
 					}
 					else{
-						System.out.println("Erreur : un ou plusieurs point est défini plusieurs fois : abandon du chargement du réseau");
-						return false ;
+						throw new ReseauException("Erreur : un ou plusieurs point est défini plusieurs fois : abandon du chargement du réseau") ;
 					}
 				}
 			}
@@ -155,9 +155,7 @@ public class Reseau {
 											.getNodeValue());
 							if (idPointDestination.equals(pointOrigine
 									.getAdresse())) {
-								System.out
-										.println("Erreur : l'adresse du point de destination mentionné dans un ou plusieurs tronçons est égale à l'adresse du point de d'origine, abandon du chargement du plan");
-								return false;
+								throw new ReseauException("Erreur : l'adresse du point de destination mentionné dans un ou plusieurs tronçons est égale à l'adresse du point de d'origine, abandon du chargement du plan");
 							}
 							Double distance = Double.parseDouble(listeAttributs
 									.getNamedItem("longueur").getNodeValue()
@@ -170,9 +168,7 @@ public class Reseau {
 							pointDestination = (Point) pointsBuffer
 									.get(idPointDestination);
 							if (null == pointDestination) {
-								System.out
-										.println("Erreur : le point de destination mentionné dans un ou plusieurs tronçons n'est pas connu, abandon du chargement du plan");
-								return false;
+								throw new ReseauException("Erreur : le point de destination mentionné dans un ou plusieurs tronçons n'est pas connu, abandon du chargement du plan");
 							}
 							Troncon t = new Troncon(nomRue, vitesse, distance,
 									pointOrigine, pointDestination);
@@ -198,8 +194,10 @@ public class Reseau {
 			System.out.println("Erreur d'entree/sortie");
 			System.out.println("lors de l'appel a constructeur.parse(xml)");
 			return false;
+		} catch (ReseauException e) {
+			System.out.println(e.getMessage());
+			return false;
 		}
-
 	}
 
 	/**

@@ -19,6 +19,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import utils.TourneeException;
 import utils.XMLReader;
 
 /**
@@ -272,7 +273,8 @@ public class Tournee {
 									DemandeLivraison demandeLivraison = chargerDemandeLivraison(
 											listeElementsOrdre4.item(k), plage);
 									if (null == demandeLivraison) {
-										return false;
+										// TODO ajouter le test associé
+										throw new TourneeException("Erreur");
 									}
 									plage.ajouterDemandeLivraison(demandeLivraison);
 									reseau.getPointViaAdresse(
@@ -308,9 +310,7 @@ public class Tournee {
 				System.out.println("Chargement des livraisons réussi");
 				return true;
 			} else {
-				System.out
-						.println("Erreur : l'entrepôt décrit dans le document ne correspond pas à un des points du réseau, abandon du chargement des livraisons");
-				return false;
+				throw new TourneeException("Erreur : l'entrepôt décrit dans le document ne correspond pas à un des points du réseau, abandon du chargement des livraisons");
 			}
 		} catch (SAXException e) {
 			System.out.println("Erreur lors du parsing du document");
@@ -324,6 +324,9 @@ public class Tournee {
 			System.out.println("Erreur de configuration du parseur DOM");
 			System.out
 					.println("lors de l'appel a fabrique.newDocumentBuilder();");
+			return false;
+		} catch (TourneeException e) {
+			System.out.println(e.getMessage());
 			return false;
 		}
 	}
@@ -423,9 +426,10 @@ public class Tournee {
 	 * @param element
 	 * @param plage
 	 * @return DemandeLivraison crée
+	 * @throws TourneeException 
 	 */
 	private DemandeLivraison chargerDemandeLivraison(Node element,
-			PlageHoraire plage) {
+			PlageHoraire plage) throws TourneeException {
 		NamedNodeMap listeAttributs = element.getAttributes();
 		Integer adresse = Integer.parseInt(listeAttributs.getNamedItem(
 				"adresse").getNodeValue());
@@ -438,9 +442,10 @@ public class Tournee {
 		// du réseau
 		Point pointDeLivraison = reseau.getPoints().get(adresse);
 		if (null == pointDeLivraison) {
-			System.out
-					.println("Erreur : le document renseigné possède un ou plusieurs points de livraison inconnus, abandon du chargement des livraisons");
-			return null;
+			
+			throw new TourneeException("Erreur : le document renseigné possède un ou plusieurs points de livraison inconnus, abandon du chargement des livraisons");
+			//System.out.println("Erreur : le document renseigné possède un ou plusieurs points de livraison inconnus, abandon du chargement des livraisons");
+			//return null;
 		}
 		return new DemandeLivraison(pointDeLivraison, client, plage, false, id);
 	}
