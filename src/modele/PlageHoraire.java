@@ -2,6 +2,7 @@ package modele;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -93,21 +94,16 @@ public class PlageHoraire {
         return null;
     }
     
-    /*
+    //*
     public void getDemandesLivraisonChronologique() {
      
-List<DemandeLivraison>  listeOrdonnee = new ArrayList<DemandeLivraison>();
+List<DemandeLivraison> listeOrdonnee = new ArrayList<DemandeLivraison>();
 		
-		this.listeDemandeLivraison.sort(, new Comparator<DemandeLivraison>() {
-			@Override
-			public int compare(Fruit fruite1, Fruit fruite2) {	
-
-				return fruite1.fruitName.compareTo(fruite2.fruitName);
-			}
+		Collections.sort(listeOrdonnee, new Comparator<DemandeLivraison>() {
 
 			@Override
 			public int compare(DemandeLivraison demande1, DemandeLivraison demande2) {
-				// TODO Auto-generated method stub
+
 				return demande1.compareTo(demande2);
 			}
 		});
