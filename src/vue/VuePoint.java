@@ -108,4 +108,14 @@ public class VuePoint implements VueCliquable, VueDessinable {
         this.setCouleur(Color.BLUE);
         return null;
     }
+	
+	public Boolean correspondA(VuePoint uneVuePoint, int uneBorne) {
+		if( (this.getX() <= uneVuePoint.getX() + uneBorne) 
+				&& (this.getX() >= uneVuePoint.getX() - uneBorne)
+				&& (this.getY() <= uneVuePoint.getY() + uneBorne)
+				&& (this.getY() >= uneVuePoint.getY() - uneBorne))
+			return true;
+		else
+			return false;
+	}
 }

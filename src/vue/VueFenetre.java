@@ -33,7 +33,7 @@ public class VueFenetre {
 	/**
 	 * 
 	 */
-	public VueReseau vueReseau = new VueReseau();
+	public VueReseau vueReseau;
 	
 	/**
 	 * 
@@ -45,6 +45,7 @@ public class VueFenetre {
      */
     public VueFenetre(Application application) {
     	this.application = application;
+    	vueReseau = new VueReseau(application);
     	vueMenu = new VueMenu(application);
 		frame = new JFrame();
 		frame.setBounds(100, 100, 800, 600);

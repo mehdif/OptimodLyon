@@ -33,7 +33,7 @@ public class Application {
 	 ****************************************************/
 	
 	/**
-	 * Constructeur par défaut
+	 * Constructeur par dï¿½faut
 	 */
 	public Application() {
 		invocateur = new Invocateur();
@@ -196,6 +196,16 @@ public class Application {
     	this.vueFenetre.vueReseau.repaint();
     }
     
+    public void selectionnerVuePoint(VuePoint uneVuePoint) {
+    	
+    	uneVuePoint = this.vueFenetre.vueReseau.getPointSelectionne(uneVuePoint);
+    	if(uneVuePoint != null){
+    	uneVuePoint.onClique();
+    	this.vueFenetre.vueReseau.getVuesPoints().add(uneVuePoint);
+    	this.vueFenetre.vueReseau.repaint();
+    	}
+    }
+    	
     public static void main(String []args){
     	new Application();
     }
