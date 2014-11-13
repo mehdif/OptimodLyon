@@ -2,36 +2,33 @@ package vue;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 
-import javax.swing.JComponent;
-import javax.swing.JPanel;
 
 
 /**
  * @author Hexanome 4301
  */
-public class VuePoint extends JComponent implements VueCliquable, VueDessinable {
+public class VuePoint implements VueCliquable, VueDessinable {
 
-	private static final long serialVersionUID = 1L;
 	private int x;
     private int y;
     private final double RAYON = 10;
     private final double OFFSET = RAYON/2;
     private Color couleur = Color.BLACK;
     
+    private boolean clique = false;
+    private Ellipse2D shape;
     
 	/****************************************************
 	 ****************** Constructeurs ********************
 	 ****************************************************/
 	
+	public boolean isClique() {
+		return clique;
+	}
+
 	/**
 	 * Constructeur par défaut de VuePoint
 	 */
@@ -87,34 +84,27 @@ public class VuePoint extends JComponent implements VueCliquable, VueDessinable 
 		Graphics2D g2d = (Graphics2D) g;
 		int x = (this.x);
 		int y = (this.y);
-		Ellipse2D rond = new Ellipse2D.Double( (double) x - OFFSET , (double) y - OFFSET, RAYON, RAYON);
+		this.shape = new Ellipse2D.Double( (double) x - OFFSET , (double) y - OFFSET, RAYON, RAYON);
 		g2d.setColor(this.couleur);
-		g2d.fill(rond);
+		g2d.fill(this.shape);
     }
-	
-	
-	public void paintComponent(Graphics g){
-		g.setColor(Color.red);
-		dessiner(g);	
+
+	public Ellipse2D getShape() {
+		return shape;
 	}
 	
+	public void paintComponent(Graphics g) {
+
+		dessiner(g);
+	}
+
 	/**
      * @return
      */
-    public Boolean onClicPoint() {
-        System.out.println("boom");
+	@Override
+    public Boolean onClique() {
+        this.clique = true;
+        this.setCouleur(Color.BLUE);
         return null;
     }
-
-	@Override
-	public Boolean estClique() {
-		this.onClicPoint();
-		return null;
-	}
-
-	public Rectangle getVue() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

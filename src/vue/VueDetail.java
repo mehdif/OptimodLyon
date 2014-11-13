@@ -18,7 +18,8 @@ import modele.PlageHoraire;
  */
 public class VueDetail {	
 	
-	private JButton btnSupprimerAjouter;
+	private JButton btnAjouter;
+	private JButton btnSupprimer;
 	private JTextPane ChampClient;
 	private JTextPane ChampAdresse;
 	private JTextPane champPlageHoraire;
@@ -35,7 +36,7 @@ public class VueDetail {
      * 
      */
     public void onClicAjouterDemande() {
-		btnSupprimerAjouter.addActionListener(new ActionListener() {
+    	btnAjouter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
@@ -56,7 +57,7 @@ public class VueDetail {
      * 
      */
     public void onClicSupprimerDemande() {
-		btnSupprimerAjouter.addActionListener(new ActionListener() {
+    	btnSupprimer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
@@ -67,7 +68,7 @@ public class VueDetail {
      */
     public void initialiser(JFrame frame) {		
 		//Vue de droite pour les d�tails du point de livraison s�lectionn�
-		JPanel vueDetail = new JPanel(new GridLayout(8, 1));
+		JPanel vueDetail = new JPanel(new GridLayout(9, 1));
 		frame.getContentPane().add(vueDetail, BorderLayout.EAST);
 		
 		JTextPane txtpnDtail = new JTextPane();
@@ -95,9 +96,12 @@ public class VueDetail {
 		champPlageHoraire = new JTextPane();
 		vueDetail.add(champPlageHoraire);
 		
-		btnSupprimerAjouter = new JButton("Supprimer / Ajouter");
-		vueDetail.add(btnSupprimerAjouter);
+		btnAjouter = new JButton("Ajouter");
+		vueDetail.add(btnAjouter);
 		onClicAjouterDemande();
+		
+		btnSupprimer = new JButton("Supprimer");
+		vueDetail.add(btnSupprimer);
 		onClicSupprimerDemande();
 		//Fin vue de droite
     }
