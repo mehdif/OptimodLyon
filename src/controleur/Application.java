@@ -38,42 +38,7 @@ public class Application {
 	public Application() {
 		invocateur = new Invocateur();
 		receveur = new Receveur();
-		vueFenetre = new VueFenetre(this);
-		
-		Reseau reseau = new Reseau();
-		boolean chargementOK = reseau
-				.chargerReseauXML("xmlPourTests/planSimplifie_BienForme.xml");
-		if (chargementOK) {
-			tournee = new Tournee(reseau);
-		}
-		tournee.chargerDonneesDemandeXML("xmlPourTests/livraisonSimplifie_BienForme.xml");
-
-		tournee.afficherTournee();
-
-		// Premiere commande
-		Point point1 = new Point(84, 84, 84);
-		Client client1 = new Client(84);
-		receveur = new Receveur();
-		DemandeLivraison uneDemandeLivraison1 = new DemandeLivraison(point1,
-				client1, tournee.getPlagesHoraires().get(0), false, 4);
-		CommandeAjouterDemandeLivraison commandeAjouterDemandeLivraison1 = new CommandeAjouterDemandeLivraison(
-				receveur, tournee, uneDemandeLivraison1);
-
-		// Premiere commande
-		Point point2 = new Point(69, 69, 69);
-		Client client2 = new Client(69);
-		
-		DemandeLivraison uneDemandeLivraison2 = new DemandeLivraison(point2,
-				client2, tournee.getPlagesHoraires().get(0), false, 5);
-		CommandeAjouterDemandeLivraison commandeAjouterDemandeLivraison2 = new CommandeAjouterDemandeLivraison(
-				receveur, tournee, uneDemandeLivraison2);
-
-		System.out.println();
-		System.out.println();
-		invocateur.ajouterDemandeLivraison(commandeAjouterDemandeLivraison1);
-		invocateur.ajouterDemandeLivraison(commandeAjouterDemandeLivraison2);
-		tournee.afficherTournee();
-		
+		vueFenetre = new VueFenetre(this);	
 	}
 
 
