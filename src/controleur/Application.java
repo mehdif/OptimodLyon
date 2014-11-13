@@ -1,9 +1,7 @@
 package controleur;
-
 import java.awt.Color;
 import java.util.Iterator;
 import java.util.Map;
-
 import modele.Client;
 import modele.DemandeLivraison;
 import modele.Itineraire;
@@ -17,31 +15,26 @@ import vue.VueFenetre;
 import vue.VueItineraire;
 import vue.VuePoint;
 import vue.VueTournee;
-
 /**
  * @author Hexanome 4301
  */
 public class Application {
-
         public Receveur receveur;
         public static Tournee tournee;
         public VueFenetre vueFenetre;
         private Invocateur invocateur;
-
         /****************************************************
          ****************** Constructeur ********************
          ****************************************************/
         
         /**
-         * Constructeur par d�faut
+         * Constructeur par dï¿½faut
          */
         public Application() {
                 invocateur = new Invocateur();
                 receveur = new Receveur();
                 vueFenetre = new VueFenetre(this);        
         }
-
-
         /****************************************************
          ********************* Getter **********************
          ****************************************************/
@@ -49,34 +42,27 @@ public class Application {
         public Receveur getReceveur() {
                 return receveur;
         }
-
         public static Tournee getTournee() {
                 return tournee;
         }
-
         public VueFenetre getVueFenetre() {
                 return vueFenetre;
         }
-
         public Invocateur getInvocateur() {
                 return invocateur;
         }
-
         
         /****************************************************
-         *************** Méthodes de classes ****************
+         *************** MÃ©thodes de classes ****************
          ****************************************************/
-
     public void calculerTournee() {
         // TODO implement here
     }
-
     /**
      * @param unReseau
      * Dessine le reseau dans la fenetre principale.
      */
     public void dessinerReseau(Reseau unReseau) {
-
                 this.vueFenetre.vueReseau.chargerVueReseau(unReseau.getTroncons(), unReseau.getPoints());
                 this.vueFenetre.vueReseau.repaint();
     }
@@ -84,7 +70,6 @@ public class Application {
      * Affiche les demandes de livraison sur le plan suivant le code couleur
      */
     public void afficherDemandesLivraison(){
-
             //Effacement des elements de la collection de vuePoint
                 this.vueFenetre.vueReseau.getVuesPoints().clear();
                 
@@ -118,14 +103,11 @@ public class Application {
                 this.vueFenetre.vueReseau.repaint();
     }
     
-
     /**
      * Methode generant la feuille de route dans un fichier texte
      */
     public void genererFeuilleDeRoute() {
-
     }
-
     /**
      * @param client 
      * @param adresse 
@@ -144,7 +126,6 @@ public class Application {
             if(chargementOK){
                     tournee = new Tournee(reseau);
                     this.dessinerReseau(reseau);
-
             }
             
             return chargementOK;
@@ -153,13 +134,8 @@ public class Application {
     public boolean chargerDemandeLivraisonXML(){
             boolean chargementOK = tournee.chargerDonneesDemandeXML(null);
             
-
             this.vueFenetre.vueReseau.repaint();
             return chargementOK;
-    }
-    
-    public void pointClique (){
-    	vueFenetre.vueReseau.getVuePointClique().isClique();
     }
     
     public void afficherItineraire(){
@@ -203,5 +179,4 @@ public class Application {
     public static void main(String []args){
             new Application();
     }
-
 }
