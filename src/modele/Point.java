@@ -8,6 +8,8 @@ public class Point {
 	private Integer longitude;
 	private Integer latitude;
 	private Integer adresse;
+
+	private Integer ordreLivraison;
 	private DemandeLivraison uneDemande;
 	//public Reseau reseau;
 
@@ -34,6 +36,7 @@ public class Point {
 		this.latitude = latitude;
 		this.adresse = adresse;
 		this.uneDemande = null;
+		this.ordreLivraison = null;
 	}
 	
 	 /****************************************************
@@ -52,9 +55,21 @@ public class Point {
 		return adresse;
 	}
 	
-	public void setDemandeLivraison(DemandeLivraison uneDemande)
-	{
+	public Integer getOrdreLivraison() {
+		return ordreLivraison;
+	}
+	
+	public DemandeLivraison getUneDemande() {
+		return uneDemande;
+	}
+
+	public void setDemandeLivraison(DemandeLivraison uneDemande) {
 		this.uneDemande = uneDemande;
+	}
+	
+	public void setOrdreLivraison(int id)
+	{
+		this.ordreLivraison = id;
 	}
 	/**
 	 * Test l'existence d'une demande de livraison pour un point

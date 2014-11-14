@@ -1,40 +1,61 @@
 package controleur;
 import java.awt.Color;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import modele.Client;
+import modele.DemandeLivraison;
+import modele.Itineraire;
 import modele.PlageHoraire;
 import modele.Point;
 import modele.Reseau;
 import modele.Tournee;
+import modele.Troncon;
 import vue.VueEntrepot;
 import vue.VueFenetre;
+import vue.VueItineraire;
 import vue.VuePoint;
+import vue.VueTournee;
 /**
  * @author Hexanome 4301
  */
 public class Application {
+        public Receveur receveur;
+        public static Tournee tournee;
+        public VueFenetre vueFenetre;
+        private Invocateur invocateur;
+        /****************************************************
+         ****************** Constructeur ********************
+         ****************************************************/
+        
     /**
-     * 
+         * Constructeur par dï¿½faut
      */
     public Application() {
+                invocateur = new Invocateur();
+                receveur = new Receveur();
         vueFenetre = new VueFenetre(this);
     }
-    /**
-     * 
-     */
-    public Receveur receveur;
-    /**
-     * 
-     */
-    public static Tournee tournee;
-    /**
-     * 
-     */
-    public VueFenetre vueFenetre ;
-    /**
-     * 
-     */
+        /****************************************************
+         ********************* Getter **********************
+         ****************************************************/
+        
+        public Receveur getReceveur() {
+                return receveur;
+        }
+        public static Tournee getTournee() {
+                return tournee;
+        }
+        public VueFenetre getVueFenetre() {
+                return vueFenetre;
+        }
+        public Invocateur getInvocateur() {
+                return invocateur;
+        }
+        
+        /****************************************************
+         *************** MÃ©thodes de classes ****************
+         ****************************************************/
     public void calculerTournee() {
         // TODO implement here
     }
@@ -43,49 +64,95 @@ public class Application {
      * Dessine le reseau dans la fenetre principale.
      */
     public void dessinerReseau(Reseau unReseau) {
-        this.vueFenetre.vueReseau.chargerVueReseau(unReseau.getTroncons(), unReseau.getPoints());
+		this.vueFenetre.vueReseau.chargerVueReseau(unReseau.getTroncons(),
+				unReseau.getPoints());
         this.vueFenetre.vueReseau.repaint();
     }
     /**
      * Affiche les demandes de livraison sur le plan suivant le code couleur
      */
     public void afficherDemandesLivraison(){
+            //Effacement des elements de la collection de vuePoint
         this.vueFenetre.vueReseau.getVuesPoints().clear();
-        VueEntrepot vueEntrepot = new VueEntrepot(this.tournee.getEntrepot().getLongitude(), this.tournee.getEntrepot().getLatitude());
-        
-        vueEntrepot.setCouleur(Color.RED);
-        this.vueFenetre.vueReseau.getVuesPoints().add(vueEntrepot);
         
         Map<Integer, Point> points = this.tournee.getReseau().getPoints();
         Iterator iterator = points.entrySet().iterator();
+                
+                Map<PlageHoraire, Color> mapCouleur = new HashMap<PlageHoraire, Color>();
+                mapCouleur.clear();
         while (iterator.hasNext()) {
             
             Map.Entry unPoint = (Map.Entry) iterator.next();
             Point pointCourant = (Point) (unPoint.getValue());
             VuePoint vuePointCourant = new VuePoint(
-                    pointCourant.getLongitude(), pointCourant.getLatitude());
+					pointCourant.getLongitude(), pointCourant.getLatitude(),
+					pointCourant.getAdresse());
+
+			// Test de l'existence d'une demande de livraison associee au point
+			// courant
             if (pointCourant.possedeUneDemande()) {
-                vuePointCourant.setCouleur(Color.RED);
+                        	
+                        	//Test de l'existence d'une couleur associee a une plage horaire
+                            if( ( mapCouleur.get( pointCourant.getUneDemande().getPlageHoraire() ) ) == null )
+                            {
+                            	Color randomCouleur = new Color( alea(255), alea(255), alea(255) );
+                            	mapCouleur.put(pointCourant.getUneDemande().getPlageHoraire() , randomCouleur);
+                            }
+                            
+				vuePointCourant.setCouleurNonClique(mapCouleur.get( pointCourant.getUneDemande().getPlageHoraire() ));
                 this.vueFenetre.vueReseau.getVuesPoints().add(vuePointCourant);
-            } else
+                        
+			} else {
+				vuePointCourant.setCouleurNonClique(Color.BLACK);
                 this.vueFenetre.vueReseau.getVuesPoints().add(vuePointCourant);
         }
-        
+                
+		VueEntrepot vueEntrepot = new VueEntrepot(this.tournee.getEntrepot()
+				.getLongitude(), this.tournee.getEntrepot().getLatitude(),
+				this.tournee.getEntrepot().getAdresse());
+		vueEntrepot.setCouleurNonClique(Color.GREEN);
+                this.vueFenetre.vueReseau.getVuesPoints().add(vueEntrepot);
+                
+                //Rafraichissement de l'affichage
+                
         this.vueFenetre.vueReseau.repaint();
-    }
+    }                
+                Map<PlageHoraire, Color> mapCouleur = new HashMap<PlageHoraire, Color>();
+                mapCouleur.clear();
+					pointCourant.getLongitude(), pointCourant.getLatitude(),
+					pointCourant.getAdresse());
+
+			// Test de l'existence d'une demande de livraison associee au point
+			// courant
+                        	
+                        	//Test de l'existence d'une couleur associee a une plage horaire
+                            if( ( mapCouleur.get( pointCourant.getUneDemande().getPlageHoraire() ) ) == null )
+                            {
+                            	Color randomCouleur = new Color( alea(255), alea(255), alea(255) );
+                            	mapCouleur.put(pointCourant.getUneDemande().getPlageHoraire() , randomCouleur);
+                            }
+                            
+				vuePointCourant.setCouleurNonClique(mapCouleur.get( pointCourant.getUneDemande().getPlageHoraire() ));
+                        
+			} else {
+				vuePointCourant.setCouleurNonClique(Color.BLACK);
+		}
+                
+                //Affichage de l'entrepot
+
     
     /**
-     * 
+     * Methode generant la feuille de route dans un fichier texte
      */
     public void genererFeuilleDeRoute() {
-        // TODO implement here
     }
     /**
      * @param client 
      * @param adresse 
      * @param plageHoraire
      */
-    public void affichageInfos(Client client, Integer adresse, PlageHoraire plageHoraire) {
+	public void affichageInfos(Client client, Integer adresse,
+			PlageHoraire plageHoraire) {
         // TODO implement here
     }
     
@@ -108,7 +175,74 @@ public class Application {
         return chargementOK;
     }
     
+    public void afficherItineraire(){
+            
+            System.out.println("clic afficherItineraire");
+            Map<Integer, Point> points = this.tournee.getReseau().getPoints();
+            
+            //* Generation d'une tournee de test
+            
+            Point point0 = points.get(0);
+            Point point1 = points.get(1);
+            Point point2 = points.get(2);
+            Point point3 = points.get(3);
+            Point point4 = points.get(4);
+            Point point5 = points.get(5);
+            Point point6 = points.get(6);
+            
+            Troncon troncon1 = new Troncon("a", 1.0, 1.0, point0, point1);
+            Troncon troncon2 = new Troncon("b", 1.0, 1.0, point1, point2);
+            Troncon troncon3 = new Troncon("c", 1.0, 1.0, point2, point3);
+            Troncon troncon4 = new Troncon("d", 1.0, 1.0, point3, point4);
+            Troncon troncon5 = new Troncon("e", 1.0, 1.0, point4, point5);
+            Troncon troncon6 = new Troncon("f", 1.0, 1.0, point5, point6);
+            
+            Itineraire unItineraire = new Itineraire();
+            unItineraire.ajouterTroncon(troncon1);
+            unItineraire.ajouterTroncon(troncon2);
+            unItineraire.ajouterTroncon(troncon3);
+            unItineraire.ajouterTroncon(troncon4);
+            unItineraire.ajouterTroncon(troncon5);
+            unItineraire.ajouterTroncon(troncon6);
+            
+		VueItineraire uneVueItineraire = new VueItineraire(
+				unItineraire.getTroncons(), Color.RED);
+            VueTournee uneVueTournee = new VueTournee();
+            uneVueTournee.ajouterVueItineraire(uneVueItineraire);
+            //*/
+            this.vueFenetre.vueReseau.setVueTournee(uneVueTournee);
+            this.vueFenetre.vueReseau.repaint();
+    }
+            
+    public void recupererPoint(int adresse){
+    	Point point = tournee.getReseau().getPointViaAdresse(adresse);
+    	if(null != point.getUneDemande()){
+			String idClient = point.getUneDemande().getClient().getId()
+					.toString();
+    		String adresseString = new Integer(adresse).toString();
+			String heureDebut = point.getUneDemande().getPlageHoraire()
+					.getDebut().getTime().toString();
+			String heureFin = point.getUneDemande().getPlageHoraire().getFin()
+					.getTime().toString();
+			vueFenetre.affichageInfos(idClient, adresseString, heureDebut,
+					heureFin);
+    	}
+		// System.out.println(point.getAdresse()+ " : " + "(" +
+		// point.getLongitude() + ", " + point.getLatitude()+ ")");
+    	//System.out.println(point.getUneDemande());
+    }
+    
+    private int alea(int max){
+		return (int) (Math.random() * max);
+	}
+           
     public static void main(String []args){
-        new Application();
+        //Application app = new Application();
+    	
+		Reseau reseau = new Reseau();
+		reseau.chargerReseauXML("xmlPourTests/plan10x10.xml");
+		Tournee tournee = new Tournee(reseau);
+		tournee.chargerDonneesDemandeXML("xmlPourTests/livraison10x10-3.xml");
+        tournee.calculerTournee();
     }
 }
