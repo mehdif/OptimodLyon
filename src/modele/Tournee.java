@@ -6,7 +6,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,7 +22,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import utils.DijkstraAlgorithm;
+import utils.GraphLivraisons;
+//github.com/mehdif/OptimodLyon.git
 import utils.Properties;
+import utils.TSP;
 import utils.TourneeException;
 import utils.XMLReader;
 
@@ -27,10 +34,12 @@ import utils.XMLReader;
  * @author Hexanome 4301
  */
 public class Tournee {
-	public SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+	private static SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+	private static int ordreLivraison = 1;
 
 	private List<Itineraire> itineraires;
 	private List<PlageHoraire> plagesHoraires = new ArrayList<PlageHoraire>();
+	private Map<String, LinkedList<Point>> paths = new HashMap<String, LinkedList<Point>>();
 	private Entrepot entrepot;
 	private Reseau reseau;
 
@@ -114,7 +123,390 @@ public class Tournee {
 	 * 
 	 */
 	public void calculerTournee() {
-		// TODO implement here
+
+
+		//Recuperer toutes les demandes de livraison et creer le graphe
+		List<Point> listePoints = new ArrayList<Point>(reseau.getPoints().values());
+		GraphLivraisons graph = creerGraphPointLivraison(listePoints);
+		
+		//Appel a CHOCO
+		TSP tsp = new TSP(graph);
+		tsp.solve(200000,graph.getNbVertices()*graph.getMaxArcCost()+1);
+
+		ArrayList<Point> globalPath = creerItineraire(tsp);
+		/*for(Point p : itineraire){
+			System.out.print(" " + p.getAdresse());
+		}*/
+		
+		Itineraire itineraire = new Itineraire();
+		//remplirItineraire(globalPath);
+		
+		System.out.println("DONE");
+		
+	}
+
+	/*public ArrayList<Troncon> remplirItineraire(ArrayList<Point> globalPath){
+		
+		ArrayList<Troncon> troncons = new ArrayList<Troncon>();
+		for(int i = 0; i < globalPath.size() - 1; i++){
+			Point p1 = globalPath.get(i);
+			Point p2 = globalPath.get(i+1);
+			
+			if(p2.get() == 0){
+				for(Troncon t : reseau.getTroncons()){
+					if(p1.equals(t.getOrigine()) && p2.equals(t.getDestination())){
+						troncons.add(t);
+					}
+				}
+			}
+		}
+		
+		
+	}*/
+	
+	
+	public void afficherCost(int[][] cost, int size){
+		for(int i = 0; i < size; i++){
+			for(int j = 0; j < size; j++){
+				if(cost[i][j] != 0)
+					System.out.print(cost[i][j] + " ");
+			}
+			System.out.println("\n");
+		}
+	}
+	
+	
+	public GraphLivraisons creerGraphPointLivraison(List<Point> points){
+		
+
+		//Creation du graphe
+		GraphLivraisons graph = new GraphLivraisons(getNombreLivraisons() + 1, Integer.MAX_VALUE, Integer.MIN_VALUE);
+		
+
+		for(int i = 0; i < plagesHoraires.size() - 1; i++){
+		
+			//Premiere plage horaire
+			if(i == 0){
+				creerPremiereFenetre(entrepot, plagesHoraires.get(i), plagesHoraires.get(i+1), graph);
+			}
+			else if(i == ( plagesHoraires.size() - 1 )){
+				creerDerniereFenetre(entrepot, plagesHoraires.get(i), graph);
+			}
+			else{
+				creerFenetreLivraison(plagesHoraires.get(i), plagesHoraires.get(i+1), graph);
+
+			}
+		}
+		
+		creerDerniereFenetre(entrepot, plagesHoraires.get(2), graph);
+		
+        for(int i = 0; i < graph.getNbVertices(); i++) {
+            for (int j = 0; j < graph.getNbVertices(); j++) {
+                System.out.print(graph.getCost(i, j)+ "  ");
+            }
+            System.out.println("\n");
+        }
+		
+		//displaySuccesors(graph);
+        return graph;
+		
+	}
+	
+
+	public ArrayList<Point> creerItineraire(TSP tsp){
+		int[] next = tsp.getNext();
+		
+		ArrayList<Point> itineraire = new ArrayList<Point>();
+		
+		for(int i = 0; i < next.length; i++){
+			
+			Point source;
+			Point destination;
+			
+			if(i == 0){
+				source = reseau.getPoints().get(entrepot.getAdresse());
+			}
+			else{
+				source = findPointFromid(i);
+			}
+			
+			if(next[i] == 0){
+				destination = reseau.getPoints().get(entrepot.getAdresse());
+			}
+			else{
+				destination = findPointFromid(next[i]);
+			}
+			
+			System.out.println("Point = " + source.getAdresse()+" "+destination.getAdresse());
+			LinkedList<Point> path = getPathBetweenNodes(source, destination);
+			System.out.println("path = " + path.size());
+			itineraire.addAll(path);
+		}
+		
+		return itineraire;
+	}
+
+	public void creerPremiereFenetre(Entrepot entrepot, PlageHoraire plageHoraireCourante, PlageHoraire plageHoraireSuivante, GraphLivraisons graph){
+		
+		//Points et troncons du plan du reseau
+		List<Point> listePointsReseau = new ArrayList<Point>(reseau.getPoints().values());
+		List<Troncon> listeTronconsReseau = new ArrayList<Troncon>(reseau.getTroncons());
+
+		//Creer Dijkstra avec les points et les troncons du reseau
+		DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(listePointsReseau, listeTronconsReseau);
+
+		//Relier l'entrepot a la premiere plage horaire
+		List<DemandeLivraison> dem = plageHoraireCourante.getDemandeLivraison();
+		for(int i = 0; i < dem.size(); i++){
+			
+			Point p = dem.get(i).getPointDeLivraison();
+			//System.out.println(entrepot.getAdresse() + " " + entrepot.getLongitude() + " " + entrepot.getLatitude());
+			//Point e = listePointsReseau.get(350);
+			//System.out.println(p1.getAdresse() + " " + p1.getLongitude() + " " + p1.getLatitude());
+	        dijkstra.execute(reseau.getPoints().get(entrepot.getAdresse()));
+	        LinkedList<Point> path = dijkstra.getPath(p);
+	        //paths.put(entrepot.getAdresse()+""+p.getAdresse(), new LinkedList<Point>(path));
+	        
+	        //Mettre a jour la matrice des couts
+	        graph.setCost(0, p.getOrdreLivraison(), (int) getPathCost(path, reseau.getTroncons()));
+
+	        //Mettre a jour les successeurs
+	    	graph.setSucc(0, p.getOrdreLivraison());
+	    	
+			System.out.println("Entrepot ; " + p.getOrdreLivraison() + " Poids = " + graph.getCost(0, p.getOrdreLivraison()));				
+		}
+		
+		//Relier les points d'une plage horaire entre eux	
+		ArrayList<Point[]> combinaisonsP = getCombinaisons(plageHoraireCourante.getDemandeLivraison());
+		
+		//ArrayList<Point> p = plageHoraireCourante.getDemandeLivraison().ge;
+		for(Point[] pts : combinaisonsP){
+			
+	        dijkstra.execute(pts[0]);
+	        LinkedList<Point> path = dijkstra.getPath(pts[1]);
+	        paths.put(pts[0].getAdresse()+""+ pts[1].getAdresse(), new LinkedList<Point>(path));
+	        
+	        
+	        //Mettre a jour la matrice des couts
+	        int value = (int) getPathCost(path, reseau.getTroncons());
+	        graph.setCost(pts[0].getOrdreLivraison(), pts[1].getOrdreLivraison(), value);
+	        updateMinMaxCost(graph, value);
+	        graph.setCost(pts[0].getOrdreLivraison(), pts[1].getOrdreLivraison(), value);
+	        graph.setCost(pts[1].getOrdreLivraison(), pts[0].getOrdreLivraison(), value);
+
+	        //Mettre a jour les successeurs
+	    	graph.setSucc(pts[0].getOrdreLivraison(), pts[1].getOrdreLivraison());
+	    	graph.setSucc(pts[1].getOrdreLivraison(), pts[0].getOrdreLivraison());
+	        
+			System.out.println("Point " + pts[0].getOrdreLivraison() + " ; " + pts[1].getOrdreLivraison() + " Poids = " + graph.getCost(pts[0].getOrdreLivraison(), pts[1].getOrdreLivraison()));		
+		}
+		
+
+		//Reliser les points avec la plage horaire suivante
+		for(DemandeLivraison ds : plageHoraireSuivante.getDemandeLivraison()){
+			
+			for(DemandeLivraison dc : plageHoraireCourante.getDemandeLivraison()){
+				
+				Point pSource = dc.getPointDeLivraison();
+				Point pDestination = ds.getPointDeLivraison();
+				
+		        dijkstra.execute(pSource);
+		        LinkedList<Point> path = dijkstra.getPath(pDestination);
+		        paths.put(pSource.getAdresse()+""+pDestination.getAdresse(), new LinkedList<Point>(path));
+		        
+		        //Mettre a jour la matrice des couts et les valeurs min et max
+		        int value = (int) getPathCost(path, reseau.getTroncons());
+		        graph.setCost(pSource.getOrdreLivraison(), pDestination.getOrdreLivraison(), value);
+		        updateMinMaxCost(graph, value);
+		        //Mettre a jour les successeurs
+		    	graph.setSucc(pSource.getOrdreLivraison(), pDestination.getOrdreLivraison());		        
+			}
+		}
+	}
+	
+	
+	public void creerFenetreLivraison(PlageHoraire plageHoraireCourante, PlageHoraire plageHoraireSuivante, GraphLivraisons graph){
+		
+
+		//Points et troncons du plan du reseau
+		List<Point> listePointsReseau = new ArrayList<Point>(reseau.getPoints().values());
+		List<Troncon> listeTronconsReseau = new ArrayList<Troncon>(reseau.getTroncons());
+
+		//Creer Dijkstra avec les points et les troncons du reseau
+		DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(listePointsReseau, listeTronconsReseau);
+
+		
+		//Relier les points d'une plage horaire entre eux	
+		ArrayList<Point[]> combinaisonsP = getCombinaisons(plageHoraireCourante.getDemandeLivraison());
+		
+		for(Point[] pts : combinaisonsP){
+			
+	        dijkstra.execute(pts[0]);
+	        LinkedList<Point> path = dijkstra.getPath(pts[1]);
+	        paths.put(pts[0].getAdresse()+""+ pts[1].getAdresse(),new LinkedList<Point>(path));
+	        
+	        //Mettre a jour la matrice des couts
+	        int value = (int) getPathCost(path, reseau.getTroncons());
+	        graph.setCost(pts[0].getOrdreLivraison(), pts[1].getOrdreLivraison(), value);
+	        updateMinMaxCost(graph, value);
+	        graph.setCost(pts[0].getOrdreLivraison(), pts[1].getOrdreLivraison(), value);
+	        graph.setCost(pts[1].getOrdreLivraison(), pts[0].getOrdreLivraison(), value);
+
+	        //Mettre a jour les successeurs
+	    	graph.setSucc(pts[0].getOrdreLivraison(), pts[1].getOrdreLivraison());
+	    	graph.setSucc(pts[1].getOrdreLivraison(), pts[0].getOrdreLivraison());
+	        
+			System.out.println("Point " + pts[0].getOrdreLivraison() + " ; " + pts[1].getOrdreLivraison() + " Poids = " + graph.getCost(pts[0].getOrdreLivraison(), pts[1].getOrdreLivraison()));		
+		}
+		
+		//Reliser les points avec la plage horaire suivante
+		for(DemandeLivraison ds : plageHoraireSuivante.getDemandeLivraison()){
+			
+			for(DemandeLivraison dc : plageHoraireCourante.getDemandeLivraison()){
+				
+				Point pSource = dc.getPointDeLivraison();
+				Point pDestination = ds.getPointDeLivraison();
+				
+		        dijkstra.execute(pSource);
+		        LinkedList<Point> path = dijkstra.getPath(pDestination);
+		        paths.put(pSource.getAdresse()+""+ pDestination.getAdresse(), new LinkedList<Point>(path));
+		        
+		        //Mettre a jour la matrice des couts et les valeurs min et max
+		        int value = (int) getPathCost(path, reseau.getTroncons());
+		        graph.setCost(pSource.getOrdreLivraison(), pDestination.getOrdreLivraison(), value);
+		        updateMinMaxCost(graph, value);
+		        //Mettre a jour les successeurs
+		    	graph.setSucc(pSource.getOrdreLivraison(), pDestination.getOrdreLivraison());		        
+			}
+		}
+		
+		
+	}
+
+	
+	public void creerDerniereFenetre(Entrepot entrepot, PlageHoraire plageHoraire, GraphLivraisons graph){
+		
+
+		//Points et troncons du plan du reseau
+		List<Point> listePointsReseau = new ArrayList<Point>(reseau.getPoints().values());
+		List<Troncon> listeTronconsReseau = new ArrayList<Troncon>(reseau.getTroncons());
+
+		//Creer Dijkstra avec les points et les troncons du reseau
+		DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(listePointsReseau, listeTronconsReseau);
+		
+		//Relier les points d'une plage horaire entre eux	
+		ArrayList<Point[]> combinaisonsP = getCombinaisons(plageHoraire.getDemandeLivraison());
+		
+		for(Point[] pts : combinaisonsP){
+			
+	        dijkstra.execute(pts[0]);
+	        LinkedList<Point> path = dijkstra.getPath(pts[1]);
+	        paths.put(pts[0].getAdresse() +""+ pts[1].getAdresse() ,new LinkedList<Point>(path));
+	        
+	        //Mettre a jour la matrice des couts
+	        int value = (int) getPathCost(path, reseau.getTroncons());
+	        graph.setCost(pts[0].getOrdreLivraison(), pts[1].getOrdreLivraison(), value);
+	        updateMinMaxCost(graph, value);
+	        graph.setCost(pts[0].getOrdreLivraison(), pts[1].getOrdreLivraison(), value);
+	        graph.setCost(pts[1].getOrdreLivraison(), pts[0].getOrdreLivraison(), value);
+
+	        //Mettre a jour les successeurs
+	    	graph.setSucc(pts[0].getOrdreLivraison(), pts[1].getOrdreLivraison());
+	    	graph.setSucc(pts[1].getOrdreLivraison(), pts[0].getOrdreLivraison());
+	        
+			System.out.println("Point " + pts[0].getOrdreLivraison() + " ; " + pts[1].getOrdreLivraison() + " Poids = " + graph.getCost(pts[0].getOrdreLivraison(), pts[1].getOrdreLivraison()));		
+		}
+		
+		//Relier les points de la dernière plage horaire avec l'entrepot
+		for(DemandeLivraison d : plageHoraire.getDemandeLivraison()){
+			
+			Point pSource = d.getPointDeLivraison();
+			Point entrp = listePointsReseau.get(14);
+	        dijkstra.execute(pSource);
+	        LinkedList<Point> path = dijkstra.getPath(entrp);
+	        paths.put(pSource.getAdresse() + "" + entrp.getAdresse(),new LinkedList<Point>(path));
+	        
+	        //Mettre a jour la matrice des couts
+	        graph.setCost(pSource.getOrdreLivraison(), 0, (int) getPathCost(path, reseau.getTroncons()));
+
+	        //Mettre a jour les successeurs
+	    	graph.setSucc(pSource.getOrdreLivraison(), 0);
+	    	
+		}
+
+	}
+
+
+	public void updateMinMaxCost(GraphLivraisons g, int value){
+		if(value > g.getMaxArcCost()){
+			g.setMaxArcCost(value);
+		}
+		
+		if(value < g.getMinArcCost()){
+			g.setMinArcCost(value);
+		}
+	}
+
+  
+	public LinkedList<Point> getPathBetweenNodes(Point source, Point destination){
+		
+		//Points et troncons du plan du reseau
+		List<Point> listePointsReseau = new ArrayList<Point>(reseau.getPoints().values());
+		List<Troncon> listeTronconsReseau = new ArrayList<Troncon>(reseau.getTroncons());
+
+		//Creer Dijkstra avec les points et les troncons du reseau
+		DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(listePointsReseau, listeTronconsReseau);
+		
+        dijkstra.execute(source);
+        LinkedList<Point> path = dijkstra.getPath(destination);
+        
+        return path;
+		
+	}
+	
+	public Point findPointFromid(int id){
+		Map<Integer, Point> points = reseau.getPoints();
+		
+		for (Map.Entry<Integer, Point> entry : points.entrySet())
+		{
+		    if((entry.getValue().getOrdreLivraison() != null) && (id == entry.getValue().getOrdreLivraison())){
+		    	return entry.getValue();
+		    }
+		}
+		return null;
+	}
+    public void displaySuccesors(GraphLivraisons g) {
+        for(int i = 0; i < g.getSucc().size(); i++) {
+            ArrayList<Integer> succesors = g.getSucc().get(i);
+
+            System.out.println("\nLes successeurs de " + i + " sont : ");
+            for (int j = 0; j < succesors.size(); j++) {
+                System.out.print(succesors.get(j) + " ");
+            }
+        }
+        System.out.println("\n");
+    }
+    
+	public double getPathCost(LinkedList<Point> path, List<Troncon> troncons){
+		
+		double cost = 0;
+		for (int i = 0; i < path.size() - 1; i++) {
+            for (Troncon troncon : troncons) {
+                if (troncon.getDestination().equals(path.get(i + 1))) {
+                    cost += troncon.getWeight();
+                    break;
+                }
+            }
+        }
+        return cost;
+	}
+	
+	public int getNombreLivraisons(){
+		int sum = 0;
+		for(int i = 0; i < plagesHoraires.size(); i++){
+			sum += plagesHoraires.get(i).getDemandeLivraison().size();
+		}
+		return sum;
 	}
 
 	private void chocoImplementation() {
@@ -124,7 +516,6 @@ public class Tournee {
 
 	private ArrayList<ArrayList<Integer>> prepareChoco() {
 		// TODO Auto-generated method stub
-
 		return null;
 	}
 
@@ -175,8 +566,12 @@ public class Tournee {
 		return tempList;
 	}
 
+
+	/** Returns the number of combinations of k elements within n
+=======
 	/**
 	 * Returns the number of combinations of k elements within n
+>>>>>>> branch 'master' of https://github.com/mehdif/OptimodLyon.git
 	 * 
 	 * @param k
 	 * @param n
@@ -458,6 +853,8 @@ public class Tournee {
 				throw new TourneeException(
 						Properties.ERREUR_TOURNEE_POINT_INCONNU);
 			}
+			pointDeLivraison.setOrdreLivraison(ordreLivraison);
+			ordreLivraison++;
 			return new DemandeLivraison(pointDeLivraison, client, plage, false,
 					id);
 		} catch (TourneeException e) {
@@ -465,6 +862,7 @@ public class Tournee {
 			return null;
 		}
 	}
+	
 
 	// TODO : méthode à effacer avant le rendu, sert juste à tester
 	public void afficherTournee() {

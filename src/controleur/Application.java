@@ -33,14 +33,17 @@ public class Application {
          ****************** Constructeur ********************
          ****************************************************/
         
-        /**
+
+    /**
          * Constructeur par dï¿½faut
-         */
-        public Application() {
+     */
+    public Application() {
                 invocateur = new Invocateur();
                 receveur = new Receveur();
-                vueFenetre = new VueFenetre(this);        
-        }
+        vueFenetre = new VueFenetre(this);
+    }
+
+
         /****************************************************
          ********************* Getter **********************
          ****************************************************/
@@ -71,7 +74,8 @@ public class Application {
     public void dessinerReseau(Reseau unReseau) {
 		this.chargerVueReseau(unReseau.getTroncons(),
 				unReseau.getPoints());
-                this.vueFenetre.vueReseau.repaint();
+        this.vueFenetre.vueReseau.repaint();
+
     }
     /**
      * Affiche les demandes de livraison sur le plan suivant le code couleur
@@ -125,6 +129,7 @@ public class Application {
                 
                 this.vueFenetre.vueReseau.repaint();
     }
+
     
     /**
      * Methode generant la feuille de route dans un fichier texte
@@ -277,6 +282,14 @@ public class Application {
 	}
            
     public static void main(String []args){
-            new Application();
+
+        //Application app = new Application();
+    	
+		Reseau reseau = new Reseau();
+		reseau.chargerReseauXML("xmlPourTests/plan10x10.xml");
+		Tournee tournee = new Tournee(reseau);
+		tournee.chargerDonneesDemandeXML("xmlPourTests/livraison10x10-3.xml");
+        tournee.calculerTournee();
+
     }
 }

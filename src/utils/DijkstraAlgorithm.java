@@ -15,19 +15,20 @@ import modele.Troncon;
 
 public class DijkstraAlgorithm {
 
-    private final List<Point> nodes;
-    private final List<Troncon> Troncons;
+    private final List<Point> points;
+    private final List<Troncon> troncons;
     private Set<Point> settledNodes;
     private Set<Point> unSettledNodes;
     private Map<Point, Point> predecessors;
     private Map<Point, Double> distance;
 
-    public DijkstraAlgorithm(Graph graph) {
+    
+    public DijkstraAlgorithm(List<Point> points, List<Troncon> troncons) {
         // create a copy of the array so that we can operate on this array
-        this.nodes = new ArrayList<Point>(graph.getPoints());
-        this.Troncons = new ArrayList<Troncon>(graph.getTroncons());
+        this.points = points;
+        this.troncons = troncons;
     }
-
+    
     public void execute(Point source) {
         settledNodes = new HashSet<Point>();
         unSettledNodes = new HashSet<Point>();
@@ -58,7 +59,7 @@ public class DijkstraAlgorithm {
     }
 
     private Double getDistance(Point node, Point target) {
-        for (Troncon Troncon : Troncons) {
+        for (Troncon Troncon : troncons) {
             if (Troncon.getOrigine().equals(node)
                     && Troncon.getDestination().equals(target)) {
                 return Troncon.getWeight();
@@ -69,7 +70,7 @@ public class DijkstraAlgorithm {
 
     private List<Point> getNeighbors(Point node) {
         List<Point> neighbors = new ArrayList<Point>();
-        for (Troncon Troncon : Troncons) {
+        for (Troncon Troncon : troncons) {
             if (Troncon.getOrigine().equals(node)
                     && !isSettled(Troncon.getDestination())) {
                 neighbors.add(Troncon.getDestination());
