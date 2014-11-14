@@ -2,7 +2,6 @@ package modele;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,10 +23,11 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import utils.DijkstraAlgorithm;
-import utils.Graph;
 import utils.GraphLivraisons;
-import utils.SolutionState;
+//github.com/mehdif/OptimodLyon.git
+import utils.Properties;
 import utils.TSP;
+import utils.TourneeException;
 import utils.XMLReader;
 
 /**
@@ -509,18 +509,16 @@ public class Tournee {
 		return sum;
 	}
 
-	
 	private void chocoImplementation() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	private ArrayList<ArrayList<Integer>> prepareChoco() {
 		// TODO Auto-generated method stub
-	
-    	return null;
+		return null;
 	}
-	
+
 	/**
 	 * Computes the number of Combinations
 	 * 
@@ -532,25 +530,48 @@ public class Tournee {
 	private ArrayList<Point[]> getCombinaisons(
 			List<DemandeLivraison> demandeLivraison) {
 		int n = demandeLivraison.size();
+		// //Point[] tempCouple = null;
+		//
+		// int numberOfCombinations = numberOfCombinations(2,n);
+		// int increment = 0 ;
+		// while (increment != numberOfCombinations){
+		//
+		// for(Point[] couple : tempList){
+		//
+		// if(!couple.equals(tempCouple)){
+		//
+		// tempList.add(tempCouple);
+		// }
+		// }
+		//
+		// increment++;
+		// }
+		//
+		//
+		ArrayList<Point[]> tempList = null;
 
-		ArrayList<Point[]> tempList = new ArrayList<Point[]>();
-
-		for (int i = 0;i < demandeLivraison.size() ; i++){
-			for (int j= i+1 ;j < demandeLivraison.size() ; j++){
-				Point [] tempCouple= {demandeLivraison.get(i).getPointDeLivraison(),demandeLivraison.get(j).getPointDeLivraison()};
+		for (int i = 0; i < demandeLivraison.size(); i++) {
+			for (int j = i + 1; j < demandeLivraison.size(); j++) {
+				Point[] tempCouple = {
+						demandeLivraison.get(i).getPointDeLivraison(),
+						demandeLivraison.get(j).getPointDeLivraison() };
 				tempList.add(tempCouple);
 			}
 		}
 
-		if (tempList.size()!=numberOfCombinations(2,n)){
+		if (tempList.size() != numberOfCombinations(2, n)) {
 			System.out.println("Combinaisons manquantes");
 		}
-		
+
 		return tempList;
 	}
-	
+
 
 	/** Returns the number of combinations of k elements within n
+=======
+	/**
+	 * Returns the number of combinations of k elements within n
+>>>>>>> branch 'master' of https://github.com/mehdif/OptimodLyon.git
 	 * 
 	 * @param k
 	 * @param n
@@ -558,24 +579,24 @@ public class Tournee {
 	 */
 	private int numberOfCombinations(int k, int n) {
 		// TODO Auto-generated method stub
-		return factorielle(n)/(factorielle(k)*factorielle(n-k));
+		return factorielle(n) / (factorielle(k) * factorielle(n - k));
 	}
-	
+
 	/**
 	 * Factorielle
 	 * 
 	 * @param number
 	 * @return
 	 */
-	private int factorielle (int number){
+	private int factorielle(int number) {
 		int fact = 1;
-		for(int i = number; i >= 1; i--){
-			fact = fact*i;
+		for (int i = number; i >= 1; i--) {
+			fact = fact * i;
 		}
-		
+
 		return fact;
 	}
-	
+
 	/**
 	 * @return
 	 */
@@ -816,31 +837,32 @@ public class Tournee {
 	private DemandeLivraison chargerDemandeLivraison(Node element,
 			PlageHoraire plage) {
 		try {
-		NamedNodeMap listeAttributs = element.getAttributes();
-		Integer adresse = Integer.parseInt(listeAttributs.getNamedItem(
+			NamedNodeMap listeAttributs = element.getAttributes();
+			Integer adresse = Integer.parseInt(listeAttributs.getNamedItem(
 					Properties.ATTRIBUTE_ADRESSE).getNodeValue());
-		Integer idClient = Integer.parseInt(listeAttributs.getNamedItem(
+			Integer idClient = Integer.parseInt(listeAttributs.getNamedItem(
 					Properties.ATTRIBUTE_CLIENT).getNodeValue());
 			Integer id = Integer.parseInt(listeAttributs.getNamedItem(
 					Properties.ATTRIBUTE_ID).getNodeValue());
-		Client client = new Client(idClient);
+			Client client = new Client(idClient);
 			// Vérification si l'adresse récupéré correspond à l'adresse d'un
 			// point
-		// du réseau
-		Point pointDeLivraison = reseau.getPoints().get(adresse);
-		if (null == pointDeLivraison) {
+			// du réseau
+			Point pointDeLivraison = reseau.getPoints().get(adresse);
+			if (null == pointDeLivraison) {
 				throw new TourneeException(
 						Properties.ERREUR_TOURNEE_POINT_INCONNU);
 			}
+			pointDeLivraison.setOrdreLivraison(ordreLivraison);
+			ordreLivraison++;
 			return new DemandeLivraison(pointDeLivraison, client, plage, false,
 					id);
 		} catch (TourneeException e) {
 			System.out.println(e.getMessage());
 			return null;
 		}
-		pointDeLivraison.setOrdreLivraison(ordreLivraison);
-		ordreLivraison++;
 	}
+	
 
 	// TODO : méthode à effacer avant le rendu, sert juste à tester
 	public void afficherTournee() {

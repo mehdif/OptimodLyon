@@ -43,7 +43,7 @@ public class VueReseau extends JPanel implements VueDessinable {
 		this.application = application;
 		addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent me) {
-				if (vuePointClique != null) {
+				if(vuePointClique != null){
 					VuePoint vTemp = vuePointClique;
 					vTemp.setCouleur(Color.BLACK);
 					vTemp.setClique(false);
@@ -62,12 +62,10 @@ public class VueReseau extends JPanel implements VueDessinable {
 							// name
 							vuePointClique = v;
 							v.onClique();
-							application.vueFenetre.adressePointClique();
 							repaint();
 						}
 					}
 				}
-				
 
 			}
 
@@ -105,13 +103,6 @@ public class VueReseau extends JPanel implements VueDessinable {
 		}
 	}
 
-	public void dessinerTournee(Graphics g) {
-
-		for (VueItineraire uneVueItineraire : this.vueTournee.vuesItineraire) {
-			uneVueItineraire.dessiner(g);
-		}
-	}
-
 	/**
 	 * Constructeur de la vueReseau à partir des paramètres précédement chargés
 	 * dans le modèle
@@ -134,8 +125,7 @@ public class VueReseau extends JPanel implements VueDessinable {
 			Object key = it.next();
 			Point p = points.get(key);
 
-			VuePoint vuePoint = new VuePoint(p.getLongitude(), p.getLatitude(),
-					p.getAdresse());
+			VuePoint vuePoint = new VuePoint(p.getLongitude(), p.getLatitude());
 			if (vuePoint != null) {
 				this.vuesPoints.add(vuePoint);
 			}
@@ -151,9 +141,8 @@ public class VueReseau extends JPanel implements VueDessinable {
 					.getAdresse());
 
 			VueTroncon vueTroncon = new VueTroncon(origine.getLongitude(),
-					origine.getLatitude(), origine.getAdresse(),
-					destination.getLongitude(), destination.getLatitude(),
-					destination.getAdresse());
+					origine.getLatitude(), destination.getLongitude(),
+					destination.getLatitude());
 			if (vueTroncon != null) {
 				vuesTroncons.add(vueTroncon);
 			}
@@ -174,10 +163,6 @@ public class VueReseau extends JPanel implements VueDessinable {
 
 	public VueTournee getVueTournee() {
 		return vueTournee;
-	}
-
-	public VuePoint getVuePointClique() {
-		return vuePointClique;
 	}
 
 	/**
@@ -206,17 +191,8 @@ public class VueReseau extends JPanel implements VueDessinable {
 	 */
 	@Override
 	public void dessiner(Graphics g) {
-
-		if (this.vueTournee != null) {
-			this.dessinerTroncons(g);
-			this.dessinerTournee(g);
-			this.vueTournee = null;
-		} else {
-			this.dessinerTroncons(g);
-
-		}
+		this.dessinerTroncons(g);
 		this.dessinerPoints(g);
-
 	}
 
 	// public List<VuePoint> trouverVue(java.awt.Point p) {

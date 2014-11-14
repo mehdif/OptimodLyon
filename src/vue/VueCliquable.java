@@ -9,6 +9,6 @@ public interface VueCliquable {
     /**
      * @return
      */
-    public Boolean estClique();
+    public Boolean onClique();
 
 }

@@ -1,9 +1,10 @@
 package test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +18,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import utils.Properties;
+
 public class ReseauTest {
-	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();	
+	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
 
 	/**
 	 * setUpStreams et cleanUpStreams permettent de récupérer la sortie standard
@@ -35,12 +38,13 @@ public class ReseauTest {
 	}
 
 	/**
-	 * Test avec un fichier bien formé et sans anomalie, vérification de l'objet réseau crée
+	 * Test avec un fichier bien formé et sans anomalie, vérification de l'objet
+	 * réseau crée
 	 */
 	@Test
 	public void testChargerReseauXML_BienFormeSansAnomalie() {
 		Reseau reseau = new Reseau();
-		reseau.chargerReseauXML("xmlPourTests/planSimplifie_BienForme.xml");
+		reseau.chargerReseauXML(Properties.CHEMIN_XML_TEST_RESEAU_SIMPLIFIE_OK);
 		Map<Integer, Point> points = reseau.getPoints();
 		List<Troncon> troncons = reseau.getTroncons();
 
@@ -110,45 +114,41 @@ public class ReseauTest {
 
 		// Est-ce que tout s'est bien déroulé ?
 		assertTrue(reseau
-				.chargerReseauXML("xmlPourTests/planSimplifie_BienForme.xml"));
+				.chargerReseauXML(Properties.CHEMIN_XML_TEST_RESEAU_SIMPLIFIE_OK));
 	}
 
 	/**
-	 * Test avec un fichier bien formé mais présentant l'anomalie suivante :
-	 * un des tronçons indique un point de destination inexistant
+	 * Test avec un fichier bien formé mais présentant l'anomalie suivante : un
+	 * des tronçons indique un point de destination inexistant
 	 */
 	@Test
 	public void testChargerReseauXML_BienFormeAvecAnomalie1() {
 		Reseau reseau = new Reseau();
 		assertFalse(reseau
-				.chargerReseauXML("xmlPourTests/planSimplifie_BienFormeAvecAnomalie1.xml"));
-		assertEquals(
-				outContent.toString(),
-				"Erreur : le point de destination mentionné dans un ou plusieurs tronçons n'est pas connu, abandon du chargement du plan\r\n");
+				.chargerReseauXML(Properties.CHEMIN_XML_TEST_RESEAU_DESTINATION_INCONNUE));
+		assertEquals(outContent.toString(),
+				Properties.ERREUR_RESEAU_DESTINATION_INCONNUE + "\r\n");
 	}
 
 	/**
-	 * Test avec un fichier bien formé mais présentant l'anomalie suivante :
-	 * un des tronçons indique un point de destination égal au point d'origine
+	 * Test avec un fichier bien formé mais présentant l'anomalie suivante : un
+	 * des tronçons indique un point de destination égal au point d'origine
 	 */
 	@Test
 	public void testChargerReseauXML_BienFormeAvecAnomalie2() {
 		Reseau reseau = new Reseau();
 		assertFalse(reseau
-				.chargerReseauXML("xmlPourTests/planSimplifie_BienFormeAvecAnomalie2.xml"));
-		assertEquals(
-				outContent.toString(),
-				"Erreur : l'entrepôt décrit dans le document ne correspond pas à un des points du réseau, abandon du chargement des livraisons\r\n");
+				.chargerReseauXML(Properties.CHEMIN_XML_TEST_RESEAU_ORIGINE_DEST_IDENTIQUE));
+		assertEquals(outContent.toString(),
+				Properties.ERREUR_RESEAU_ORIGINE_DESTINATION + "\r\n");
 	}
 
 	@Test
 	public void testChargerReseauXML_MalForme() {
 		Reseau reseau = new Reseau();
 		assertFalse(reseau
-				.chargerReseauXML("xmlPourTests/plan20x20_notWellFormed.xml"));
-		File xml = new File("xmlPourTests/plan20x20_notWellFormed.xml");
-		assertEquals(outContent.toString(), xml.getAbsolutePath()
-				+ " n'est pas valide\r\n");
+				.chargerReseauXML(Properties.CHEMIN_XML_TEST_RESEAU_MALFORME));
+		assertEquals(outContent.toString(), Properties.XML_NON_VALIDE + "\r\n");
 	}
 
 }

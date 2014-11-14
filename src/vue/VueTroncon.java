@@ -35,10 +35,12 @@ public class VueTroncon implements VueDessinable {
      * @param y1 coordonnee y de la VuePoint origine
      * @param x2 coordonnee x de la VuePoint destination
      * @param y2 coordonnee y de la VuePoint destination
+     * @param integer2 
+     * @param integer 
      */
-    public VueTroncon(int x1,int y1,int x2, int y2){
-    	origine = new VuePoint(x1,y1);
-    	destination = new VuePoint(x2,y2);
+    public VueTroncon(int x1,int y1,int adresse1,int x2, int y2, int adresse2){
+    	origine = new VuePoint(x1,y1,adresse1);
+    	destination = new VuePoint(x2,y2,adresse2);
     	couleur = Color.BLACK;
     }
 
@@ -94,6 +96,13 @@ public class VueTroncon implements VueDessinable {
 		g2d.setStroke(new BasicStroke(EPAISSEUR_TRAIT_TRONCON_TOURNEE));
 		g.drawLine(x1 + decalage, y1 + decalage, x2 + decalage, y2 + decalage);
 		
+	}
+	
+    /**
+     * Change la couleur de la vue troncon
+     */
+	public void setCouleur(Color couleur) {
+		this.couleur = couleur;
 	}
 	
 

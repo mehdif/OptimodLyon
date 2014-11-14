@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
 import modele.Client;
 import modele.DemandeLivraison;
 import modele.Itineraire;
@@ -28,6 +29,7 @@ public class Application {
          ****************** Constructeur ********************
          ****************************************************/
         
+
     /**
          * Constructeur par dï¿½faut
      */
@@ -36,6 +38,8 @@ public class Application {
                 receveur = new Receveur();
         vueFenetre = new VueFenetre(this);
     }
+
+
         /****************************************************
          ********************* Getter **********************
          ****************************************************/
@@ -67,30 +71,31 @@ public class Application {
 		this.vueFenetre.vueReseau.chargerVueReseau(unReseau.getTroncons(),
 				unReseau.getPoints());
         this.vueFenetre.vueReseau.repaint();
+
     }
     /**
      * Affiche les demandes de livraison sur le plan suivant le code couleur
      */
     public void afficherDemandesLivraison(){
             //Effacement des elements de la collection de vuePoint
-        this.vueFenetre.vueReseau.getVuesPoints().clear();
-        
-        Map<Integer, Point> points = this.tournee.getReseau().getPoints();
-        Iterator iterator = points.entrySet().iterator();
+                this.vueFenetre.vueReseau.getVuesPoints().clear();
+                
+                Map<Integer, Point> points = this.tournee.getReseau().getPoints();
+                Iterator iterator = points.entrySet().iterator();
                 
                 Map<PlageHoraire, Color> mapCouleur = new HashMap<PlageHoraire, Color>();
                 mapCouleur.clear();
-        while (iterator.hasNext()) {
-            
-            Map.Entry unPoint = (Map.Entry) iterator.next();
-            Point pointCourant = (Point) (unPoint.getValue());
-            VuePoint vuePointCourant = new VuePoint(
+                while (iterator.hasNext()) {
+                        
+                        Map.Entry unPoint = (Map.Entry) iterator.next();
+                        Point pointCourant = (Point) (unPoint.getValue());
+			VuePoint vuePointCourant = new VuePoint(
 					pointCourant.getLongitude(), pointCourant.getLatitude(),
 					pointCourant.getAdresse());
 
 			// Test de l'existence d'une demande de livraison associee au point
 			// courant
-            if (pointCourant.possedeUneDemande()) {
+                        if (pointCourant.possedeUneDemande()) {
                         	
                         	//Test de l'existence d'une couleur associee a une plage horaire
                             if( ( mapCouleur.get( pointCourant.getUneDemande().getPlageHoraire() ) ) == null )
@@ -100,12 +105,15 @@ public class Application {
                             }
                             
 				vuePointCourant.setCouleurNonClique(mapCouleur.get( pointCourant.getUneDemande().getPlageHoraire() ));
-                this.vueFenetre.vueReseau.getVuesPoints().add(vuePointCourant);
+                                this.vueFenetre.vueReseau.getVuesPoints().add(vuePointCourant);
                         
 			} else {
 				vuePointCourant.setCouleurNonClique(Color.BLACK);
-                this.vueFenetre.vueReseau.getVuesPoints().add(vuePointCourant);
-        }
+                                this.vueFenetre.vueReseau.getVuesPoints().add(vuePointCourant);
+                }
+		}
+                
+                //Affichage de l'entrepot
                 
 		VueEntrepot vueEntrepot = new VueEntrepot(this.tournee.getEntrepot()
 				.getLongitude(), this.tournee.getEntrepot().getLatitude(),
@@ -115,30 +123,8 @@ public class Application {
                 
                 //Rafraichissement de l'affichage
                 
-        this.vueFenetre.vueReseau.repaint();
-    }                
-                Map<PlageHoraire, Color> mapCouleur = new HashMap<PlageHoraire, Color>();
-                mapCouleur.clear();
-					pointCourant.getLongitude(), pointCourant.getLatitude(),
-					pointCourant.getAdresse());
-
-			// Test de l'existence d'une demande de livraison associee au point
-			// courant
-                        	
-                        	//Test de l'existence d'une couleur associee a une plage horaire
-                            if( ( mapCouleur.get( pointCourant.getUneDemande().getPlageHoraire() ) ) == null )
-                            {
-                            	Color randomCouleur = new Color( alea(255), alea(255), alea(255) );
-                            	mapCouleur.put(pointCourant.getUneDemande().getPlageHoraire() , randomCouleur);
-                            }
-                            
-				vuePointCourant.setCouleurNonClique(mapCouleur.get( pointCourant.getUneDemande().getPlageHoraire() ));
-                        
-			} else {
-				vuePointCourant.setCouleurNonClique(Color.BLACK);
-		}
-                
-                //Affichage de l'entrepot
+                this.vueFenetre.vueReseau.repaint();
+    }
 
     
     /**
@@ -160,19 +146,21 @@ public class Application {
      * Charge et dessine le plan du reseau.
      */
     public boolean chargerReseauXML(){
-        Reseau reseau = new Reseau();
-        boolean chargementOK = reseau.chargerReseauXML(null);
-        if(chargementOK){
-            tournee = new Tournee(reseau);
-            this.dessinerReseau(reseau);
-        }
-        return chargementOK;
+            Reseau reseau = new Reseau();
+            boolean chargementOK = reseau.chargerReseauXML(null);
+            if(chargementOK){
+                    tournee = new Tournee(reseau);
+                    this.dessinerReseau(reseau);
+            }
+            
+            return chargementOK;
     }
     
     public boolean chargerDemandeLivraisonXML(){
-        boolean chargementOK = tournee.chargerDonneesDemandeXML(null);
-        this.vueFenetre.vueReseau.repaint();
-        return chargementOK;
+            boolean chargementOK = tournee.chargerDonneesDemandeXML(null);
+            
+            this.vueFenetre.vueReseau.repaint();
+            return chargementOK;
     }
     
     public void afficherItineraire(){
@@ -237,6 +225,7 @@ public class Application {
 	}
            
     public static void main(String []args){
+
         //Application app = new Application();
     	
 		Reseau reseau = new Reseau();
@@ -244,5 +233,6 @@ public class Application {
 		Tournee tournee = new Tournee(reseau);
 		tournee.chargerDonneesDemandeXML("xmlPourTests/livraison10x10-3.xml");
         tournee.calculerTournee();
+
     }
 }
