@@ -1,8 +1,11 @@
 package controleur;
 import java.awt.Color;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import modele.Client;
 import modele.DemandeLivraison;
@@ -17,6 +20,7 @@ import vue.VueFenetre;
 import vue.VueItineraire;
 import vue.VuePoint;
 import vue.VueTournee;
+import vue.VueTroncon;
 /**
  * @author Hexanome 4301
  */
@@ -65,7 +69,7 @@ public class Application {
      * Dessine le reseau dans la fenetre principale.
      */
     public void dessinerReseau(Reseau unReseau) {
-		this.vueFenetre.vueReseau.chargerVueReseau(unReseau.getTroncons(),
+		this.chargerVueReseau(unReseau.getTroncons(),
 				unReseau.getPoints());
                 this.vueFenetre.vueReseau.repaint();
     }
@@ -153,10 +157,53 @@ public class Application {
     
     public boolean chargerDemandeLivraisonXML(){
             boolean chargementOK = tournee.chargerDonneesDemandeXML(null);
-            
             this.vueFenetre.vueReseau.repaint();
             return chargementOK;
     }
+    
+    
+    public void chargerVueReseau(List<Troncon> troncons,
+            Map<Integer, Point> points) {
+
+        this.vueFenetre.vueReseau.getVuesPoints().clear();
+        this.vueFenetre.vueReseau.getVuesTroncons().clear();
+        // Remplissage de la liste vuesPoints
+
+        Set<Integer> listKeys = points.keySet(); // Obtenir la liste des cles
+        Iterator<Integer> it = listKeys.iterator();
+
+        // Parcourir les cles et afficher les entrees de chaque cle;
+        while (it.hasNext()) {
+            Object key = it.next();
+            Point p = points.get(key);
+
+            VuePoint vuePoint = new VuePoint(p.getLongitude(), p.getLatitude(),
+                    p.getAdresse());
+            if (vuePoint != null) {
+                this.vueFenetre.vueReseau.getVuesPoints().add(vuePoint);
+            }
+        }
+
+        // Remplissage de la liste vueTroncons
+        for (int i = 0; i < troncons.size(); i++) {
+            Troncon t = troncons.get(i);
+            Point origine = new Point(t.getOrigine().getLongitude(), t
+                    .getOrigine().getLatitude(), t.getOrigine().getAdresse());
+
+            Point destination = new Point(t.getDestination().getLongitude(), t
+                    .getDestination().getLatitude(), t.getDestination()
+                    .getAdresse());
+
+            VueTroncon vueTroncon = new VueTroncon(origine.getLongitude(),
+                    origine.getLatitude(), origine.getAdresse(),
+                    destination.getLongitude(), destination.getLatitude(),
+                    destination.getAdresse());
+            if (vueTroncon != null) {
+                this.vueFenetre.vueReseau.getVuesTroncons().add(vueTroncon);
+            }
+        }
+    }
+
     
     public void afficherItineraire(){
             
@@ -198,17 +245,27 @@ public class Application {
     }
             
     public void recupererPoint(int adresse){
+    	SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
     	Point point = tournee.getReseau().getPointViaAdresse(adresse);
     	if(null != point.getUneDemande()){
 			String idClient = point.getUneDemande().getClient().getId()
 					.toString();
     		String adresseString = new Integer(adresse).toString();
-			String heureDebut = point.getUneDemande().getPlageHoraire()
-					.getDebut().getTime().toString();
-			String heureFin = point.getUneDemande().getPlageHoraire().getFin()
-					.getTime().toString();
+			String heureDebut = dateFormat.format(point.getUneDemande().getPlageHoraire()
+					.getDebut().getTime()).toString();
+			String heureFin = dateFormat.format(point.getUneDemande().getPlageHoraire().getFin()
+					.getTime()).toString();
 			vueFenetre.affichageInfos(idClient, adresseString, heureDebut,
-					heureFin);
+					heureFin, true);
+    	}
+    	else{
+    		String idClient = "Non défini";
+    		String adresseString = new Integer(adresse).toString();
+    		String heureDebut = "Non défini";
+			String heureFin = "";
+			vueFenetre.affichageInfos(idClient, adresseString, heureDebut,
+					heureFin, false);
+    		
     	}
 		// System.out.println(point.getAdresse()+ " : " + "(" +
 		// point.getLongitude() + ", " + point.getLatitude()+ ")");

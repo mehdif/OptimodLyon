@@ -17,13 +17,13 @@ public class VuePoint implements VueCliquable, VueDessinable {
     private int adresse;
     protected final double RAYON = 10;
     protected final double OFFSET = RAYON/2;
-    protected Color couleur = Color.BLACK;
+    private Color couleur;
     //private Color couleurClique = Color.YELLOW;
     private Color couleurNonClique;
     
     
     protected boolean clique = false;
-    protected Ellipse2D shape;
+    private Ellipse2D shape;
     
 	/****************************************************
 	 ****************** Constructeurs ********************
@@ -102,7 +102,6 @@ public class VuePoint implements VueCliquable, VueDessinable {
 		int x = (this.x);
 		int y = (this.y);
 		this.shape = new Ellipse2D.Double( (double) x - OFFSET , (double) y - OFFSET, RAYON, RAYON);
-	
 		if(clique){
 			this.setCouleur(Color.YELLOW);
 		}
@@ -126,7 +125,6 @@ public class VuePoint implements VueCliquable, VueDessinable {
 	@Override
     public Boolean onClique() {
         this.clique = true;
-        //System.out.println("Point x: " + this.getX() +"\ny : " + this.getY() );
         return null;
     }
 }

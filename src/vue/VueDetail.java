@@ -13,6 +13,7 @@ import javax.swing.JTextPane;
 import controleur.Application;
 import modele.Client;
 import modele.PlageHoraire;
+import modele.Point;
 
 /**
  * @author Hexanome 4301
@@ -24,17 +25,24 @@ public class VueDetail {
 	private JTextPane champClient;
 	private JTextPane champAdresse;
 	private JTextPane champPlageHoraire;
-
+	private JTextPane champDemande;
+	private Application application;
+	
+	
+	/****************************************************
+	 ****************** Constructeur ********************
+	 ****************************************************/
 
     /**
-     * 
+     * Constructeur par defaut
      */
     public VueDetail() {
     }
 
-    /**
-     * 
-     */
+    /****************************************************
+	 *************** Methodes de classes ****************
+	 ****************************************************/
+
     public void onClicAjouterDemande() {
     	btnAjouter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -43,23 +51,24 @@ public class VueDetail {
     }
 
     /**
-     * @param client 
-     * @param adresse 
-     * @param plageHoraire
+     * Permet d'afficher les informations du point selectionne
+     * @param client : String contenant l'ID du client
+     * @param adresse : String contenant l'adresse de la demande de livraison
+     * @param heureDebut : String contenant l'heure de début de la plage horaire associee a la demande de livraison
+     * @param heureFin : String contenant l'heure de fin de la plage horaire associee a la demande de livraison
+     * @param demande : booleen qui indique si il y a une demande de livraison sur ce point
      */
-    public void affichageInfos(String client, String adresse, String heureDebut, String heureFin) {
-    	champClient.setText(client);
+    public void affichageInfos(String client, String adresse, String heureDebut, String heureFin, boolean demande) {
+	    champClient.setText(client);
 		champAdresse.setText(adresse);
-		champPlageHoraire.setText(heureDebut + "\n" + heureFin);
+		champPlageHoraire.setText(heureDebut + "  -  " + heureFin);
+		champDemande.setText(demande == true ? "Oui" : "Non");
 		champClient.repaint();
 		champAdresse.repaint();
 		champPlageHoraire.repaint();
-		
+		champDemande.repaint();
     }
 
-    /**
-     * 
-     */
     public void onClicSupprimerDemande() {
     	btnSupprimer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -68,23 +77,17 @@ public class VueDetail {
     }
 
     /**
-     * @return
+     * Permet d'initialiser les elements de la vue detail
+     * @param frame : fentre principale de notre application
      */
     public void initialiser(JFrame frame) {		
-		//Vue de droite pour les dï¿½tails du point de livraison sï¿½lectionnï¿½
-		JPanel vueDetail = new JPanel(new GridLayout(9, 1));
+		//Vue de droite pour les details du point de livraison selectionne
+		JPanel vueDetail = new JPanel(new GridLayout(11, 1));
 		frame.getContentPane().add(vueDetail, BorderLayout.EAST);
 		
 		JTextPane txtpnDtail = new JTextPane();
-		txtpnDtail.setText("D\u00E9tail de la livraison");
+		txtpnDtail.setText("D\u00E9tail Point");
 		vueDetail.add(txtpnDtail);
-		
-		JTextPane txtpnClient = new JTextPane();
-		txtpnClient.setText("Client :");
-		vueDetail.add(txtpnClient);
-		
-		champClient = new JTextPane();
-		vueDetail.add(champClient);
 		
 		JTextPane txtpnAdresse = new JTextPane();
 		txtpnAdresse.setText("Adresse :");
@@ -92,6 +95,20 @@ public class VueDetail {
 		
 		champAdresse = new JTextPane();
 		vueDetail.add(champAdresse);
+		
+		JTextPane txtpnDemande = new JTextPane();
+		txtpnDemande.setText("Demande :");
+		vueDetail.add(txtpnDemande);
+		
+		champDemande = new JTextPane();
+		vueDetail.add(champDemande);
+		
+		JTextPane txtpnClient = new JTextPane();
+		txtpnClient.setText("Client :");
+		vueDetail.add(txtpnClient);
+		
+		champClient = new JTextPane();
+		vueDetail.add(champClient);
 		
 		JTextPane txtpnPlageHoraire = new JTextPane();
 		txtpnPlageHoraire.setText("Plage horaire de livraison :");

@@ -1,6 +1,7 @@
 package vue;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.io.ByteArrayOutputStream;
 
@@ -13,45 +14,51 @@ import javax.swing.JTextPane;
  */
 public class VueListe {
 
-	
 	JPanel vueHistorique;
-	JTextPane txtpnHistorique;
-	JTextPane historique1;
+	JTextPane retourConsole;
+	
+	/****************************************************
+	 ****************** Constructeur ********************
+	 ****************************************************/
 
     /**
-     * 
+     * Construteur par defaut
      */
     public VueListe() {
     	
     }
+    
+    /****************************************************
+	 *************** Methodes de classes ****************
+	 ****************************************************/
 
-    /**
-     * @return
-     */	
-    public Boolean initialiser(JFrame frame, ByteArrayOutputStream outContent) {		
+   /**
+    * Permet d'initialiser la vue du bas afin d'afficher les retours de la console
+    * @param frame : la fenetre
+    * @param outContent : la sortie console
+    */
+    public void initialiser(JFrame frame, ByteArrayOutputStream outContent) {		
 		//Vue du bas pour l'historique des actions
-		JPanel vueHistorique = new JPanel(new GridLayout(3, 1));
-		vueHistorique = new JPanel(new GridLayout(3, 1));
+		vueHistorique = new JPanel(new GridLayout(1, 1));
+		vueHistorique.setSize(100, 500);
+		vueHistorique.setPreferredSize(new Dimension(100, 100));
 		frame.getContentPane().add(vueHistorique, BorderLayout.SOUTH);
 		
-		txtpnHistorique = new JTextPane();
-		txtpnHistorique.setText("HISTORIQUE");
-		vueHistorique.add(txtpnHistorique);
-		
-		historique1 = new JTextPane();
-		historique1.setText(outContent.toString());
-		vueHistorique.add(historique1);
+		retourConsole = new JTextPane();
+		retourConsole.setText(outContent.toString());
+		vueHistorique.add(retourConsole);
 
 		//Fin vue du bas
-        return null;
     }
 
     
     /**
-     * @return
+     * Permet de rafraichir la vue du bas
+     * @param outContent : la sortie console
      */
     public void refresh(ByteArrayOutputStream outContent) {		
-		historique1.setText(outContent.toString());
-		historique1.repaint();
+		retourConsole.setText(outContent.toString());
+		retourConsole.repaint();
+		outContent.reset();
     }
 }

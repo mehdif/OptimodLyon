@@ -26,10 +26,20 @@ public class VueMenu {
 	private JButton btnRedo;
 	private JButton btnGenererFeuilleDeRoute;
 	private Application application;
-	
-	
 	// Redirection de la sortie standard
 	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+	
+	/****************************************************
+	 ****************** Constructeur ********************
+	 ****************************************************/
+	
+	/**
+     * Constructeur par defaut
+     */
+	public VueMenu(Application application) {
+		this.application = application;
+	}
+	
 
 	/****************************************************
 	 ********************* Getter **********************
@@ -40,40 +50,27 @@ public class VueMenu {
 	}
 
 	/****************************************************
-	 *************** Méthodes de classes ****************
+	 *************** Methodes de classes ****************
 	 ****************************************************/
 
 	/**
-	 * setUpStreams permettent de récupérer la sortie standard
+	 * setUpStreams permettent de recuperer la sortie standard
 	 */
 	public void setUpStreams() {
 		System.setOut(new PrintStream(outContent));
 	}
 	
-	/**
-     * 
-     */
-	public VueMenu(Application application) {
-		this.application = application;
-	}
-
-	/**
-	 * @return
-	 */
-	public Boolean onClicCalculerTournee() {
+	public void onClicCalculerTournee() {
 		btnCalculerTournee.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				application.afficherItineraire();
 
 			}
 		});
-		return null;
 	}
 
-	/**
-	 * @return
-	 */
-	public Boolean onClicChargerReseau() {
+
+	public void onClicChargerReseau() {
 		btnChargerReseau.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setUpStreams();
@@ -84,13 +81,10 @@ public class VueMenu {
 				}
 			}
 		});
-		return null;
 	}
 
-	/**
-	 * @return
-	 */
-	public Boolean onClicUndo() {
+
+	public void onClicUndo() {
 		btnUndo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setUpStreams();
@@ -101,13 +95,10 @@ public class VueMenu {
 				}
 			}
 		});
-		return null;
 	}
 
-	/**
-	 * @return
-	 */
-	public Boolean onClicRedo() {
+
+	public void onClicRedo() {
 		btnRedo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				setUpStreams();
@@ -118,12 +109,9 @@ public class VueMenu {
 				}
 			}
 		});
-		return null;
 	}
 
-	/**
-     * 
-     */
+
 	public void onClicChargerDemandeLivraison() {
 		btnChargerDemandeLivraison.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -137,9 +125,6 @@ public class VueMenu {
 		});
 	}
 
-	/**
-     * 
-     */
 	public void onClicGenererFeuilleDeRoute() {
 		btnGenererFeuilleDeRoute.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -148,7 +133,8 @@ public class VueMenu {
 	}
 
 	/**
-	 * @return
+	 * Permet d'initialiser les boutons de la vue menu
+	 * @param frame : fenetre de l'application
 	 */
 	public void initialiser(JFrame frame) {
 		// Vue menu du haut pour les boutons de chargement
