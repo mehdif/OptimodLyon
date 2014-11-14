@@ -54,7 +54,11 @@ public class VueDetail {
      * Permet d'afficher les informations du point selectionne
      * @param client : String contenant l'ID du client
      * @param adresse : String contenant l'adresse de la demande de livraison
+<<<<<<< HEAD
      * @param heureDebut : String contenant l'heure de dï¿½but de la plage horaire associee a la demande de livraison
+=======
+     * @param heureDebut : String contenant l'heure de début de la plage horaire associee a la demande de livraison
+>>>>>>> branch 'master' of https://github.com/mehdif/OptimodLyon.git
      * @param heureFin : String contenant l'heure de fin de la plage horaire associee a la demande de livraison
      * @param demande : booleen qui indique si il y a une demande de livraison sur ce point
      */

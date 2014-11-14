@@ -26,10 +26,20 @@ public class VueMenu {
 	private JButton btnRedo;
 	private JButton btnGenererFeuilleDeRoute;
 	private Application application;
-	
-	
 	// Redirection de la sortie standard
 	private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+	
+	/****************************************************
+	 ****************** Constructeur ********************
+	 ****************************************************/
+	
+	/**
+     * Constructeur par defaut
+     */
+	public VueMenu(Application application) {
+		this.application = application;
+	}
+	
 
 	/****************************************************
 	 ********************* Getter **********************
@@ -49,17 +59,7 @@ public class VueMenu {
 	public void setUpStreams() {
 		System.setOut(new PrintStream(outContent));
 	}
-	
-	/**
-     * 
-     */
-	public VueMenu(Application application) {
-		this.application = application;
-	}
 
-	/**
-	 * @return
-	 */
 	public void onClicCalculerTournee() {
 		btnCalculerTournee.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {

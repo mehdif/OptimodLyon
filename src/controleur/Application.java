@@ -233,6 +233,7 @@ public class Application {
 					heureFin, true);
     	}
     	else{
+
     		String idClient = "Non d�fini";
     		String adresseString = new Integer(adresse).toString();
     		String heureDebut = "Non d�fini";

@@ -150,6 +150,7 @@ public class VueReseau extends JPanel implements VueDessinable {
 		}
 	}
 
+
 	/****************************************************
 	 ********************* Getter **********************
 	 ****************************************************/
@@ -169,15 +170,15 @@ public class VueReseau extends JPanel implements VueDessinable {
 	public VuePoint getVuePointClique() {
 		return vuePointClique;
 	}
+	
+	
+    /****************************************************
+	 *************** Methodes de classes ****************
+	 ****************************************************/
 
 	/**
-	 * Méthode d'initialisation. Insère le JPanel: vueReseau au centre du cadre
-	 * frame passé en paramètre
-	 * 
-	 * @param frame
-	 * 
-	 * @return bool , égal à true si l'initialisation s'est correctement
-	 *         effectué, false sinon
+	 * Permet de dessiner les points
+	 * @param g 
 	 */
 	public void initialiser(JFrame frame) {
 		frame.getContentPane().add(this, BorderLayout.CENTER);
@@ -193,17 +194,14 @@ public class VueReseau extends JPanel implements VueDessinable {
 	 */
 	@Override
 	public void dessiner(Graphics g) {
-
 		if (this.vueTournee != null) {
 			this.dessinerTroncons(g);
 			this.dessinerTournee(g);
 			this.vueTournee = null;
 		} else {
 			this.dessinerTroncons(g);
-
 		}
 		this.dessinerPoints(g);
-
 	}
 
 	@Override

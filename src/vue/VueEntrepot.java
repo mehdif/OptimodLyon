@@ -12,35 +12,46 @@ import java.util.*;
  */
 public class VueEntrepot extends VuePoint {
 
-    /**
-     * 
-     */
-private Rectangle2D shape;
-
+	private Rectangle2D shape;
+	
+	/****************************************************
+	 ****************** Constructeurs ********************
+	 ****************************************************/
+	/**
+	 * Constructeur par défaut
+	 */
 	public VueEntrepot() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * Constructeur à trois paramètre
+	 * @param x : longitude de l'entrepot
+	 * @param y : latitude de l'entrepot
+	 * @param adresse : adresse de l'entrepot
+	 */
 	public VueEntrepot(int x, int y, int adresse) {
 		super(x, y, adresse);
-		// TODO Auto-generated constructor stub
 	}
+	
+	/****************************************************
+	 *************** Methodes de classes ****************
+	 ****************************************************/
 
+	/**
+	 * Permet de dessine l'entrepot
+	 */
 	@Override
 	public void dessiner(Graphics g) {
 		Graphics2D g2d = (Graphics2D) g;
 		int x = (this.getX());
 		int y = (this.getY());
-	
 		this.shape = new Rectangle2D.Double( (double) x - OFFSET , (double) y - OFFSET, RAYON, RAYON);
-	
 		if(clique){
 			this.setCouleur(Color.YELLOW);
 		}
-		g2d.setColor(this.couleur);
+		else this.setCouleur(this.getCouleurNonClique());
+		g2d.setColor(this.getCouleur());
 		g2d.fill(this.shape);
 	}
-
-
 }
