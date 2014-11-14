@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import modele.Client;
@@ -41,6 +42,38 @@ public class Application {
                 invocateur = new Invocateur();
                 receveur = new Receveur();
         vueFenetre = new VueFenetre(this);
+        
+//        Reseau reseau = new Reseau();
+//		boolean chargementOK = reseau
+//				.chargerReseauXML(utils.Properties.CHEMIN_XML_TEST_RESEAU_SIMPLIFIE_OK);
+//		if (chargementOK) {
+//			tournee = new Tournee(reseau);
+//		}
+//		tournee.chargerDonneesDemandeXML(utils.Properties.CHEMIN_XML_TEST_DEMANDES_SIMPLIFIE_OK );
+//
+//		tournee.afficherTournee();
+//
+//		// Premiere commande
+//		Point point1 = new Point(84, 84, 84);
+//		Client client1 = new Client(84);
+//		DemandeLivraison uneDemandeLivraison1 = new DemandeLivraison(point1,
+//				client1, tournee.getPlagesHoraires().get(0), false, 4);
+//		CommandeAjouterDemandeLivraison commandeAjouterDemandeLivraison1 = new CommandeAjouterDemandeLivraison(
+//				receveur, tournee, uneDemandeLivraison1);
+//
+//		// Premiere commande
+//		Point point2 = new Point(69, 69, 69);
+//		Client client2 = new Client(69);
+//		DemandeLivraison uneDemandeLivraison2 = new DemandeLivraison(point2,
+//				client2, tournee.getPlagesHoraires().get(0), false, 5);
+//		CommandeAjouterDemandeLivraison commandeAjouterDemandeLivraison2 = new CommandeAjouterDemandeLivraison(
+//				receveur, tournee, uneDemandeLivraison2);
+//
+//		System.out.println();
+//		System.out.println();
+//		invocateur.ajouterDemandeLivraison(commandeAjouterDemandeLivraison1);
+//		invocateur.ajouterDemandeLivraison(commandeAjouterDemandeLivraison2);
+//		tournee.afficherTournee();
     }
 
 
@@ -234,9 +267,9 @@ public class Application {
     	}
     	else{
 
-    		String idClient = "Non d�fini";
+    		String idClient = "Non défini";
     		String adresseString = new Integer(adresse).toString();
-    		String heureDebut = "Non d�fini";
+    		String heureDebut = "Non défini";
 			String heureFin = "";
 			vueFenetre.affichageInfos(idClient, adresseString, heureDebut,
 					heureFin, false);
@@ -253,13 +286,13 @@ public class Application {
            
     public static void main(String []args){
 
-       //new Application();
+       new Application();
     	
     	
-		Reseau reseau = new Reseau();
+		/*Reseau reseau = new Reseau();
 		reseau.chargerReseauXML("xmlPourTests/plan10x10.xml");
 		Tournee tournee = new Tournee(reseau);
 		tournee.chargerDonneesDemandeXML("xmlPourTests/livraison10x10-3.xml");
-        tournee.calculerTournee();
+        tournee.calculerTournee();*/
       }
 }

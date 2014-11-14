@@ -57,7 +57,7 @@ public class VueMenu {
 	 * setUpStreams permettent de recuperer la sortie standard
 	 */
 	public void setUpStreams() {
-		System.setOut(new PrintStream(outContent));
+		//System.setOut(new PrintStream(outContent));
 	}
 
 	public void onClicCalculerTournee() {
@@ -80,6 +80,7 @@ public class VueMenu {
 				application.vueFenetre.refresh();
 				if(chargementOK == true){
 					btnChargerDemandeLivraison.setEnabled(true);
+					btnChargerReseau.setEnabled(false);
 				}
 			}
 		});
@@ -92,6 +93,7 @@ public class VueMenu {
 				setUpStreams();
 				boolean undoOK = application.getInvocateur().undo();
 				application.vueFenetre.refresh();
+				application.getTournee().afficherTournee();
 				if (undoOK == true){
 					btnUndo.setEnabled(true);
 				}
@@ -121,8 +123,10 @@ public class VueMenu {
 				application.vueFenetre.refresh();
 				if(chargementOK == true){
 					btnGenererFeuilleDeRoute.setEnabled(true);
+					btnCalculerTournee.setEnabled(true);
+					btnChargerDemandeLivraison.setEnabled(false);
 					application.afficherDemandesLivraison();
-				}	
+				}
 			}
 		});
 	}
@@ -158,6 +162,7 @@ public class VueMenu {
 		frame.getContentPane().add(vueMenuGauche, BorderLayout.WEST);
 
 		btnCalculerTournee = new JButton("Calculer");
+		btnCalculerTournee.setEnabled(false);
 		vueMenuGauche.add(btnCalculerTournee);
 		onClicCalculerTournee();
 

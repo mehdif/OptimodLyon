@@ -27,6 +27,7 @@ import utils.DijkstraAlgorithm;
 import utils.GraphLivraisons;
 //github.com/mehdif/OptimodLyon.git
 import utils.Properties;
+import utils.SolutionState;
 import utils.TSP;
 import utils.TourneeException;
 import utils.XMLReader;
@@ -131,26 +132,31 @@ public class Tournee {
 		
 		//Appel a CHOCO
 		TSP tsp = new TSP(graph);
-		tsp.solve(200000,graph.getNbVertices()*graph.getMaxArcCost()+1);
+		SolutionState s = tsp.solve(200000,graph.getNbVertices()*graph.getMaxArcCost()+1);
 
-		ArrayList<Point> globalPath = creerItineraire(tsp);
-		for(Point p : globalPath){
-			System.out.print(" " + p.getAdresse());
+		if(s ==  SolutionState.NO_SOLUTION_FOUND || s == SolutionState.INCONSISTENT){
+			System.out.println("Pas de solution");
 		}
-
-
-		displaySuccesors(graph);
-		remplirItineraire(globalPath);
-		
-		for(Itineraire i : itineraires){
+		else{
+			ArrayList<Point> globalPath = creerItineraire(tsp);
+			/*for(Point p : globalPath){
+				System.out.print(" " + p.getAdresse());
+			}*/
+	
+	
+			displaySuccesors(graph);
+			remplirItineraire(globalPath);
 			
-			System.out.println("Itineraire");
-			for(int j = 0; j < i.getTroncons().size(); j++ ){
-				System.out.println("It = " + i.getTroncons().get(j).getOrigine().getAdresse() + " : " + i.getTroncons().get(j).getDestination().getAdresse() );
+			/*for(Itineraire i : itineraires){
+				
+				System.out.println("Itineraire");
+				for(int j = 0; j < i.getTroncons().size(); j++ ){
+					System.out.println("It = " + i.getTroncons().get(j).getOrigine().getAdresse() + " : " + i.getTroncons().get(j).getDestination().getAdresse() );
+				}
 			}
+	
+			System.out.println("DONE");*/
 		}
-
-		System.out.println("DONE");
 		
 	}
 
@@ -216,10 +222,16 @@ public class Tournee {
 		for(int i = 0; i < plagesHoraires.size(); i++){
 		
 			//Premiere plage horaire
-			if(i == 0){
-				creerPremiereFenetre(entrepot, plagesHoraires.get(i), plagesHoraires.get(i+1), graph);
+			if(i == 0 ){
+				if(plagesHoraires.size() == 1){
+					creerFenetreUnique(entrepot, plagesHoraires.get(i), graph);
+				}
+				else{
+					creerPremiereFenetre(entrepot, plagesHoraires.get(i), plagesHoraires.get(i+1), graph);
+				}
+				
 			}
-			else if(i == ( plagesHoraires.size() - 1 )){
+			else if(i == ( plagesHoraires.size() - 1)){
 				creerDerniereFenetre(entrepot, plagesHoraires.get(i), graph);
 			}
 			else{
@@ -345,6 +357,64 @@ public class Tournee {
 	}
 	
 	
+	public void creerFenetreUnique(Entrepot entrepot, PlageHoraire plageHoraireCourante, GraphLivraisons graph){
+		
+		//Points et troncons du plan du reseau
+		List<Point> listePointsReseau = new ArrayList<Point>(reseau.getPoints().values());
+		List<Troncon> listeTronconsReseau = new ArrayList<Troncon>(reseau.getTroncons());
+
+		//Creer Dijkstra avec les points et les troncons du reseau
+		DijkstraAlgorithm dijkstra = new DijkstraAlgorithm(listePointsReseau, listeTronconsReseau);
+
+		//Relier l'entrepot a la premiere plage horaire
+		List<DemandeLivraison> dem = plageHoraireCourante.getDemandeLivraison();
+		for(int i = 0; i < dem.size() ; i++){
+			
+			Point p = dem.get(i).getPointDeLivraison();
+			//System.out.println(entrepot.getAdresse() + " " + entrepot.getLongitude() + " " + entrepot.getLatitude());
+			//Point e = listePointsReseau.get(350);
+			//System.out.println(p1.getAdresse() + " " + p1.getLongitude() + " " + p1.getLatitude());
+	        dijkstra.execute(reseau.getPoints().get(entrepot.getAdresse()));
+	        LinkedList<Point> path = dijkstra.getPath(p);
+	        //paths.put(entrepot.getAdresse()+""+p.getAdresse(), new LinkedList<Point>(path));
+	        
+	        //Mettre a jour la matrice des couts
+	        graph.setCost(0, p.getOrdreLivraison(), (int) getPathCost(path, reseau.getTroncons()));
+
+	        //Mettre a jour les successeurs
+	    	graph.setSucc(0, p.getOrdreLivraison());
+	    	
+			System.out.println("Entrepot ; " + p.getOrdreLivraison() + " Poids = " + graph.getCost(0, p.getOrdreLivraison()));				
+		}
+		
+		//Relier les points d'une plage horaire entre eux	
+		ArrayList<Point[]> combinaisonsP = getCombinaisons(plageHoraireCourante.getDemandeLivraison());
+		
+		//ArrayList<Point> p = plageHoraireCourante.getDemandeLivraison().ge;
+		for(Point[] pts : combinaisonsP){
+			
+	        dijkstra.execute(pts[0]);
+	        LinkedList<Point> path = dijkstra.getPath(pts[1]);
+	        paths.put(pts[0].getAdresse()+""+ pts[1].getAdresse(), new LinkedList<Point>(path));
+	        
+	        
+	        //Mettre a jour la matrice des couts
+	        int value = (int) getPathCost(path, reseau.getTroncons());
+	        graph.setCost(pts[0].getOrdreLivraison(), pts[1].getOrdreLivraison(), value);
+	        updateMinMaxCost(graph, value);
+	        graph.setCost(pts[0].getOrdreLivraison(), pts[1].getOrdreLivraison(), value);
+	        graph.setCost(pts[1].getOrdreLivraison(), pts[0].getOrdreLivraison(), value);
+
+	        //Mettre a jour les successeurs
+	    	graph.setSucc(pts[0].getOrdreLivraison(), pts[1].getOrdreLivraison());
+	    	graph.setSucc(pts[1].getOrdreLivraison(), pts[0].getOrdreLivraison());
+	        
+			System.out.println("Point " + pts[0].getOrdreLivraison() + " ; " + pts[1].getOrdreLivraison() + " Poids = " + graph.getCost(pts[0].getOrdreLivraison(), pts[1].getOrdreLivraison()));		
+		}
+		
+	}
+
+	
 	public void creerFenetreLivraison(PlageHoraire plageHoraireCourante, PlageHoraire plageHoraireSuivante, GraphLivraisons graph){
 		
 
@@ -389,7 +459,7 @@ public class Tournee {
 				
 		        dijkstra.execute(pSource);
 		        LinkedList<Point> path = dijkstra.getPath(pDestination);
-		        paths.put(pSource.getAdresse()+""+ pDestination.getAdresse(), new LinkedList<Point>(path));
+		        //paths.put(pSource.getAdresse()+""+ pDestination.getAdresse(), new LinkedList<Point>(path));
 		        
 		        //Mettre a jour la matrice des couts et les valeurs min et max
 		        int value = (int) getPathCost(path, reseau.getTroncons());
@@ -613,6 +683,11 @@ public class Tournee {
 	 */
 	public boolean chargerDonneesDemandeXML(String nomFichier) {
 		try {
+			
+			itineraires.clear();
+			plagesHoraires.clear();
+			//paths.clear();
+			
 			File xml;
 			if (null == nomFichier) {
 				xml = XMLReader.ouvrirFichier();
