@@ -1,8 +1,11 @@
 package controleur;
 import java.awt.Color;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import modele.Client;
 import modele.DemandeLivraison;
@@ -17,6 +20,7 @@ import vue.VueFenetre;
 import vue.VueItineraire;
 import vue.VuePoint;
 import vue.VueTournee;
+import vue.VueTroncon;
 /**
  * @author Hexanome 4301
  */
@@ -61,14 +65,15 @@ public class Application {
          *************** MÃ©thodes de classes ****************
          ****************************************************/
     public void calculerTournee() {
-        // TODO implement here
+        tournee.calculerTournee();
+    	
     }
     /**
      * @param unReseau
      * Dessine le reseau dans la fenetre principale.
      */
     public void dessinerReseau(Reseau unReseau) {
-		this.vueFenetre.vueReseau.chargerVueReseau(unReseau.getTroncons(),
+		this.chargerVueReseau(unReseau.getTroncons(),
 				unReseau.getPoints());
         this.vueFenetre.vueReseau.repaint();
 
@@ -87,8 +92,8 @@ public class Application {
                 mapCouleur.clear();
                 while (iterator.hasNext()) {
                         
-                        Map.Entry unPoint = (Map.Entry) iterator.next();
-                        Point pointCourant = (Point) (unPoint.getValue());
+                Map.Entry unPoint = (Map.Entry) iterator.next();
+                Point pointCourant = (Point) (unPoint.getValue());
 			VuePoint vuePointCourant = new VuePoint(
 					pointCourant.getLongitude(), pointCourant.getLatitude(),
 					pointCourant.getAdresse());
@@ -158,62 +163,83 @@ public class Application {
     
     public boolean chargerDemandeLivraisonXML(){
             boolean chargementOK = tournee.chargerDonneesDemandeXML(null);
-            
             this.vueFenetre.vueReseau.repaint();
             return chargementOK;
     }
     
+    
+    public void chargerVueReseau(List<Troncon> troncons,
+            Map<Integer, Point> points) {
+
+        this.vueFenetre.vueReseau.getVuesPoints().clear();
+        this.vueFenetre.vueReseau.getVuesTroncons().clear();
+        // Remplissage de la liste vuesPoints
+
+        Set<Integer> listKeys = points.keySet(); // Obtenir la liste des cles
+        Iterator<Integer> it = listKeys.iterator();
+
+        // Parcourir les cles et afficher les entrees de chaque cle;
+        while (it.hasNext()) {
+            Object key = it.next();
+            Point p = points.get(key);
+
+            VuePoint vuePoint = new VuePoint(p.getLongitude(), p.getLatitude(),
+                    p.getAdresse());
+            if (vuePoint != null) {
+                this.vueFenetre.vueReseau.getVuesPoints().add(vuePoint);
+            }
+        }
+
+        // Remplissage de la liste vueTroncons
+        for (int i = 0; i < troncons.size(); i++) {
+            Troncon t = troncons.get(i);
+            Point origine = new Point(t.getOrigine().getLongitude(), t
+                    .getOrigine().getLatitude(), t.getOrigine().getAdresse());
+
+            Point destination = new Point(t.getDestination().getLongitude(), t
+                    .getDestination().getLatitude(), t.getDestination()
+                    .getAdresse());
+
+            VueTroncon vueTroncon = new VueTroncon(origine.getLongitude(),
+                    origine.getLatitude(), origine.getAdresse(),
+                    destination.getLongitude(), destination.getLatitude(),
+                    destination.getAdresse());
+            if (vueTroncon != null) {
+                this.vueFenetre.vueReseau.getVuesTroncons().add(vueTroncon);
+            }
+        }
+    }
+
+    
     public void afficherItineraire(){
-            
-            System.out.println("clic afficherItineraire");
-            Map<Integer, Point> points = this.tournee.getReseau().getPoints();
-            
-            //* Generation d'une tournee de test
-            
-            Point point0 = points.get(0);
-            Point point1 = points.get(1);
-            Point point2 = points.get(2);
-            Point point3 = points.get(3);
-            Point point4 = points.get(4);
-            Point point5 = points.get(5);
-            Point point6 = points.get(6);
-            
-            Troncon troncon1 = new Troncon("a", 1.0, 1.0, point0, point1);
-            Troncon troncon2 = new Troncon("b", 1.0, 1.0, point1, point2);
-            Troncon troncon3 = new Troncon("c", 1.0, 1.0, point2, point3);
-            Troncon troncon4 = new Troncon("d", 1.0, 1.0, point3, point4);
-            Troncon troncon5 = new Troncon("e", 1.0, 1.0, point4, point5);
-            Troncon troncon6 = new Troncon("f", 1.0, 1.0, point5, point6);
-            
-            Itineraire unItineraire = new Itineraire();
-            unItineraire.ajouterTroncon(troncon1);
-            unItineraire.ajouterTroncon(troncon2);
-            unItineraire.ajouterTroncon(troncon3);
-            unItineraire.ajouterTroncon(troncon4);
-            unItineraire.ajouterTroncon(troncon5);
-            unItineraire.ajouterTroncon(troncon6);
-            
-		VueItineraire uneVueItineraire = new VueItineraire(
-				unItineraire.getTroncons(), Color.RED);
-            VueTournee uneVueTournee = new VueTournee();
-            uneVueTournee.ajouterVueItineraire(uneVueItineraire);
-            //*/
-            this.vueFenetre.vueReseau.setVueTournee(uneVueTournee);
+    	
+    	VueTournee uneVue = new VueTournee(tournee.getItineraires());
+    		this.vueFenetre.vueReseau.setVueTournee(uneVue);
             this.vueFenetre.vueReseau.repaint();
     }
             
     public void recupererPoint(int adresse){
+    	SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
     	Point point = tournee.getReseau().getPointViaAdresse(adresse);
     	if(null != point.getUneDemande()){
 			String idClient = point.getUneDemande().getClient().getId()
 					.toString();
     		String adresseString = new Integer(adresse).toString();
-			String heureDebut = point.getUneDemande().getPlageHoraire()
-					.getDebut().getTime().toString();
-			String heureFin = point.getUneDemande().getPlageHoraire().getFin()
-					.getTime().toString();
+			String heureDebut = dateFormat.format(point.getUneDemande().getPlageHoraire()
+					.getDebut().getTime()).toString();
+			String heureFin = dateFormat.format(point.getUneDemande().getPlageHoraire().getFin()
+					.getTime()).toString();
 			vueFenetre.affichageInfos(idClient, adresseString, heureDebut,
-					heureFin);
+					heureFin, true);
+    	}
+    	else{
+    		String idClient = "Non d�fini";
+    		String adresseString = new Integer(adresse).toString();
+    		String heureDebut = "Non d�fini";
+			String heureFin = "";
+			vueFenetre.affichageInfos(idClient, adresseString, heureDebut,
+					heureFin, false);
+    		
     	}
 		// System.out.println(point.getAdresse()+ " : " + "(" +
 		// point.getLongitude() + ", " + point.getLatitude()+ ")");
@@ -226,13 +252,13 @@ public class Application {
            
     public static void main(String []args){
 
-        //Application app = new Application();
+       //new Application();
+    	
     	
 		Reseau reseau = new Reseau();
 		reseau.chargerReseauXML("xmlPourTests/plan10x10.xml");
 		Tournee tournee = new Tournee(reseau);
 		tournee.chargerDonneesDemandeXML("xmlPourTests/livraison10x10-3.xml");
         tournee.calculerTournee();
-
-    }
+      }
 }

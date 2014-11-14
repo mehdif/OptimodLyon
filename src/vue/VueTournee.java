@@ -1,24 +1,36 @@
 package vue;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.*;
+
+import modele.Itineraire;
 
 /**
  * @author Hexanome 4301
  */
 public class VueTournee implements VueDessinable {
 
+	/**
+     * 
+     */
+    public List <VueItineraire> vuesItineraire =new ArrayList<VueItineraire>();
     /**
      * 
      */
     public VueTournee() {
-    	vuesItineraire = new ArrayList<VueItineraire>();
+    	 
+    }
+    
+    public VueTournee(List<Itineraire> list) {
+    	for(Itineraire itineraireCourant : list) {
+    		VueItineraire uneVueItineraire = new VueItineraire(
+    				itineraireCourant.getTroncons(), Color.RED);
+    		vuesItineraire.add(uneVueItineraire);
+    	}    	
     }
 
-    /**
-     * 
-     */
-    public List <VueItineraire> vuesItineraire;
+    
 
 	@Override
 	public void dessiner(Graphics g) {

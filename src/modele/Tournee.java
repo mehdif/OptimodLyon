@@ -2,6 +2,7 @@ package modele;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class Tournee {
 	private static SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 	private static int ordreLivraison = 1;
 
-	private List<Itineraire> itineraires;
+	private List<Itineraire> itineraires = new ArrayList<Itineraire>();
 	private List<PlageHoraire> plagesHoraires = new ArrayList<PlageHoraire>();
 	private Map<String, LinkedList<Point>> paths = new HashMap<String, LinkedList<Point>>();
 	private Entrepot entrepot;
@@ -89,9 +90,8 @@ public class Tournee {
 	/**
 	 * @return
 	 */
-	private Boolean ajouterItineraire() {
-		// TODO implement here
-		return null;
+	private Boolean ajouterItineraire(Itineraire itineraire) {
+		return itineraires.add(itineraire);
 	}
 
 	/**
@@ -134,35 +134,61 @@ public class Tournee {
 		tsp.solve(200000,graph.getNbVertices()*graph.getMaxArcCost()+1);
 
 		ArrayList<Point> globalPath = creerItineraire(tsp);
-		/*for(Point p : itineraire){
+		for(Point p : globalPath){
 			System.out.print(" " + p.getAdresse());
-		}*/
+		}
+
+
+		displaySuccesors(graph);
+		remplirItineraire(globalPath);
 		
-		Itineraire itineraire = new Itineraire();
-		//remplirItineraire(globalPath);
-		
+		for(Itineraire i : itineraires){
+			
+			System.out.println("Itineraire");
+			for(int j = 0; j < i.getTroncons().size(); j++ ){
+				System.out.println("It = " + i.getTroncons().get(j).getOrigine().getAdresse() + " : " + i.getTroncons().get(j).getDestination().getAdresse() );
+			}
+		}
+
 		System.out.println("DONE");
 		
 	}
 
-	/*public ArrayList<Troncon> remplirItineraire(ArrayList<Point> globalPath){
+	/**
+	 * Methode qui permet de remplir la liste d'itineraires avec les troncons correspondants
+	 * @param globalPath : chemin optimal du tsp
+	 */
+	public void remplirItineraire(ArrayList<Point> globalPath){
 		
+
 		ArrayList<Troncon> troncons = new ArrayList<Troncon>();
-		for(int i = 0; i < globalPath.size() - 1; i++){
-			Point p1 = globalPath.get(i);
-			Point p2 = globalPath.get(i+1);
-			
-			if(p2.get() == 0){
-				for(Troncon t : reseau.getTroncons()){
-					if(p1.equals(t.getOrigine()) && p2.equals(t.getDestination())){
-						troncons.add(t);
-					}
+		int i = 0;
+		
+
+		while( i != globalPath.size() - 1){
+			Itineraire itineraire = new Itineraire();
+
+				Point p1 = globalPath.get(i);
+				Point p2 = globalPath.get(i+1);
+
+
+			for(Troncon t : reseau.getTroncons()){
+				if(p1.equals(t.getOrigine()) && p2.equals(t.getDestination())){
+					troncons.add(t);
 				}
 			}
+				
+			if((p1.getOrdreLivraison() != null && p2.getOrdreLivraison() == null && !troncons.isEmpty() || (i == globalPath.size()-2))){
+				for(Troncon t : troncons){
+					itineraire.ajouterTroncon(t);
+					
+				}
+				troncons.clear();
+				ajouterItineraire(itineraire);		
+			}
+			i++;
 		}
-		
-		
-	}*/
+	}
 	
 	
 	public void afficherCost(int[][] cost, int size){
@@ -175,7 +201,11 @@ public class Tournee {
 		}
 	}
 	
-	
+	/**
+	 * Methode qui permet de creer un graphe contenant uniquement les dmemandes de livraisons
+	 * @param points
+	 * @return
+	 */
 	public GraphLivraisons creerGraphPointLivraison(List<Point> points){
 		
 
@@ -183,7 +213,7 @@ public class Tournee {
 		GraphLivraisons graph = new GraphLivraisons(getNombreLivraisons() + 1, Integer.MAX_VALUE, Integer.MIN_VALUE);
 		
 
-		for(int i = 0; i < plagesHoraires.size() - 1; i++){
+		for(int i = 0; i < plagesHoraires.size(); i++){
 		
 			//Premiere plage horaire
 			if(i == 0){
@@ -197,15 +227,7 @@ public class Tournee {
 
 			}
 		}
-		
-		creerDerniereFenetre(entrepot, plagesHoraires.get(2), graph);
-		
-        for(int i = 0; i < graph.getNbVertices(); i++) {
-            for (int j = 0; j < graph.getNbVertices(); j++) {
-                System.out.print(graph.getCost(i, j)+ "  ");
-            }
-            System.out.println("\n");
-        }
+	
 		
 		//displaySuccesors(graph);
         return graph;
@@ -237,9 +259,7 @@ public class Tournee {
 				destination = findPointFromid(next[i]);
 			}
 			
-			System.out.println("Point = " + source.getAdresse()+" "+destination.getAdresse());
 			LinkedList<Point> path = getPathBetweenNodes(source, destination);
-			System.out.println("path = " + path.size());
 			itineraire.addAll(path);
 		}
 		
@@ -312,7 +332,7 @@ public class Tournee {
 				
 		        dijkstra.execute(pSource);
 		        LinkedList<Point> path = dijkstra.getPath(pDestination);
-		        paths.put(pSource.getAdresse()+""+pDestination.getAdresse(), new LinkedList<Point>(path));
+		        //paths.put(pSource.getAdresse()+""+pDestination.getAdresse(), new LinkedList<Point>(path));
 		        
 		        //Mettre a jour la matrice des couts et les valeurs min et max
 		        int value = (int) getPathCost(path, reseau.getTroncons());
@@ -527,51 +547,27 @@ public class Tournee {
 	 * @return a list of points array : for each array there's origin and
 	 *         destination
 	 */
-	private ArrayList<Point[]> getCombinaisons(
-			List<DemandeLivraison> demandeLivraison) {
+	private ArrayList<Point[]> getCombinaisons(List<DemandeLivraison> demandeLivraison){
 		int n = demandeLivraison.size();
-		// //Point[] tempCouple = null;
-		//
-		// int numberOfCombinations = numberOfCombinations(2,n);
-		// int increment = 0 ;
-		// while (increment != numberOfCombinations){
-		//
-		// for(Point[] couple : tempList){
-		//
-		// if(!couple.equals(tempCouple)){
-		//
-		// tempList.add(tempCouple);
-		// }
-		// }
-		//
-		// increment++;
-		// }
-		//
-		//
-		ArrayList<Point[]> tempList = null;
 
-		for (int i = 0; i < demandeLivraison.size(); i++) {
-			for (int j = i + 1; j < demandeLivraison.size(); j++) {
-				Point[] tempCouple = {
-						demandeLivraison.get(i).getPointDeLivraison(),
-						demandeLivraison.get(j).getPointDeLivraison() };
+		ArrayList<Point[]> tempList = new ArrayList<Point[]>();
+
+		for (int i = 0;i < demandeLivraison.size() ; i++){
+			for (int j= i+1 ;j < demandeLivraison.size() ; j++){
+				Point [] tempCouple= {demandeLivraison.get(i).getPointDeLivraison(),demandeLivraison.get(j).getPointDeLivraison()};
 				tempList.add(tempCouple);
 			}
 		}
 
-		if (tempList.size() != numberOfCombinations(2, n)) {
+		if (tempList.size()!=numberOfCombinations(2,n)){
 			System.out.println("Combinaisons manquantes");
 		}
-
+		
 		return tempList;
 	}
 
 
 	/** Returns the number of combinations of k elements within n
-=======
-	/**
-	 * Returns the number of combinations of k elements within n
->>>>>>> branch 'master' of https://github.com/mehdif/OptimodLyon.git
 	 * 
 	 * @param k
 	 * @param n
@@ -685,7 +681,6 @@ public class Tournee {
 													.getAdresse())
 											.setDemandeLivraison(
 													demandeLivraison);
-
 								}
 							}
 							listePlagesBuffer.add(plage);

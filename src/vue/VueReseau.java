@@ -2,6 +2,7 @@ package vue;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -22,10 +23,8 @@ import modele.Troncon;
  * 
  * @author Hexanome 4301
  */
+@SuppressWarnings("serial")
 public class VueReseau extends JPanel implements VueDessinable {
-
-	private static final long serialVersionUID = 1L;
-
 	private ArrayList<VuePoint> vuesPoints = new ArrayList<VuePoint>();
 	private ArrayList<VueTroncon> vuesTroncons = new ArrayList<VueTroncon>();;
 	private VueTournee vueTournee;
@@ -53,13 +52,7 @@ public class VueReseau extends JPanel implements VueDessinable {
 				}
 				for (VuePoint v : vuesPoints) {
 					if (null != v.getShape() && null != me.getPoint()) {
-						if (v.getShape().contains(me.getPoint())) {// check if
-																	// mouse is
-																	// clicked
-																	// within
-																	// shape
-							// we can either just print out the object class
-							// name
+						if (v.getShape().contains(me.getPoint())) {
 							vuePointClique = v;
 							v.onClique();
 							application.vueFenetre.adressePointClique();
@@ -67,8 +60,6 @@ public class VueReseau extends JPanel implements VueDessinable {
 						}
 					}
 				}
-				
-
 			}
 
 			public void mouseEntered(MouseEvent me) {
@@ -85,21 +76,20 @@ public class VueReseau extends JPanel implements VueDessinable {
 	}
 
 	/**
-	 * Dessine tous les points du réseau
+	 * Permet de dessiner les points
+	 * @param g 
 	 */
-
 	public void dessinerPoints(Graphics g) {
-
-		for (int i = 0; i < vuesPoints.size(); i++) {
-			vuesPoints.get(i).dessiner(g);
-		}
+	for (int i = 0; i < vuesPoints.size(); i++) {
+		vuesPoints.get(i).dessiner(g);
+	}
 	}
 
 	/**
-	 * Dessine tous les troncons du réseau
+	 * Permet de dessiner les troncons
+	 * @param g
 	 */
 	public void dessinerTroncons(Graphics g) {
-
 		for (int j = 0; j < vuesTroncons.size(); j++) {
 			vuesTroncons.get(j).dessiner(g);
 		}
@@ -189,10 +179,8 @@ public class VueReseau extends JPanel implements VueDessinable {
 	 * @return bool , égal à true si l'initialisation s'est correctement
 	 *         effectué, false sinon
 	 */
-	public Boolean initialiser(JFrame frame) {
-		boolean bool = true;
+	public void initialiser(JFrame frame) {
 		frame.getContentPane().add(this, BorderLayout.CENTER);
-		return bool;
 	}
 
 	/**
@@ -202,7 +190,6 @@ public class VueReseau extends JPanel implements VueDessinable {
 	 * ete cree
 	 * 
 	 * @param g
-	 * @return bool true si tout les �l�ments ont pu se dessiner
 	 */
 	@Override
 	public void dessiner(Graphics g) {
@@ -218,17 +205,6 @@ public class VueReseau extends JPanel implements VueDessinable {
 		this.dessinerPoints(g);
 
 	}
-
-	// public List<VuePoint> trouverVue(java.awt.Point p) {
-	// List<VuePoint> l = new ArrayList<VuePoint>();
-	// for (Iterator<VuePoint> iter = vuesPoints.iterator(); iter.hasNext();) {
-	// VuePoint element = (VuePoint) iter.next();
-	// if(this.contains(p)){
-	// l.add(element);
-	// }
-	// }
-	// return l;
-	// }
 
 	@Override
 	public void paintComponent(Graphics g) {
